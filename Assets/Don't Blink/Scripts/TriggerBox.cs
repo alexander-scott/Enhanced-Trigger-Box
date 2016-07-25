@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,19 +13,9 @@ public class TriggerBox : MonoBehaviour
     #region Options
 
     /// <summary>
-    /// The tag of a gameobject that is allowed to trip the trigger
+    /// A list of tags belonging to gameobjects which are able to trigger the trigger box
     /// </summary>
-    public string triggerByTag1 = "Player";
-
-    /// <summary>
-    /// An additional tag from a gameobject that is allowed to trip the trigger. OPTIONAL.
-    /// </summary>
-    public string triggerByTag2 = "";
-
-    /// <summary>
-    /// Number of trigger tags being used
-    /// </summary>
-    public int triggerCount = 1;
+    public List<string> triggerTags;
 
     /// <summary>
     /// The colour of the trigger box
@@ -35,6 +26,11 @@ public class TriggerBox : MonoBehaviour
     /// If true then only a wireframe will be displayed instead of a coloured box
     /// </summary>
     public bool drawWire;
+
+    /// <summary>
+    /// If true the application will write to the console a message with the name of the trigger that was triggered
+    /// </summary>
+    public bool debugTriggerBox;
     #endregion
 
     #region Animation
@@ -144,7 +140,7 @@ public class TriggerBox : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// The type of message sent to the recieving gameobject
+    /// The type of message that will be sent to the recieving gameobject
     /// </summary>
     public enum msgtype
     {
@@ -171,14 +167,17 @@ public class TriggerBox : MonoBehaviour
     /// <param name="other">The collider that has been collided with</param>
     private void OnTriggerEnter(Collider other)
     {
-        triggerCount -= 1;
-        if (triggerCount >= 0 && (other.gameObject.tag == triggerByTag1 || other.gameObject.tag == triggerByTag2))
+        if (triggerTags.Count >= 0 && (triggerTags.Contains(other.gameObject.tag)))
         {
+            if (debugTriggerBox)
+            {
+                Debug.Log(gameObject.name + " has been triggered!");
+            }
+
             if (mute)
             {
                 Camera.main.GetComponent<AudioSource>().Stop();
             }
-                
 
             if (playAudio)
             {

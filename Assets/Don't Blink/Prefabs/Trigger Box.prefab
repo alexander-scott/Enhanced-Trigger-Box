@@ -105,7 +105,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -141,10 +141,10 @@ MonoBehaviour:
   playAudio: {fileID: 0}
   mute: 0
   loop: 0
-  sfx: {fileID: 0}
+  soundEffect: {fileID: 0}
   soundEffectVolume: 1
   messageTarget: {fileID: 0}
-  sendMessage: 
+  messageMethodName: 
   parameterType: 0
   parameterValue: 
   spawnGameobject: {fileID: 0}
@@ -152,7 +152,7 @@ MonoBehaviour:
   isEnabled: 0
   targetgameObject: {fileID: 0}
   loadLevelName: 
-  loadDelay: 2
+  loadDelay: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
