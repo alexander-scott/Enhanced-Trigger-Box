@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets.Characters.DontBlink
+namespace UnityStandardAssets.Characters.FirstPerson
 {
     [Serializable]
     public class MouseLook

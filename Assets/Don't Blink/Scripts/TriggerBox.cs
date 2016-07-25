@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityStandardAssets.Characters.DontBlink;
 
 /// <summary>
 /// Perform an action when a player walks into a box
@@ -267,11 +266,6 @@ public class TriggerBox : MonoBehaviour
     /// <returns></returns>
     IEnumerator LoadScene()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<HeadBob>().enabled = false;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<MouseLook>().enabled = false;
-        Camera.main.GetComponent<MouseLook>().enabled = false;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>().enabled = false;
-
         yield return new WaitForSeconds(loadDelay);
         UnityEngine.SceneManagement.SceneManager.LoadScene(loadLevelName);
     }
