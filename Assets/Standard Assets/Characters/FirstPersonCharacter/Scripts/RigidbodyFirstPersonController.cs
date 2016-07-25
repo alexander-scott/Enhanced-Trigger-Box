@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets.Characters.FirstPerson
+namespace UnityStandardAssets.Characters.DontBlink
 {
     [RequireComponent(typeof (Rigidbody))]
     [RequireComponent(typeof (CapsuleCollider))]
