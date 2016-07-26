@@ -31,6 +31,28 @@ public class TriggerBox : MonoBehaviour
     /// If true the application will write to the console a message with the name of the trigger that was triggered
     /// </summary>
     public bool debugTriggerBox;
+
+    private bool triggered = false;
+
+    private bool conditionMet = false;
+    #endregion 
+
+    #region Conditions
+
+    public LookType viewConditionType;
+
+    public GameObject viewObject;
+
+    private Vector3 viewConditionScreenPoint = new Vector3();
+
+    private Vector3 viewConditionDirection = new Vector3();
+
+    private RaycastHit viewConditionRaycastHit;
+
+    private BoxCollider viewConditionObjectCollider;
+
+    private Plane[] viewConditionCameraPlane;
+
     #endregion
 
     #region Animation
@@ -139,6 +161,8 @@ public class TriggerBox : MonoBehaviour
 
     #endregion
 
+    #region Enums and structs
+
     /// <summary>
     /// The type of message that will be sent to the recieving gameobject
     /// </summary>
@@ -149,114 +173,195 @@ public class TriggerBox : MonoBehaviour
         String,
     }
 
+    public enum LookType
+    {
+        None,
+        LookingAt,
+        LookingAway,
+    }
+
+    #endregion
+
+    void Awake()
+    {
+        viewConditionObjectCollider = viewObject.GetComponent<BoxCollider>();
+    }
+
     /// <summary>
     /// Update loop called every frame
     /// </summary>
-    void Update()
+    void FixedUpdate()
     {
         if (spawnGameobject && !onetime && !Application.isPlaying)
         {
             onetime = true;
             spawnPosition = transform.position + Vector3.forward;
         }
-    }
+
+        if (triggered)
+        {
+            if (viewConditionType != LookType.None)
+            {
+                conditionMet = CheckConditions();
+            }
+            else
+            {
+                conditionMet = true;
+            }
+
+            if (conditionMet)
+            {
+                ConditionMet();
+            }           
+        }
+    } 
 
     /// <summary>
-    /// Called when this box intersects with another gameobject that has a collider
+    /// Called when this box intersects with another gameobject
     /// </summary>
-    /// <param name="other">The collider that has been collided with</param>
+    /// <param name="other">The collider that this object has collided with</param>
     private void OnTriggerEnter(Collider other)
     {
         if (triggerTags.Count >= 0 && (triggerTags.Contains(other.gameObject.tag)))
         {
-            if (debugTriggerBox)
-            {
-                Debug.Log(gameObject.name + " has been triggered!");
-            }
+            triggered = true;
+        }
+    }
 
-            if (mute)
-            {
-                Camera.main.GetComponent<AudioSource>().Stop();
-            }
+    private bool CheckConditions()
+    {
+        // Get the position of the object
+        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
 
-            if (playAudio)
+        if (viewConditionType == LookType.LookingAt)
+        {
+            // This checks that the object is in our screen
+            if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
             {
-                Camera.main.GetComponent<AudioSource>().loop = loop;
-                Camera.main.GetComponent<AudioSource>().clip = playAudio;
-                Camera.main.GetComponent<AudioSource>().volume = musicVolume;
-                Camera.main.GetComponent<AudioSource>().Play();
-            }
+                viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position).normalized;
 
-            if (soundEffect)
-            {
-                AudioSource.PlayClipAtPoint(soundEffect, transform.position, soundEffectVolume);
-            } 
-
-            if (messageMethodName != "" && messageTarget)
-            {
-                if (parameterValue != "")
+                // This checks that there's no obstacles in the way
+                if (Physics.Raycast(Camera.main.transform.position, viewConditionDirection, out viewConditionRaycastHit, 100))
                 {
-                    switch (parameterType)
+                    if (viewConditionRaycastHit.transform.position == viewObject.transform.position)
                     {
-                        case msgtype.Int:
-                            messageTarget.SendMessage(messageMethodName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
-                            break;
-                        case msgtype.Float:
-                            messageTarget.SendMessage(messageMethodName, float.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
-                            break;
-                        case msgtype.String:
-                            messageTarget.SendMessage(messageMethodName, parameterValue, SendMessageOptions.DontRequireReceiver);
-                            break;
+                        return true;
                     }
                 }
-                else
-                {
-                    messageTarget.SendMessage(messageMethodName, SendMessageOptions.DontRequireReceiver);
-                }
-            }
-
-            if (stopAnim && animationTarget)
-            {
-                animationTarget.GetComponent<Animation>().Stop();
-            }
-            
-
-            if (playAnimation && animationTarget)
-            {
-                animationTarget.GetComponent<Animation>().CrossFade(playAnimation.name, 0.3f, PlayMode.StopAll);
-            }
-
-            if (setMecanimTrigger != "")
-            {
-                animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
-            }
-
-            if (spawnGameobject)
-            {
-                Instantiate(spawnGameobject, spawnPosition, Quaternion.identity);
-            }
-
-            if (targetgameObject)
-            {
-                if (isEnabled)
-                {
-                    targetgameObject.SetActive(true);
-                }
-                else
-                {
-                    targetgameObject.SetActive(false);
-                }
-            }
-
-            if (loadLevelName != "")
-            {
-                StartCoroutine("LoadScene");
             }
         }
         else
         {
-            Destroy(gameObject);
+            // If the object doesn't have a box collider we instead check if the object position is out of view
+            if (viewConditionObjectCollider == null)
+            {
+                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 && viewConditionScreenPoint.x < 1
+                && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                {
+                    return true;
+                }
+            }
+            else // Check the whole collider is out of view
+            {
+                viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+                if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                {
+                    return true;
+                }
+            }
         }
+
+        return false;
+    }
+
+    private void ConditionMet()
+    {
+        if (debugTriggerBox)
+        {
+            Debug.Log(gameObject.name + " has been triggered!");
+        }
+
+        if (mute)
+        {
+            Camera.main.GetComponent<AudioSource>().Stop();
+        }
+
+        if (playAudio)
+        {
+            Camera.main.GetComponent<AudioSource>().loop = loop;
+            Camera.main.GetComponent<AudioSource>().clip = playAudio;
+            Camera.main.GetComponent<AudioSource>().volume = musicVolume;
+            Camera.main.GetComponent<AudioSource>().Play();
+        }
+
+        if (soundEffect)
+        {
+            AudioSource.PlayClipAtPoint(soundEffect, transform.position, soundEffectVolume);
+        }
+
+        if (messageMethodName != "" && messageTarget)
+        {
+            if (parameterValue != "")
+            {
+                switch (parameterType)
+                {
+                    case msgtype.Int:
+                        messageTarget.SendMessage(messageMethodName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
+                        break;
+                    case msgtype.Float:
+                        messageTarget.SendMessage(messageMethodName, float.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
+                        break;
+                    case msgtype.String:
+                        messageTarget.SendMessage(messageMethodName, parameterValue, SendMessageOptions.DontRequireReceiver);
+                        break;
+                }
+            }
+            else
+            {
+                messageTarget.SendMessage(messageMethodName, SendMessageOptions.DontRequireReceiver);
+            }
+        }
+
+        if (stopAnim && animationTarget)
+        {
+            animationTarget.GetComponent<Animation>().Stop();
+        }
+
+
+        if (playAnimation && animationTarget)
+        {
+            animationTarget.GetComponent<Animation>().CrossFade(playAnimation.name, 0.3f, PlayMode.StopAll);
+        }
+
+        if (setMecanimTrigger != "")
+        {
+            animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
+        }
+
+        if (spawnGameobject)
+        {
+            Instantiate(spawnGameobject, spawnPosition, Quaternion.identity);
+        }
+
+        if (targetgameObject)
+        {
+            if (isEnabled)
+            {
+                targetgameObject.SetActive(true);
+            }
+            else
+            {
+                targetgameObject.SetActive(false);
+            }
+        }
+
+        if (loadLevelName != "")
+        {
+            StartCoroutine("LoadScene");
+        }
+
+        Destroy(gameObject);
     }
 
     /// <summary>

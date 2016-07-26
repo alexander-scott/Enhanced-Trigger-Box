@@ -24,7 +24,6 @@ public class TriggerBoxInspector : Editor
     {
         longStringProp = serializedObject.FindProperty("showText");
 
-
         vars = new List<InspectorPlusVar>();
         so = serializedObject;
 
@@ -76,7 +75,7 @@ public class TriggerBoxInspector : Editor
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "List<String>",
                                       "triggerTags", "Trigger Tags", InspectorPlusVar.VectorDrawType.None, false,
                                       false, 47, new[] { true, false, false, false },
-                                      new[] { "Animation:", "", "", "" }, new[] { true, false, false, false },
+                                      new[] { "Conditions:", "", "", "" }, new[] { true, false, false, false },
                                       new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
                                       new[]
                                           {
@@ -87,6 +86,37 @@ public class TriggerBoxInspector : Editor
                                       new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
                                       new[] { false, false, false, false }, 1, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
                                       false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
+        vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "LookType",
+                            "viewConditionType", "View Condition", InspectorPlusVar.VectorDrawType.None, false,
+                                       false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
+                            new[] { false, false, false, false }, new[] { false, false, false, false },
+                            new[] { 0, 0, 0, 0 },
+                            new[]
+                                          {
+                                              false, false, false, false, false, false, false, false, false, false, false,
+                                              false, false, false, false, false
+                                          },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { false, false, false, false }, 0, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
+                            false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
+        vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "GameObject",
+                              "viewObject", "Condition Object", InspectorPlusVar.VectorDrawType.None, false,
+                    false, 47, new[] { true, false, false, false },
+                                      new[] { "Animations:", "", "", "" }, new[] { true, false, false, false },
+                                      new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
+                                      new[]
+                                          {
+                                              false, false, false, false, false, false, false, false, false, false, false,
+                                              false, false, false, false, false
+                                          },
+                                      new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                                      new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                                      new[] { false, false, false, false }, 1, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
+                                      false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "GameObject",
                                 "animationTarget", "Target Gameobject", InspectorPlusVar.VectorDrawType.None,
