@@ -128,11 +128,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d66628cfae09554483adedc6b29f7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerByTag1: Player
-  triggerByTag2: 
-  triggerCount: 1
+  triggerTags:
+  - Player
   triggerboxColour: {r: 1, g: 0, b: 0, a: 0.334}
   drawWire: 0
+  debugTriggerBox: 0
+  destroyOnTrigger: 0
+  viewConditionType: 0
+  viewObject: {fileID: 0}
+  lookObjectCondition: 0
+  conditionTime: 0
+  canWander: 0
   animationTarget: {fileID: 0}
   playAnimation: {fileID: 0}
   setMecanimTrigger: 

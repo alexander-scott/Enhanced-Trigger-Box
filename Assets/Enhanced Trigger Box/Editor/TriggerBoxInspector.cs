@@ -90,7 +90,7 @@ public class TriggerBoxInspector : Editor
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "List<String>",
                                       "triggerTags", "Trigger Tags", InspectorPlusVar.VectorDrawType.None, false,
                                       false, 47, new[] { true, false, false, false },
-                                      new[] { "Conditions:", "", "", "" }, new[] { true, false, false, false },
+                                      new[] { "Camera Conditions:", "", "", "" }, new[] { true, false, false, false },
                                       new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
                                       new[]
                                           {
@@ -103,7 +103,7 @@ public class TriggerBoxInspector : Editor
                                       false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "LookType",
-                            "viewConditionType", "View Condition", InspectorPlusVar.VectorDrawType.None, false,
+                            "viewConditionType", "Camera Condition", InspectorPlusVar.VectorDrawType.None, false,
                                        false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -133,7 +133,22 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "LookObjectCondition",
-                              "lookObjectCondition", "Object Condition", InspectorPlusVar.VectorDrawType.None, false,
+                              "lookObjectCondition", "Object Type", InspectorPlusVar.VectorDrawType.None, false,
+                                false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
+                            new[] { false, false, false, false }, new[] { false, false, false, false },
+                            new[] { 0, 0, 0, 0 },
+                            new[]
+                                          {
+                                              false, false, false, false, false, false, false, false, false, false, false,
+                                              false, false, false, false, false
+                                          },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { false, false, false, false }, 0, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
+                            false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
+        vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Boolean",
+                              "canWander", "Can Wander", InspectorPlusVar.VectorDrawType.None, false,
                                 false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -833,10 +848,12 @@ public class TriggerBoxInspector : Editor
 
         var script = (TriggerBox)target;
         if (script.spawnGameobject)
+        {
             Handles.Label(script.spawnPosition, "Spawn " + script.spawnGameobject.name);
 
-        script.spawnPosition =
-            Handles.PositionHandle(script.spawnPosition, Quaternion.identity);
+            script.spawnPosition = Handles.PositionHandle(script.spawnPosition, Quaternion.identity);
+        }
+            
 
         if (GUI.changed)
             EditorUtility.SetDirty(target);

@@ -49,6 +49,8 @@ public class TriggerBox : MonoBehaviour
 
     public float conditionTime = 0f;
 
+    public bool canWander;
+
     private Vector3 viewConditionScreenPoint = new Vector3();
 
     private Vector3 viewConditionDirection = new Vector3();
@@ -197,12 +199,15 @@ public class TriggerBox : MonoBehaviour
 
     #endregion
 
-    void Awake()
+    void Start()
     {
-        viewConditionObjectCollider = viewObject.GetComponent<BoxCollider>();
-        if (viewConditionObjectCollider == null)
+        if (viewConditionType != LookType.None)
         {
-            lookObjectCondition = LookObjectCondition.Transform;
+            viewConditionObjectCollider = viewObject.GetComponent<BoxCollider>();
+            if (viewConditionObjectCollider == null)
+            {
+                lookObjectCondition = LookObjectCondition.Transform;
+            }
         }
     }
 
@@ -247,8 +252,24 @@ public class TriggerBox : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (!canWander)
+        {
+            if (triggerTags.Count >= 0 && (triggerTags.Contains(other.gameObject.tag)))
+            {
+                triggered = false;
+            }
+        }
+    }
+
     private bool CheckConditions()
     {
+        if (Vector3.Distance(Camera.main.transform.position, viewObject.transform.position) < 2f)
+        {
+            return false;
+        }
+
         if (viewConditionType == LookType.LookingAt)
         {
             if (lookObjectCondition == LookObjectCondition.Transform)
@@ -324,7 +345,13 @@ public class TriggerBox : MonoBehaviour
                 viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
                 {
-                    return CheckConditionTimer();
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
+
+                    if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                    {
+                        return CheckConditionTimer();
+                    }
                 }
             }
             else
@@ -455,7 +482,7 @@ public class TriggerBox : MonoBehaviour
 
         if (spawnGameobject)
         {
-            Instantiate(spawnGameobject, spawnPosition, Quaternion.identity);
+            Instantiate(spawnGameobject, spawnPosition, spawnGameobject.transform.rotation);
         }
 
         if (targetgameObject)
