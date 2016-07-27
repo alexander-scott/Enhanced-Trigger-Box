@@ -32,6 +32,8 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     public bool debugTriggerBox;
 
+    public bool destroyOnTrigger;
+
     private bool triggered = false;
 
     private bool conditionMet = false;
@@ -43,15 +45,21 @@ public class TriggerBox : MonoBehaviour
 
     public GameObject viewObject;
 
+    public LookObjectCondition lookObjectCondition;
+
+    public float conditionTime = 0f;
+
     private Vector3 viewConditionScreenPoint = new Vector3();
 
     private Vector3 viewConditionDirection = new Vector3();
 
-    private RaycastHit viewConditionRaycastHit;
+    private RaycastHit viewConditionRaycastHit = new RaycastHit();
 
     private BoxCollider viewConditionObjectCollider;
 
     private Plane[] viewConditionCameraPlane;
+
+    private float viewTimer = 0f;
 
     #endregion
 
@@ -180,11 +188,22 @@ public class TriggerBox : MonoBehaviour
         LookingAway,
     }
 
+    public enum LookObjectCondition
+    {
+        Transform,
+        FullBoxCollider,
+        MinimumBoxCollider,
+    }
+
     #endregion
 
     void Awake()
     {
         viewConditionObjectCollider = viewObject.GetComponent<BoxCollider>();
+        if (viewConditionObjectCollider == null)
+        {
+            lookObjectCondition = LookObjectCondition.Transform;
+        }
     }
 
     /// <summary>
@@ -230,46 +249,141 @@ public class TriggerBox : MonoBehaviour
 
     private bool CheckConditions()
     {
-        // Get the position of the object
-        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
-
         if (viewConditionType == LookType.LookingAt)
         {
-            // This checks that the object is in our screen
-            if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+            if (lookObjectCondition == LookObjectCondition.Transform)
             {
-                viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position).normalized;
+                // Get the viewport point of the object
+                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
 
-                // This checks that there's no obstacles in the way
-                if (Physics.Raycast(Camera.main.transform.position, viewConditionDirection, out viewConditionRaycastHit, 100))
+                // This checks that the object is in our screen
+                if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
                 {
-                    if (viewConditionRaycastHit.transform.position == viewObject.transform.position)
+                    viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+
+                    if (CheckRaycast())
                     {
-                        return true;
+                        return CheckConditionTimer();
+                    }
+                }
+            }
+            else if (lookObjectCondition == LookObjectCondition.MinimumBoxCollider)
+            {
+                viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+                if (GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                {
+                    viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+
+                    if (CheckRaycast())
+                    {
+                        return CheckConditionTimer();
+                    }
+                }
+            }
+            else
+            {
+                // Get the viewport point of the object
+                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
+
+                // This checks that the object is in our screen
+                if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                {
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+
+                    if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                    {
+                        viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+
+                        if (CheckRaycast())
+                        {
+                            return CheckConditionTimer();
+                        }
                     }
                 }
             }
         }
         else
         {
-            // If the object doesn't have a box collider we instead check if the object position is out of view
-            if (viewConditionObjectCollider == null)
+            if (lookObjectCondition == LookObjectCondition.Transform)
             {
-                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 && viewConditionScreenPoint.x < 1
-                && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                // Get the viewport point of the object
+                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
+
+                // This checks that the object is in our screen
+                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
                 {
-                    return true;
+                    return CheckConditionTimer();
                 }
             }
-            else // Check the whole collider is out of view
+            else if (lookObjectCondition == LookObjectCondition.FullBoxCollider)
             {
                 viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
                 {
-                    return true;
+                    return CheckConditionTimer();
                 }
             }
+            else
+            {
+                // Get the viewport point of the object
+                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
+
+                // This checks that the object is in our screen
+                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                {
+                    return CheckConditionTimer();
+                }
+                else
+                {
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+
+                    if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                    {
+                        return CheckConditionTimer();
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private bool CheckRaycast()
+    {
+        // This checks that there's no obstacles in the way
+        if (Physics.Raycast(Camera.main.transform.position, viewConditionDirection.normalized, out viewConditionRaycastHit, viewConditionDirection.magnitude))
+        {
+            if (viewConditionRaycastHit.transform.position == viewObject.transform.position)
+            {
+                if (viewTimer >= conditionTime)
+                {
+                    return true;
+                }
+                else
+                {
+                    viewTimer += Time.fixedDeltaTime;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private bool CheckConditionTimer()
+    {
+        if (viewTimer >= conditionTime)
+        {
+            return true;
+        }
+        else
+        {
+            viewTimer += Time.fixedDeltaTime;
         }
 
         return false;
@@ -361,7 +475,14 @@ public class TriggerBox : MonoBehaviour
             StartCoroutine("LoadScene");
         }
 
-        Destroy(gameObject);
+        if (destroyOnTrigger)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     /// <summary>

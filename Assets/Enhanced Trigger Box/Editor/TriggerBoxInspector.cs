@@ -57,6 +57,21 @@ public class TriggerBoxInspector : Editor
                               new[] { false, false, false, false }, 0, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
                               false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
+        vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Boolean", "destroyOnTrigger",
+                              "Destroy on Trigger", InspectorPlusVar.VectorDrawType.None, false, false, 0,
+                              new[] { false, false, false, false }, new[] { "", "", "", "" },
+                              new[] { false, false, false, false }, new[] { false, false, false, false },
+                              new[] { 0, 0, 0, 0 },
+                              new[]
+                                          {
+                                              false, false, false, false, false, false, false, false, false, false, false,
+                                              false, false, false, false, false
+                                          },
+                              new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                              new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                              new[] { false, false, false, false }, 0, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
+                              false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Color",
                               "triggerboxColour", "Triggerbox Colour", InspectorPlusVar.VectorDrawType.None, false,
                               false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
@@ -103,8 +118,39 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "GameObject",
-                              "viewObject", "Condition Object", InspectorPlusVar.VectorDrawType.None, false,
-                    false, 47, new[] { true, false, false, false },
+                              "viewObject", "Object", InspectorPlusVar.VectorDrawType.None, false,
+                                false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
+                            new[] { false, false, false, false }, new[] { false, false, false, false },
+                            new[] { 0, 0, 0, 0 },
+                            new[]
+                                          {
+                                              false, false, false, false, false, false, false, false, false, false, false,
+                                              false, false, false, false, false
+                                          },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { false, false, false, false }, 0, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
+                            false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
+        vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "LookObjectCondition",
+                              "lookObjectCondition", "Object Condition", InspectorPlusVar.VectorDrawType.None, false,
+                                false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
+                            new[] { false, false, false, false }, new[] { false, false, false, false },
+                            new[] { 0, 0, 0, 0 },
+                            new[]
+                                          {
+                                              false, false, false, false, false, false, false, false, false, false, false,
+                                              false, false, false, false, false
+                                          },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" },
+                            new[] { false, false, false, false }, 0, "TriggerBox", new Vector3(0.5f, 0.5f, 0f),
+                            false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
+
+
+        vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Float",
+                            "conditionTime", "Condition Timer", InspectorPlusVar.VectorDrawType.None, false,
+                                    false, 47, new[] { true, false, false, false },
                                       new[] { "Animations:", "", "", "" }, new[] { true, false, false, false },
                                       new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
                                       new[]
