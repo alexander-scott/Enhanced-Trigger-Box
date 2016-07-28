@@ -148,15 +148,28 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     public GameObject spawnGameobject;
 
-    /// <summary>
-    /// Used to ensure it is only spawned once
-    /// </summary>
-    private bool onetime;
+    public string spawnedObjectName;
 
     /// <summary>
     /// Position to spawn the gameobject on
     /// </summary>
     public Vector3 spawnPosition;
+
+    public Quaternion spawnRotation;
+
+    /// <summary>
+    /// Used to ensure it is only spawned once
+    /// </summary>
+    private bool onetime;
+    #endregion
+
+    #region Destroy Gameobject
+    /// <summary>
+    /// The gameobject or prefab to instanstiate
+    /// </summary>
+    public GameObject destroyGameobject;
+
+    public string destroyObjectName;
     #endregion
 
     #region Enable / Disable gameobject
@@ -482,7 +495,16 @@ public class TriggerBox : MonoBehaviour
 
         if (spawnGameobject)
         {
-            Instantiate(spawnGameobject, spawnPosition, spawnGameobject.transform.rotation);
+            if (!string.IsNullOrEmpty(spawnedObjectName))
+            {
+                // Is spawnrotation ever null?
+                var newobj = Instantiate(spawnGameobject, (spawnPosition != Vector3.zero) ? spawnPosition : spawnGameobject.transform.position, spawnGameobject.transform.rotation);
+                newobj.name = spawnedObjectName;
+            }
+            else
+            {
+                Instantiate(spawnGameobject, (spawnPosition != Vector3.zero) ? spawnPosition : spawnGameobject.transform.position, spawnGameobject.transform.rotation);
+            }
         }
 
         if (targetgameObject)
@@ -495,6 +517,17 @@ public class TriggerBox : MonoBehaviour
             {
                 targetgameObject.SetActive(false);
             }
+        }
+
+        if (destroyGameobject)
+        {
+            DestroyImmediate(destroyGameobject);
+        }
+
+        if (!string.IsNullOrEmpty(destroyObjectName))
+        {
+            GameObject gameobj = GameObject.Find(destroyObjectName);
+            Destroy(gameobj);
         }
 
         if (loadLevelName != "")
