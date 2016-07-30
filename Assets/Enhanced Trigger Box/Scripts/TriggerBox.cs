@@ -32,14 +32,23 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     public bool debugTriggerBox;
 
-    public bool destroyOnTrigger;
+    /// <summary>
+    /// A set of options for when the trigger box has been trigged. Nothing does nothing. Trigger box destroys trigger box. Parent destroys parent.
+    /// </summary>
+    public DestroyTriggerBox destroyOnTrigger;
 
+    /// <summary>
+    /// This is set to true when the trigger box is triggered. Once this is true we can start checking if the conditions have been met.
+    /// </summary>
     private bool triggered = false;
 
+    /// <summary>
+    /// This is set to true when all the conditions have been met.
+    /// </summary>
     private bool conditionMet = false;
     #endregion 
 
-    #region Conditions
+    #region Camera Conditions
 
     public LookType viewConditionType;
 
@@ -62,6 +71,28 @@ public class TriggerBox : MonoBehaviour
     private Plane[] viewConditionCameraPlane;
 
     private float viewTimer = 0f;
+
+    #endregion
+
+    #region Player Prefs Conditions
+
+    public string playerPrefKey;
+
+    public string playerPrefVal;
+
+    public ParameterType playerPrefType;
+
+    public PlayerPrefCondition playerPrefCondition;
+
+    private float playerPrefFloat;
+
+    private int playerPrefInt;
+
+    private string playerPrefString;
+
+    private float playerPrefValFloat;
+
+    private int playerPrefValInt;
 
     #endregion
 
@@ -134,7 +165,7 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The type of parameter that is being sent
     /// </summary>
-    public msgtype parameterType;
+    public ParameterType parameterType;
 
     /// <summary>
     /// The value of the parameter that is being sent
@@ -155,8 +186,6 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     public Vector3 spawnPosition;
 
-    public Quaternion spawnRotation;
-
     /// <summary>
     /// Used to ensure it is only spawned once
     /// </summary>
@@ -167,14 +196,23 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The gameobject or prefab to instanstiate
     /// </summary>
-    public GameObject destroyGameobject;
+    public List<GameObject> destroyGameobjects;
 
-    public string destroyObjectName;
+    public List<string> destroyObjectNames;
     #endregion
 
-    #region Enable / Disable gameobject
-    public bool isEnabled;
-    public GameObject targetgameObject;
+    #region Enable object
+
+    public List<GameObject> enableGameObject;
+
+    #endregion
+
+    #region Disable gameobject
+
+    public List<GameObject> disableGameObject;
+
+    public List<string> disableGameObjectName;
+
     #endregion
 
     #region Load Level
@@ -189,11 +227,18 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The type of message that will be sent to the recieving gameobject
     /// </summary>
-    public enum msgtype
+    public enum ParameterType
     {
         Int,
         Float,
         String,
+    }
+
+    public enum DestroyTriggerBox
+    {
+        Nothing,
+        TriggerBox,
+        Parent,
     }
 
     public enum LookType
@@ -210,6 +255,16 @@ public class TriggerBox : MonoBehaviour
         MinimumBoxCollider,
     }
 
+    public enum PlayerPrefCondition
+    {
+        None,
+        GreaterThan,
+        GreaterThanOrEqualTo,
+        EqualTo,
+        LessThanOrEqualTo,
+        LessThan,
+    }
+
     #endregion
 
     void Start()
@@ -220,6 +275,26 @@ public class TriggerBox : MonoBehaviour
             if (viewConditionObjectCollider == null)
             {
                 lookObjectCondition = LookObjectCondition.Transform;
+            }
+        }
+
+        if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
+        {
+            switch (playerPrefType)
+            {
+                case ParameterType.Float:
+                    playerPrefFloat = PlayerPrefs.GetFloat(playerPrefKey);
+                    break;
+
+                case ParameterType.Int:
+                    playerPrefInt = PlayerPrefs.GetInt(playerPrefKey);
+                    float.TryParse(playerPrefVal, out playerPrefValFloat);
+                    break;
+
+                case ParameterType.String:
+                    playerPrefString = PlayerPrefs.GetString(playerPrefString);
+                    int.TryParse(playerPrefVal, out playerPrefValInt);
+                    break;
             }
         }
     }
@@ -237,13 +312,19 @@ public class TriggerBox : MonoBehaviour
 
         if (triggered)
         {
-            if (viewConditionType != LookType.None)
-            {
-                conditionMet = CheckConditions();
-            }
-            else
+            if (viewConditionType == LookType.None && playerPrefCondition == PlayerPrefCondition.None)
             {
                 conditionMet = true;
+            }
+
+            if (!conditionMet && viewConditionType != LookType.None)
+            {
+                conditionMet = CheckCameraConditions();
+            }
+
+            if (!conditionMet && playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
+            {
+                conditionMet = CheckPlayerPrefConditions();
             }
 
             if (conditionMet)
@@ -276,58 +357,24 @@ public class TriggerBox : MonoBehaviour
         }
     }
 
-    private bool CheckConditions()
+    private bool CheckCameraConditions()
     {
+        // Is this necessary? TODO: Find out if this is necessary
         if (Vector3.Distance(Camera.main.transform.position, viewObject.transform.position) < 2f)
         {
             return false;
         }
 
-        if (viewConditionType == LookType.LookingAt)
-        {
-            if (lookObjectCondition == LookObjectCondition.Transform)
+            if (viewConditionType == LookType.LookingAt)
             {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
-
-                // This checks that the object is in our screen
-                if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                if (lookObjectCondition == LookObjectCondition.Transform)
                 {
-                    viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+                    // Get the viewport point of the object
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
 
-                    if (CheckRaycast())
-                    {
-                        return CheckConditionTimer();
-                    }
-                }
-            }
-            else if (lookObjectCondition == LookObjectCondition.MinimumBoxCollider)
-            {
-                viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-                if (GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
-                {
-                    viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
-
-                    if (CheckRaycast())
-                    {
-                        return CheckConditionTimer();
-                    }
-                }
-            }
-            else
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
-
-                // This checks that the object is in our screen
-                if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
-                {
-                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
-
+                    // This checks that the object is in our screen
                     if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
                     {
                         viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
 
@@ -337,57 +384,185 @@ public class TriggerBox : MonoBehaviour
                         }
                     }
                 }
-            }
-        }
-        else
-        {
-            if (lookObjectCondition == LookObjectCondition.Transform)
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
-
-                // This checks that the object is in our screen
-                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                else if (lookObjectCondition == LookObjectCondition.MinimumBoxCollider)
                 {
-                    return CheckConditionTimer();
+                    viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+                    if (GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                    {
+                        viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+
+                        if (CheckRaycast())
+                        {
+                            return CheckConditionTimer();
+                        }
+                    }
+                }
+                else
+                {
+                    // Get the viewport point of the object
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
+
+                    // This checks that the object is in our screen
+                    if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                    {
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+
+                        if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                        {
+                            viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+
+                            if (CheckRaycast())
+                            {
+                                return CheckConditionTimer();
+                            }
+                        }
+                    }
                 }
             }
-            else if (lookObjectCondition == LookObjectCondition.FullBoxCollider)
+            else if (viewConditionType == LookType.LookingAway)
             {
-                viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-                if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                if (lookObjectCondition == LookObjectCondition.Transform)
                 {
+                    // Get the viewport point of the object
                     viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
 
+                    // This checks that the object is in our screen
                     if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
                         viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
                     {
                         return CheckConditionTimer();
                     }
                 }
-            }
-            else
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
-
-                // This checks that the object is in our screen
-                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                else if (lookObjectCondition == LookObjectCondition.FullBoxCollider)
                 {
-                    return CheckConditionTimer();
+                    viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+                    if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                    {
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
+
+                        if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                        {
+                            return CheckConditionTimer();
+                        }
+                    }
                 }
                 else
                 {
-                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+                    // Get the viewport point of the object
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
 
+                    // This checks that the object is in our screen
                     if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
                     {
                         return CheckConditionTimer();
                     }
+                    else
+                    {
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+
+                        if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                        {
+                            return CheckConditionTimer();
+                        }
+                    }
                 }
+            }
+        return false;
+    }
+
+    private bool CheckPlayerPrefConditions()
+    {
+        if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
+        {
+            switch (playerPrefType)
+            {
+                case ParameterType.String:
+                    switch (playerPrefCondition)
+                    {
+                        case PlayerPrefCondition.EqualTo:
+                            if (playerPrefVal == playerPrefString)
+                                return true;
+                            else
+                                return false;
+                        default:
+                            Debug.Log("You can only use Equal To with strings");
+                            return false;
+                    }
+
+                case ParameterType.Float:
+                    switch (playerPrefCondition)
+                    {
+                        case PlayerPrefCondition.EqualTo:
+                            if (playerPrefValFloat == playerPrefFloat)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.GreaterThan:
+                            if (playerPrefValFloat > playerPrefFloat)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.GreaterThanOrEqualTo:
+                            if (playerPrefValFloat >= playerPrefFloat)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.LessThan:
+                            if (playerPrefValFloat < playerPrefFloat)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.LessThanOrEqualTo:
+                            if (playerPrefValFloat <= playerPrefFloat)
+                                return true;
+                            else
+                                return false;
+                    }
+                    break;
+
+                case ParameterType.Int:
+                    switch (playerPrefCondition)
+                    {
+                        case PlayerPrefCondition.EqualTo:
+                            if (playerPrefValInt == playerPrefInt)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.GreaterThan:
+                            if (playerPrefValInt > playerPrefInt)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.GreaterThanOrEqualTo:
+                            if (playerPrefValInt >= playerPrefInt)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.LessThan:
+                            if (playerPrefValInt < playerPrefInt)
+                                return true;
+                            else
+                                return false;
+
+                        case PlayerPrefCondition.LessThanOrEqualTo:
+                            if (playerPrefValInt <= playerPrefInt)
+                                return true;
+                            else
+                                return false;
+                    }
+                    break;
             }
         }
 
@@ -408,11 +583,12 @@ public class TriggerBox : MonoBehaviour
                 else
                 {
                     viewTimer += Time.fixedDeltaTime;
+                    return false;
                 }
             }
+            return false;
         }
-
-        return false;
+        return true; 
     }
 
     private bool CheckConditionTimer()
@@ -460,13 +636,13 @@ public class TriggerBox : MonoBehaviour
             {
                 switch (parameterType)
                 {
-                    case msgtype.Int:
+                    case ParameterType.Int:
                         messageTarget.SendMessage(messageMethodName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
                         break;
-                    case msgtype.Float:
+                    case ParameterType.Float:
                         messageTarget.SendMessage(messageMethodName, float.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
                         break;
-                    case msgtype.String:
+                    case ParameterType.String:
                         messageTarget.SendMessage(messageMethodName, parameterValue, SendMessageOptions.DontRequireReceiver);
                         break;
                 }
@@ -507,41 +683,63 @@ public class TriggerBox : MonoBehaviour
             }
         }
 
-        if (targetgameObject)
+        for (int i = 0; i < enableGameObject.Count; i++)
         {
-            if (isEnabled)
+            if (enableGameObject[i])
             {
-                targetgameObject.SetActive(true);
-            }
-            else
-            {
-                targetgameObject.SetActive(false);
+                enableGameObject[i].SetActive(true);
             }
         }
 
-        if (destroyGameobject)
+        for (int i = 0; i < disableGameObject.Count; i++)
         {
-            DestroyImmediate(destroyGameobject);
+            if (disableGameObject[i])
+            {
+                disableGameObject[i].SetActive(false);
+            }
         }
 
-        if (!string.IsNullOrEmpty(destroyObjectName))
+        for (int i = 0; i < disableGameObjectName.Count; i++)
         {
-            GameObject gameobj = GameObject.Find(destroyObjectName);
-            Destroy(gameobj);
+            if (!string.IsNullOrEmpty(disableGameObjectName[i]))
+            {
+                GameObject gameobj = GameObject.Find(disableGameObjectName[i]);
+                gameobj.SetActive(false);
+            }
+        }
+
+        for (int i = 0; i < destroyGameobjects.Count; i++)
+        {
+            Destroy(destroyGameobjects[i]);
+        }
+
+        for (int i = 0; i < destroyObjectNames.Count; i++)
+        {
+            if (!string.IsNullOrEmpty(destroyObjectNames[i]))
+            {
+                GameObject gameobj = GameObject.Find(destroyObjectNames[i]);
+                Destroy(gameobj);
+            }
+        }
+
+        switch (destroyOnTrigger)
+        {
+            case DestroyTriggerBox.Nothing:
+                gameObject.SetActive(false);
+                break;
+
+            case DestroyTriggerBox.TriggerBox:
+                Destroy(gameObject);
+                break;
+
+            case DestroyTriggerBox.Parent:
+                Destroy(transform.parent.gameObject);
+                break;
         }
 
         if (loadLevelName != "")
         {
             StartCoroutine("LoadScene");
-        }
-
-        if (destroyOnTrigger)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            gameObject.SetActive(false);
         }
     }
 

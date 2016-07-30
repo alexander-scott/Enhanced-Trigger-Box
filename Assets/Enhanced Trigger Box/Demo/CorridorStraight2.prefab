@@ -84,6 +84,39 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &162534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 441140}
+  - 65: {fileID: 6543078}
+  - 82: {fileID: 8282430}
+  - 114: {fileID: 11456486}
+  m_Layer: 0
+  m_Name: Trigger Box Anim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &168978
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 485850}
+  m_Layer: 0
+  m_Name: Trigger Box Cube Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &180686
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +184,7 @@ GameObject:
   - 82: {fileID: 8228510}
   - 114: {fileID: 11477588}
   m_Layer: 0
-  m_Name: Trigger Box
+  m_Name: Trigger Box Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,6 +206,7 @@ Transform:
   - {fileID: 492936}
   - {fileID: 483618}
   - {fileID: 402638}
+  - {fileID: 441140}
   - {fileID: 443704}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -228,12 +262,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 401174}
   m_RootOrder: 0
---- !u!4 &443704
+--- !u!4 &441140
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193886}
+  m_GameObject: {fileID: 162534}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -52.78, y: 2.15, z: 40.53}
   m_LocalScale: {x: 1.4479495, y: 3.4813817, z: 7.318827}
@@ -241,6 +275,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 401174}
   m_RootOrder: 5
+--- !u!4 &443704
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193886}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -52.77999, y: 2.15, z: 40.529995}
+  m_LocalScale: {x: 1.4479493, y: 3.4813817, z: 7.3188267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 485850}
+  m_Father: {fileID: 401174}
+  m_RootOrder: 6
 --- !u!4 &445464
 Transform:
   m_ObjectHideFlags: 1
@@ -269,6 +317,19 @@ Transform:
   - {fileID: 404278}
   m_Father: {fileID: 401174}
   m_RootOrder: 3
+--- !u!4 &485850
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168978}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 1.808}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 443704}
+  m_RootOrder: 0
 --- !u!4 &492936
 Transform:
   m_ObjectHideFlags: 1
@@ -528,6 +589,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6543078
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.31, y: 1, z: 2.23}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6560720
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -638,6 +711,80 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!82 &8282430
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &9570560
 Animator:
   serializedVersion: 3
@@ -655,12 +802,12 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11477588
+--- !u!114 &11456486
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193886}
+  m_GameObject: {fileID: 162534}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d66628cfae09554483adedc6b29f7e7, type: 3}
@@ -691,14 +838,61 @@ MonoBehaviour:
   messageMethodName: 
   parameterType: 0
   parameterValue: 
-  spawnGameobject: {fileID: 106496, guid: a35fcedbba67ced4a9f88d82c6d56876, type: 2}
+  spawnGameobject: {fileID: 0}
   spawnedObjectName: 
   spawnPosition: {x: 0, y: 0, z: 0}
-  spawnRotation: {x: 0, y: 0, z: 0, w: 0}
-  destroyGameobject: {fileID: 0}
-  destroyObjectName: 
-  isEnabled: 0
-  targetgameObject: {fileID: 0}
+  destroyGameobjects: []
+  destroyObjectNames: []
+  enableGameObject: []
+  disableGameObject: []
+  disableGameObjectName: []
+  loadLevelName: 
+  loadDelay: 0
+--- !u!114 &11477588
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d66628cfae09554483adedc6b29f7e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerTags:
+  - Player
+  triggerboxColour: {r: 1, g: 0, b: 0, a: 0.334}
+  drawWire: 0
+  debugTriggerBox: 0
+  destroyOnTrigger: 0
+  viewConditionType: 2
+  viewObject: {fileID: 168978}
+  lookObjectCondition: 0
+  conditionTime: 0
+  canWander: 0
+  animationTarget: {fileID: 0}
+  playAnimation: {fileID: 0}
+  setMecanimTrigger: 
+  stopAnim: 0
+  musicVolume: 1
+  playAudio: {fileID: 0}
+  mute: 0
+  loop: 0
+  soundEffect: {fileID: 0}
+  soundEffectVolume: 1
+  messageTarget: {fileID: 0}
+  messageMethodName: 
+  parameterType: 0
+  parameterValue: 
+  spawnGameobject: {fileID: 198598, guid: d80595fa1b463ab449b3143cd896ab9d, type: 2}
+  spawnedObjectName: 
+  spawnPosition: {x: 0, y: 0, z: 0}
+  destroyGameobjects: []
+  destroyObjectNames:
+  - OpenAreaWithDoor
+  enableGameObject: []
+  disableGameObject: []
+  disableGameObjectName: []
   loadLevelName: 
   loadDelay: 0
 --- !u!1001 &100100000

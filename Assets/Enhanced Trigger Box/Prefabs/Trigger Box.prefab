@@ -139,6 +139,10 @@ MonoBehaviour:
   lookObjectCondition: 0
   conditionTime: 0
   canWander: 0
+  playerPrefKey: 
+  playerPrefVal: 
+  playerPrefType: 0
+  playerPrefCondition: 0
   animationTarget: {fileID: 0}
   playAnimation: {fileID: 0}
   setMecanimTrigger: 
@@ -154,9 +158,13 @@ MonoBehaviour:
   parameterType: 0
   parameterValue: 
   spawnGameobject: {fileID: 0}
+  spawnedObjectName: 
   spawnPosition: {x: 0, y: 0, z: 0}
-  isEnabled: 0
-  targetgameObject: {fileID: 0}
+  destroyGameobjects: []
+  destroyObjectNames: []
+  enableGameObject: []
+  disableGameObject: []
+  disableGameObjectName: []
   loadLevelName: 
   loadDelay: 0
 --- !u!1001 &100100000
