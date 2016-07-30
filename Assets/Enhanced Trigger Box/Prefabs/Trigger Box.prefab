@@ -134,10 +134,14 @@ MonoBehaviour:
   drawWire: 0
   debugTriggerBox: 0
   destroyOnTrigger: 0
+  triggerFollow: 0
+  followTransform: {fileID: 0}
+  followTransformName: 
   viewConditionType: 0
   viewObject: {fileID: 0}
   lookObjectCondition: 0
   conditionTime: 0
+  ignoreObstacles: 0
   canWander: 0
   playerPrefKey: 
   playerPrefVal: 
@@ -157,6 +161,9 @@ MonoBehaviour:
   messageMethodName: 
   parameterType: 0
   parameterValue: 
+  setPlayerPrefKey: 
+  setPlayerPrefType: 0
+  setPlayerPrefVal: 
   spawnGameobject: {fileID: 0}
   spawnedObjectName: 
   spawnPosition: {x: 0, y: 0, z: 0}
