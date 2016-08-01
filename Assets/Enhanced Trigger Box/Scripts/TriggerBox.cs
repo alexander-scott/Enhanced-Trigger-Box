@@ -13,10 +13,12 @@ public class TriggerBox : MonoBehaviour
 
     #region Options
 
+    public bool showBaseOptions = true;
+
     /// <summary>
-    /// A list of tags belonging to gameobjects which are able to trigger the trigger box
+    /// If true then only a wireframe will be displayed instead of a coloured box
     /// </summary>
-    public List<string> triggerTags;
+    public bool drawWire;
 
     /// <summary>
     /// The colour of the trigger box
@@ -24,9 +26,9 @@ public class TriggerBox : MonoBehaviour
     public Color triggerboxColour;
 
     /// <summary>
-    /// If true then only a wireframe will be displayed instead of a coloured box
+    /// A list of tags belonging to gameobjects which are able to trigger the trigger box
     /// </summary>
-    public bool drawWire;
+    public List<string> triggerTags;
 
     /// <summary>
     /// If true the application will write to the console a message with the name of the trigger that was triggered
@@ -57,17 +59,19 @@ public class TriggerBox : MonoBehaviour
 
     #region Camera Conditions
 
+    public bool showCameraConditions = false;
+
     public LookType viewConditionType;
 
     public GameObject viewObject;
 
     public LookObjectCondition lookObjectCondition;
 
-    public float conditionTime = 0f;
-
     public bool ignoreObstacles;
 
     public bool canWander;
+
+    public float conditionTime = 0f;
 
     private Vector3 viewConditionScreenPoint = new Vector3();
 
@@ -85,13 +89,15 @@ public class TriggerBox : MonoBehaviour
 
     #region Player Prefs Conditions
 
-    public string playerPrefKey;
+    public bool showPPrefConditions = false;
+
+    public PlayerPrefCondition playerPrefCondition;
 
     public string playerPrefVal;
 
-    public ParameterType playerPrefType;
+    public string playerPrefKey;
 
-    public PlayerPrefCondition playerPrefCondition;
+    public ParameterType playerPrefType;
 
     private float playerPrefFloat;
 
@@ -107,15 +113,12 @@ public class TriggerBox : MonoBehaviour
 
     #region Animation
 
+    public bool showAnimResponses = false;
+
     /// <summary>
     /// The gameobject to apply the animation to
     /// </summary>
     public GameObject animationTarget;
-
-    /// <summary>
-    /// The animation clip to play
-    /// </summary>
-    public AnimationClip playAnimation;
 
     /// <summary>
     /// The mecanim trigger string
@@ -126,33 +129,40 @@ public class TriggerBox : MonoBehaviour
     /// Stops the current animation
     /// </summary>
     public bool stopAnim;
+
+    /// <summary>
+    /// The animation clip to play
+    /// </summary>
+    public AnimationClip playLegacyAnimation;
     #endregion
 
     #region Audio
+    public bool showAudioResponses = false;
+
+    /// <summary>
+    /// If true, all audio is stopped
+    /// </summary>
+    public bool muteAllAudio;
+
+    /// <summary>
+    /// The audio clip to play on the Main Camera
+    /// </summary>
+    public AudioClip playMusic;
+
+    /// <summary>
+    /// If true, the audio clip is looped
+    /// </summary>
+    public bool loopMusic;
+
     /// <summary>
     /// The volume of the music. Default is 1.
     /// </summary>
     public float musicVolume = 1f;
 
     /// <summary>
-    /// The audio clip to play on the Main Camera
-    /// </summary>
-    public AudioClip playAudio;
-
-    /// <summary>
-    /// If true, all audio is stopped
-    /// </summary>
-    public bool mute;
-
-    /// <summary>
-    /// If true, the audio clip is looped
-    /// </summary>
-    public bool loop;
-
-    /// <summary>
     /// This is an audio clip, played at the position of this trigger box
     /// </summary>
-    public AudioClip soundEffect;
+    public AudioClip playSoundEffect;
 
     /// <summary>
     /// The volume of the soundEffect
@@ -161,6 +171,8 @@ public class TriggerBox : MonoBehaviour
     #endregion
 
     #region Call Function
+    public bool showCallFResponses = false;
+
     /// <summary>
     /// The gameobject on which messageMethodName is called on every MonoBehaviour belonging to it.
     /// </summary>
@@ -184,6 +196,8 @@ public class TriggerBox : MonoBehaviour
 
     #region Player Prefs
 
+    public bool showPPrefResponses = false;
+
     public string setPlayerPrefKey;
 
     public ParameterType setPlayerPrefType;
@@ -193,12 +207,14 @@ public class TriggerBox : MonoBehaviour
     #endregion
 
     #region Spawn Gameobject
+    public bool showSpawnResponses = false;
+
     /// <summary>
     /// The gameobject or prefab to instanstiate
     /// </summary>
-    public GameObject spawnGameobject;
+    public GameObject prefabToSpawn;
 
-    public string spawnedObjectName;
+    public string newInstanceName;
 
     /// <summary>
     /// Position to spawn the gameobject on
@@ -215,18 +231,22 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The gameobject or prefab to instanstiate
     /// </summary>
+    public bool showDestroyResponses = false;
+
     public List<GameObject> destroyGameobjects;
 
     public List<string> destroyObjectNames;
     #endregion
 
     #region Enable object
+    public bool showEnableResponses = false;
 
     public List<GameObject> enableGameObject;
 
     #endregion
 
     #region Disable gameobject
+    public bool showDisableResponses = false;
 
     public List<GameObject> disableGameObject;
 
@@ -235,6 +255,7 @@ public class TriggerBox : MonoBehaviour
     #endregion
 
     #region Load Level
+    public bool showLevelResponses = false;
     public string loadLevelName;
     public float loadDelay = 2;
     #endregion
@@ -336,7 +357,7 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        if (spawnGameobject && !onetime && !Application.isPlaying)
+        if (prefabToSpawn && !onetime && !Application.isPlaying)
         {
             onetime = true;
             spawnPosition = transform.position + Vector3.forward;
@@ -667,22 +688,22 @@ public class TriggerBox : MonoBehaviour
             Debug.Log(gameObject.name + " has been triggered!");
         }
 
-        if (mute)
+        if (muteAllAudio)
         {
             Camera.main.GetComponent<AudioSource>().Stop();
         }
 
-        if (playAudio)
+        if (playMusic)
         {
-            Camera.main.GetComponent<AudioSource>().loop = loop;
-            Camera.main.GetComponent<AudioSource>().clip = playAudio;
+            Camera.main.GetComponent<AudioSource>().loop = loopMusic;
+            Camera.main.GetComponent<AudioSource>().clip = playMusic;
             Camera.main.GetComponent<AudioSource>().volume = musicVolume;
             Camera.main.GetComponent<AudioSource>().Play();
         }
 
-        if (soundEffect)
+        if (playSoundEffect)
         {
-            AudioSource.PlayClipAtPoint(soundEffect, transform.position, soundEffectVolume);
+            AudioSource.PlayClipAtPoint(playSoundEffect, transform.position, soundEffectVolume);
         }
 
         if (messageMethodName != "" && messageTarget)
@@ -714,9 +735,9 @@ public class TriggerBox : MonoBehaviour
         }
 
 
-        if (playAnimation && animationTarget)
+        if (playLegacyAnimation && animationTarget)
         {
-            animationTarget.GetComponent<Animation>().CrossFade(playAnimation.name, 0.3f, PlayMode.StopAll);
+            animationTarget.GetComponent<Animation>().CrossFade(playLegacyAnimation.name, 0.3f, PlayMode.StopAll);
         }
 
         if (setMecanimTrigger != "")
@@ -724,17 +745,17 @@ public class TriggerBox : MonoBehaviour
             animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
         }
 
-        if (spawnGameobject)
+        if (prefabToSpawn)
         {
-            if (!string.IsNullOrEmpty(spawnedObjectName))
+            if (!string.IsNullOrEmpty(newInstanceName))
             {
                 // Is spawnrotation ever null?
-                var newobj = Instantiate(spawnGameobject, (spawnPosition != Vector3.zero) ? spawnPosition : spawnGameobject.transform.position, spawnGameobject.transform.rotation);
-                newobj.name = spawnedObjectName;
+                var newobj = Instantiate(prefabToSpawn, (spawnPosition != Vector3.zero) ? spawnPosition : prefabToSpawn.transform.position, prefabToSpawn.transform.rotation);
+                newobj.name = newInstanceName;
             }
             else
             {
-                Instantiate(spawnGameobject, (spawnPosition != Vector3.zero) ? spawnPosition : spawnGameobject.transform.position, spawnGameobject.transform.rotation);
+                Instantiate(prefabToSpawn, (spawnPosition != Vector3.zero) ? spawnPosition : prefabToSpawn.transform.position, prefabToSpawn.transform.rotation);
             }
         }
 

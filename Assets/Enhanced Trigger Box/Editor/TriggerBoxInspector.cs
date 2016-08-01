@@ -11,26 +11,25 @@ public class TriggerBoxInspector : Editor
     private new string name;
     private SerializedProperty[] properties;
     private SerializedObject so;
-    private Rect tooltipRect;
     private List<InspectorPlusVar> vars;
-    public SerializedProperty longStringProp;
 
     private void RefreshVars()
     {
-        for (int i = 0; i < vars.Count; i += 1) properties[i] = so.FindProperty(vars[i].name);
+        for (int i = 0; i < vars.Count; i += 1)
+        {
+            properties[i] = so.FindProperty(vars[i].name);
+        }
     }
 
     private void OnEnable()
     {
-        longStringProp = serializedObject.FindProperty("showText");
-
         vars = new List<InspectorPlusVar>();
         so = serializedObject;
 
         #region Base Options
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, null,
-                                      null, null, InspectorPlusVar.VectorDrawType.None, 
+                                      null, null, InspectorPlusVar.VectorDrawType.None,
                                       false, false, 47, new[] { true, false, false, false },
                                       new[] { "Base Options:", "", "", "" }, new[] { true, false, false, false },
                                       new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
@@ -45,7 +44,7 @@ public class TriggerBoxInspector : Editor
                                       false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Boolean", "drawWire",
-                              "Draw Wirebox", InspectorPlusVar.VectorDrawType.None, 
+                              "Draw Wirebox", InspectorPlusVar.VectorDrawType.None,
                               false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                               new[] { false, false, false, false }, new[] { false, false, false, false },
                               new[] { 0, 0, 0, 0 },
@@ -60,7 +59,7 @@ public class TriggerBoxInspector : Editor
                               false, true, "Tooltip", true, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Boolean", "debugTriggerBox",
-                              "Debug Trigger Box", InspectorPlusVar.VectorDrawType.None, 
+                              "Debug Trigger Box", InspectorPlusVar.VectorDrawType.None,
                               false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                               new[] { false, false, false, false }, new[] { false, false, false, false },
                               new[] { 0, 0, 0, 0 },
@@ -90,7 +89,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "DestroyTriggerBox", "destroyOnTrigger",
-                              "On Trigger Destroy", InspectorPlusVar.VectorDrawType.None, 
+                              "On Trigger Destroy", InspectorPlusVar.VectorDrawType.None,
                               false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                               new[] { false, false, false, false }, new[] { false, false, false, false },
                               new[] { 0, 0, 0, 0 },
@@ -105,7 +104,7 @@ public class TriggerBoxInspector : Editor
                               false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Color",
-                              "triggerboxColour", "Triggerbox Colour", InspectorPlusVar.VectorDrawType.None, 
+                              "triggerboxColour", "Triggerbox Colour", InspectorPlusVar.VectorDrawType.None,
                               false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                               new[] { false, false, false, false }, new[] { false, false, false, false },
                               new[] { 0, 0, 0, 0 },
@@ -169,7 +168,7 @@ public class TriggerBoxInspector : Editor
         #region Camera Conditions
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, null,
-                            null, null, InspectorPlusVar.VectorDrawType.None, 
+                            null, null, InspectorPlusVar.VectorDrawType.None,
                             false, false, 47, new[] { true, false, false, false },
                             new[] { "Camera Conditions:", "", "", "" }, new[] { true, false, false, false },
                             new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
@@ -184,7 +183,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "LookType",
-                            "viewConditionType", "Camera Condition", InspectorPlusVar.VectorDrawType.None, 
+                            "viewConditionType", "Camera Condition", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -199,7 +198,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "GameObject",
-                            "viewObject", "GameObject Target", InspectorPlusVar.VectorDrawType.None, 
+                            "viewObject", "GameObject Target", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -214,7 +213,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "LookObjectCondition",
-                            "lookObjectCondition", "GameObject Type", InspectorPlusVar.VectorDrawType.None, 
+                            "lookObjectCondition", "GameObject Type", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -244,7 +243,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Boolean",
-                            "canWander", "Can Wander", InspectorPlusVar.VectorDrawType.None, 
+                            "canWander", "Can Wander", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -357,7 +356,7 @@ public class TriggerBoxInspector : Editor
         #region Animations
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, null,
-                            null, null, InspectorPlusVar.VectorDrawType.None, 
+                            null, null, InspectorPlusVar.VectorDrawType.None,
                             false, false, 47, new[] { true, false, false, false },
                             new[] { "Animation Responses:", "", "", "" }, new[] { true, false, false, false },
                             new[] { false, false, false, false }, new[] { 0, 0, 0, 0 },
@@ -417,7 +416,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "AnimationClip",
-                            "playAnimation", "Play Legacy Animation", InspectorPlusVar.VectorDrawType.None, 
+                            "playAnimation", "Play Legacy Animation", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -436,7 +435,7 @@ public class TriggerBoxInspector : Editor
         #region Audio
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, null,
-                            null, null, InspectorPlusVar.VectorDrawType.None, 
+                            null, null, InspectorPlusVar.VectorDrawType.None,
                             false, false, 45, new[] { true, false, false, false }, new[] { "Audio Responses:", "", "", "" },
                             new[] { true, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -451,7 +450,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Bool", "mute",
-                            "Stop Music", InspectorPlusVar.VectorDrawType.None, 
+                            "Stop Music", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -466,7 +465,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "AudioClip", "playAudio",
-                            "Play Music", InspectorPlusVar.VectorDrawType.None, 
+                            "Play Music", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -481,7 +480,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "Boolean", "loop",
-                            "Loop Music", InspectorPlusVar.VectorDrawType.None, 
+                            "Loop Music", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -496,7 +495,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.Range, 0, 1, false, 0, 0, true, "Single", "musicVolume",
-                             "Music Volume", InspectorPlusVar.VectorDrawType.None, 
+                             "Music Volume", InspectorPlusVar.VectorDrawType.None,
                              false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                              new[] { false, false, false, false }, new[] { false, false, false, false },
                              new[] { 0, 0, 0, 0 },
@@ -511,7 +510,7 @@ public class TriggerBoxInspector : Editor
                              false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "AudioClip", "soundEffect",
-                             "Play Sound Effect", InspectorPlusVar.VectorDrawType.None, 
+                             "Play Sound Effect", InspectorPlusVar.VectorDrawType.None,
                              false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                              new[] { false, false, false, false }, new[] { false, false, false, false },
                              new[] { 0, 0, 0, 0 },
@@ -530,7 +529,7 @@ public class TriggerBoxInspector : Editor
         #region Call Function
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, null, null,
-                            null, InspectorPlusVar.VectorDrawType.None, 
+                            null, InspectorPlusVar.VectorDrawType.None,
                             false, false, 44, new[] { true, false, false, false }, new[] { "Call Function Responses:", "", "", "" },
                             new[] { true, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -545,7 +544,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "GameObject",
-                            "messageTarget", "Send Message To", InspectorPlusVar.VectorDrawType.None, 
+                            "messageTarget", "Send Message To", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -560,7 +559,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "String",
-                            "messageMethodName", "Send Message Method Name", InspectorPlusVar.VectorDrawType.None, 
+                            "messageMethodName", "Send Message Method Name", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -575,7 +574,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "ParameterType",
-                            "parameterType", "Parameter Type", InspectorPlusVar.VectorDrawType.None, 
+                            "parameterType", "Parameter Type", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -590,7 +589,7 @@ public class TriggerBoxInspector : Editor
                             false, true, "Tooltip", false, false, 0, 0, false, 70, "", false));
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, "String", "parameterValue",
-                            "Parameter Value", InspectorPlusVar.VectorDrawType.None, 
+                            "Parameter Value", InspectorPlusVar.VectorDrawType.None,
                             false, false, 0, new[] { false, false, false, false }, new[] { "", "", "", "" },
                             new[] { false, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -673,7 +672,7 @@ public class TriggerBoxInspector : Editor
         #region Spawn Gameobject
 
         vars.Add(new InspectorPlusVar(InspectorPlusVar.LimitType.None, 0, 0, false, 0, 0, true, null, null,
-                            null, InspectorPlusVar.VectorDrawType.None, 
+                            null, InspectorPlusVar.VectorDrawType.None,
                             false, false, 43, new[] { true, false, false, false }, new[] { "Spawn GameObject Responses:", "", "", "" },
                             new[] { true, false, false, false }, new[] { false, false, false, false },
                             new[] { 0, 0, 0, 0 },
@@ -915,8 +914,7 @@ public class TriggerBoxInspector : Editor
 
         #endregion
 
-        int count = vars.Count;
-        properties = new SerializedProperty[count];
+        properties = new SerializedProperty[vars.Count];
     }
 
     private void ProgressBar(float value, string label)
@@ -1068,7 +1066,7 @@ public class TriggerBoxInspector : Editor
         return 0;
     }
 
-    public override void OnInspectorGUI()
+    public void OnInspectorGUI1()
     {
         so.Update();
         RefreshVars();
@@ -1223,6 +1221,248 @@ public class TriggerBoxInspector : Editor
         so.ApplyModifiedProperties();
     }
 
+    public override void OnInspectorGUI()
+    {
+        so.Update();
+        RefreshVars();
+
+        GUI.enabled = true;
+
+        so.FindProperty("showBaseOptions").boolValue = RenderHeader("Base Options", so.FindProperty("showBaseOptions").boolValue);
+
+        if (so.FindProperty("showBaseOptions").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("drawWire"));
+            RenderPropertyField(so.FindProperty("debugTriggerBox"));
+            RenderPropertyField(so.FindProperty("triggerTags"));
+            RenderPropertyField(so.FindProperty("destroyOnTrigger"));
+            RenderPropertyField(so.FindProperty("triggerboxColour"));
+
+            var triggerFollowProp = so.FindProperty("triggerFollow");
+            RenderPropertyField(triggerFollowProp);
+
+            if (triggerFollowProp.enumValueIndex != 0)
+            {
+                RenderPropertyField(so.FindProperty("followTransform"));
+                RenderPropertyField(so.FindProperty("followTransformName"));
+            }
+        }
+
+        so.FindProperty("showCameraConditions").boolValue = RenderHeader("Camera Conditions", so.FindProperty("showCameraConditions").boolValue);
+
+        if (so.FindProperty("showCameraConditions").boolValue)
+        {
+            var viewConditionTypeProp = so.FindProperty("viewConditionType");
+            RenderPropertyField(viewConditionTypeProp);
+
+            if (viewConditionTypeProp.enumValueIndex != 0)
+            {
+                RenderPropertyField(so.FindProperty("viewObject"));
+                RenderPropertyField(so.FindProperty("lookObjectCondition"));
+                RenderPropertyField(so.FindProperty("ignoreObstacles"));
+                RenderPropertyField(so.FindProperty("canWander"));
+                RenderPropertyField(so.FindProperty("conditionTime"));
+            }
+        }
+
+        so.FindProperty("showPPrefConditions").boolValue = RenderHeader("Player Prefs Conditions", so.FindProperty("showPPrefConditions").boolValue);
+
+        if (so.FindProperty("showPPrefConditions").boolValue)
+        {
+            var viewPPrefTypeProp = so.FindProperty("playerPrefCondition");
+            RenderPropertyField(viewPPrefTypeProp);
+
+            if (viewPPrefTypeProp.enumValueIndex != 0)
+            {
+                RenderPropertyField(so.FindProperty("playerPrefVal"));
+                RenderPropertyField(so.FindProperty("playerPrefKey"));
+                RenderPropertyField(so.FindProperty("playerPrefType"));
+            }
+        }
+
+        so.FindProperty("showAnimResponses").boolValue = RenderHeader("Animation Responses", so.FindProperty("showAnimResponses").boolValue);
+
+        if (so.FindProperty("showAnimResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("animationTarget"));
+            RenderPropertyField(so.FindProperty("setMecanimTrigger"));
+            RenderPropertyField(so.FindProperty("stopAnim"));
+            RenderPropertyField(so.FindProperty("playLegacyAnimation"));
+        }
+
+        so.FindProperty("showAudioResponses").boolValue = RenderHeader("Audio Responses", so.FindProperty("showAudioResponses").boolValue);
+
+        if (so.FindProperty("showAudioResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("muteAllAudio"));
+            RenderPropertyField(so.FindProperty("playMusic"));
+            RenderPropertyField(so.FindProperty("loopMusic"));
+            RenderSlider(so.FindProperty("musicVolume"), 0f, 1f);
+            RenderPropertyField(so.FindProperty("playSoundEffect"));
+        }
+
+        so.FindProperty("showCallFResponses").boolValue = RenderHeader("Call Function Responses", so.FindProperty("showCallFResponses").boolValue);
+
+        if (so.FindProperty("showCallFResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("messageTarget"));
+            RenderPropertyField(so.FindProperty("messageMethodName"));
+            RenderPropertyField(so.FindProperty("parameterType"));
+            RenderPropertyField(so.FindProperty("parameterValue"));
+        }
+
+        so.FindProperty("showPPrefResponses").boolValue = RenderHeader("Player Pref Responses", so.FindProperty("showPPrefResponses").boolValue);
+
+        if (so.FindProperty("showPPrefResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("setPlayerPrefKey"));
+            RenderPropertyField(so.FindProperty("setPlayerPrefType"));
+            RenderPropertyField(so.FindProperty("setPlayerPrefVal"));
+        }
+
+        so.FindProperty("showSpawnResponses").boolValue = RenderHeader("Spawn GameObject Responses", so.FindProperty("showSpawnResponses").boolValue);
+
+        if (so.FindProperty("showSpawnResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("prefabToSpawn"));
+            RenderPropertyField(so.FindProperty("newInstanceName"));
+            RenderPropertyField(so.FindProperty("spawnPosition"));
+        }
+
+        so.FindProperty("showDestroyResponses").boolValue = RenderHeader("Destroy GameObject Responses", so.FindProperty("showDestroyResponses").boolValue);
+
+        if (so.FindProperty("showDestroyResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("destroyGameobjects"));
+            RenderPropertyField(so.FindProperty("destroyObjectNames"));
+        }
+
+        so.FindProperty("showEnableResponses").boolValue = RenderHeader("Enable GameObject Responses", so.FindProperty("showEnableResponses").boolValue);
+
+        if (so.FindProperty("showEnableResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("enableGameObject"));
+        }
+
+        so.FindProperty("showDisableResponses").boolValue = RenderHeader("Disable GameObject Responses", so.FindProperty("showDisableResponses").boolValue);
+
+        if (so.FindProperty("showDisableResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("disableGameObject"));
+            RenderPropertyField(so.FindProperty("disableGameObjectName"));
+        }
+
+        so.FindProperty("showLevelResponses").boolValue = RenderHeader("Load Level Responses", so.FindProperty("showLevelResponses").boolValue);
+
+        if (so.FindProperty("showLevelResponses").boolValue)
+        {
+            RenderPropertyField(so.FindProperty("loadLevelName"));
+            RenderPropertyField(so.FindProperty("loadDelay"));
+        }
+
+        so.ApplyModifiedProperties();
+    }
+
+    private void RenderPropertyField(SerializedProperty sp, bool slider = false)
+    {
+        name = sp.name;
+        dispName = sp.displayName;
+
+        EditorGUIUtility.LookLikeControls(180.0f, 50.0f);
+
+        GUILayout.BeginHorizontal();
+
+        EditorGUI.indentLevel = 2;
+
+        if (sp.hasChildren)
+        {
+            GUILayout.BeginVertical();
+            while (true)
+            {
+                if (sp.propertyPath != name && !sp.propertyPath.StartsWith(name + "."))
+                    break;
+
+                EditorGUI.indentLevel = sp.depth;
+                bool child = false;
+
+                EditorGUI.indentLevel = 2;
+
+                if (sp.depth == 0)
+                {
+                    child = EditorGUILayout.PropertyField(sp, new GUIContent(dispName));
+                }
+                else
+                {
+                    child = EditorGUILayout.PropertyField(sp);
+                }
+
+                if (!sp.NextVisible(child))
+                    break;
+            }
+
+            GUILayout.EndVertical();
+        }
+        else
+        {
+            EditorGUILayout.PropertyField(sp, new GUIContent(dispName));
+        }
+
+        GUILayout.EndHorizontal();
+    }
+
+    private void RenderSlider(SerializedProperty sp, float min, float max)
+    {
+        name = sp.name;
+        dispName = sp.displayName;
+
+        EditorGUIUtility.LookLikeControls(180.0f, 50.0f);
+
+        GUILayout.BeginHorizontal();
+
+        EditorGUI.indentLevel = 2;
+
+        if (sp.hasChildren)
+        {
+            GUILayout.BeginVertical();
+            while (true)
+            {
+                if (sp.propertyPath != name && !sp.propertyPath.StartsWith(name + "."))
+                    break;
+
+                EditorGUI.indentLevel = sp.depth;
+                bool child = false;
+
+                EditorGUI.indentLevel = 2;
+
+                EditorGUILayout.Slider(sp, min, max);
+
+                if (!sp.NextVisible(child))
+                    break;
+            }
+
+            GUILayout.EndVertical();
+        }
+        else
+        {
+            EditorGUILayout.Slider(sp, min, max);
+        }
+
+        GUILayout.EndHorizontal();
+    }
+
+    private bool RenderHeader(string s, bool optionRef)
+    {
+        GUIStyle myFoldoutStyle = new GUIStyle(EditorStyles.foldout);
+        myFoldoutStyle.fontStyle = FontStyle.Bold;
+
+        GUILayout.Space(10.0f);
+
+        EditorGUI.indentLevel = 1;
+        EditorGUIUtility.LookLikeInspector();
+
+        return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
+    }
+
     private void VectorScene(InspectorPlusVar v, string s, Transform t)
     {
         Vector3 val;
@@ -1305,9 +1545,9 @@ public class TriggerBoxInspector : Editor
     {
 
         var script = (TriggerBox)target;
-        if (script.spawnGameobject)
+        if (script.prefabToSpawn)
         {
-            Handles.Label(script.spawnPosition, "Spawn " + script.spawnGameobject.name);
+            Handles.Label(script.spawnPosition, "Spawn " + script.prefabToSpawn.name);
 
             script.spawnPosition = Handles.PositionHandle(script.spawnPosition, Quaternion.identity);
         }
