@@ -13,6 +13,9 @@ public class TriggerBox : MonoBehaviour
 
     #region Options
 
+    /// <summary>
+    /// This bool is used to store whether the base options tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showBaseOptions = true;
 
     /// <summary>
@@ -40,11 +43,25 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     public DestroyTriggerBox destroyOnTrigger;
 
+    /// <summary>
+    /// An Enum allowing users to choose whether the trigger box follows the main camera or a selected transform
+    /// </summary>
     public TriggerFollow triggerFollow;
 
+    /// <summary>
+    /// This transform is used when trigger follow is set to transform. The trigger boxes position will be set to this transforms position every frame.
+    /// </summary>
     public Transform followTransform;
 
+    /// <summary>
+    /// This is used when a transform reference for followTransform is unavailable. An object with this named is searched for and used as the followTransform object
+    /// </summary>
     public string followTransformName;
+
+    /// <summary>
+    /// If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
+    /// </summary>
+    public bool canWander;
 
     /// <summary>
     /// This is set to true when the trigger box is triggered. Once this is true we can start checking if the conditions have been met.
@@ -59,60 +76,127 @@ public class TriggerBox : MonoBehaviour
 
     #region Camera Conditions
 
+    /// <summary>
+    /// This bool is used to store whether the camera conditions tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showCameraConditions = false;
 
+    /// <summary>
+    /// The type of condition the user wants, either Looking At an object or Looking Away from an object.
+    /// </summary>
     public LookType viewConditionType;
 
+    /// <summary>
+    /// A reference for the object that the condition is based upon
+    /// </summary>
     public GameObject viewObject;
 
+    /// <summary>
+    /// The type of condition the object will be checked with, either transform (a vector3 in frame), minimum box collider (any part of a box collider can be in frame) or full box collider (the whole box collider must be in frame).
+    /// </summary>
     public LookObjectCondition lookObjectCondition;
 
+    /// <summary>
+    /// If this is true, when checking if the user is looking at an object no raycast checks will be performed to check if there is something preventing the line of sight. This means that as long as the objects position is within the camera frustum the condition will pass.
+    /// </summary>
     public bool ignoreObstacles;
 
-    public bool canWander;
-
+    /// <summary>
+    /// The time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for condition to pass.
+    /// </summary>
     public float conditionTime = 0f;
 
+    /// <summary>
+    /// The world to viewport point of the object the viewObject
+    /// </summary>
     private Vector3 viewConditionScreenPoint = new Vector3();
 
+    /// <summary>
+    /// The direction from the main camera to the viewObject
+    /// </summary>
     private Vector3 viewConditionDirection = new Vector3();
 
+    /// <summary>
+    /// Holds raycast information when raycast checks are taking place. Only used when using the Looking At condition
+    /// </summary>
     private RaycastHit viewConditionRaycastHit = new RaycastHit();
 
+    /// <summary>
+    /// This is the box collider of the viewObject. Only used when the condition involves Minimum Box Collider or Full Box Collider
+    /// </summary>
     private BoxCollider viewConditionObjectCollider;
 
+    /// <summary>
+    /// The view planes of the camera
+    /// </summary>
     private Plane[] viewConditionCameraPlane;
 
+    /// <summary>
+    /// This is a timer used to make sure the time the condition has been met for is longer than conditionTime
+    /// </summary>
     private float viewTimer = 0f;
 
     #endregion
 
     #region Player Prefs Conditions
 
+    /// <summary>
+    /// This bool is used to store whether the player pref conditions tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showPPrefConditions = false;
 
+    /// <summary>
+    /// The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to, less than
+    /// </summary>
     public PlayerPrefCondition playerPrefCondition;
 
+    /// <summary>
+    /// The value that will be used to check the condition
+    /// </summary>
     public string playerPrefVal;
 
+    /// <summary>
+    /// The key of the player pref which will be inspected in the condition
+    /// </summary>
     public string playerPrefKey;
 
+    /// <summary>
+    /// The type of the player pref. Options are int, float or string
+    /// </summary>
     public ParameterType playerPrefType;
 
+    /// <summary>
+    /// Holds the value stored in the player pref as a float
+    /// </summary>
     private float playerPrefFloat;
 
+    /// <summary>
+    /// Holds the value stored in the player pref as a int
+    /// </summary>
     private int playerPrefInt;
 
+    /// <summary>
+    /// Holds the value stored in the player pref as a string
+    /// </summary>
     private string playerPrefString;
 
+    /// <summary>
+    /// This is a conversion of playerPrefVal to a float
+    /// </summary>
     private float playerPrefValFloat;
 
+    /// <summary>
+    /// This is a conversion of playerPrefVal to a int
+    /// </summary>
     private int playerPrefValInt;
 
     #endregion
 
     #region Animation
 
+    /// <summary>
+    /// This bool is used to store whether the animation responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showAnimResponses = false;
 
     /// <summary>
@@ -134,9 +218,14 @@ public class TriggerBox : MonoBehaviour
     /// The animation clip to play
     /// </summary>
     public AnimationClip playLegacyAnimation;
+
     #endregion
 
     #region Audio
+
+    /// <summary>
+    /// This bool is used to store whether the audio responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showAudioResponses = false;
 
     /// <summary>
@@ -168,9 +257,14 @@ public class TriggerBox : MonoBehaviour
     /// The volume of the soundEffect
     /// </summary>
     public float soundEffectVolume = 1f;
+
     #endregion
 
     #region Call Function
+
+    /// <summary>
+    /// This bool is used to store whether the call function responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showCallFResponses = false;
 
     /// <summary>
@@ -192,21 +286,38 @@ public class TriggerBox : MonoBehaviour
     /// The value of the parameter that is being sent
     /// </summary>
     public string parameterValue;
+
     #endregion
 
     #region Player Prefs
 
+    /// <summary>
+    /// This bool is used to store whether the player prefs responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showPPrefResponses = false;
 
+    /// <summary>
+    /// The player pref key which will hold the value set by the user
+    /// </summary>
     public string setPlayerPrefKey;
 
+    /// <summary>
+    /// The type of the player pref. Options are int, float and string
+    /// </summary>
     public ParameterType setPlayerPrefType;
 
+    /// <summary>
+    /// The value being set in the player pref
+    /// </summary>
     public string setPlayerPrefVal;
 
     #endregion
 
     #region Spawn Gameobject
+
+    /// <summary>
+    /// This bool is used to store whether the spawn gameobject responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showSpawnResponses = false;
 
     /// <summary>
@@ -214,6 +325,9 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     public GameObject prefabToSpawn;
 
+    /// <summary>
+    /// If this isn't empty, the name of the instanciated object will be called this
+    /// </summary>
     public string newInstanceName;
 
     /// <summary>
@@ -225,39 +339,78 @@ public class TriggerBox : MonoBehaviour
     /// Used to ensure it is only spawned once
     /// </summary>
     private bool onetime;
+
     #endregion
 
     #region Destroy Gameobject
+
     /// <summary>
-    /// The gameobject or prefab to instanstiate
+    /// This bool is used to store whether the destroy gameobject responses tab is open in the inspector so it can persist across sessions
     /// </summary>
     public bool showDestroyResponses = false;
 
+    /// <summary>
+    /// A list storing object references that will be destroyed when the trigger box is triggered
+    /// </summary>
     public List<GameObject> destroyGameobjects;
 
+    /// <summary>
+    /// A list storing object names that will be destroyed when the trigger box is triggered
+    /// </summary>
     public List<string> destroyObjectNames;
+
     #endregion
 
     #region Enable object
+
+    /// <summary>
+    /// This bool is used to store whether the enable gameobject responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showEnableResponses = false;
 
+    /// <summary>
+    /// A list storing gameobject references that will be set to active when this trigger box is triggered
+    /// </summary>
     public List<GameObject> enableGameObject;
 
     #endregion
 
     #region Disable gameobject
+
+    /// <summary>
+    /// This bool is used to store whether the disable gameobject responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showDisableResponses = false;
 
+    /// <summary>
+    /// A list storing gameobject references that will be set to inactive when this trigger box is triggered
+    /// </summary>
     public List<GameObject> disableGameObject;
 
+    /// <summary>
+    /// A list storing gameobject names that will be set to inactive when this trigger box is triggered
+    /// </summary>
     public List<string> disableGameObjectName;
 
     #endregion
 
     #region Load Level
+
+    /// <summary>
+    /// This bool is used to store whether the level responses tab is open in the inspector so it can persist across sessions
+    /// </summary>
     public bool showLevelResponses = false;
+
+    /// <summary>
+    /// The name of the level to be loaded
+    /// </summary>
     public string loadLevelName;
+
+    /// <summary>
+    /// A delay that will take place before the level gets loaded
+    /// </summary>
     public float loadDelay = 2;
+
     #endregion
 
     #endregion
@@ -330,16 +483,10 @@ public class TriggerBox : MonoBehaviour
             switch (playerPrefType)
             {
                 case ParameterType.Float:
-                    playerPrefFloat = PlayerPrefs.GetFloat(playerPrefKey);
-                    break;
-
-                case ParameterType.Int:
-                    playerPrefInt = PlayerPrefs.GetInt(playerPrefKey);
                     float.TryParse(playerPrefVal, out playerPrefValFloat);
                     break;
 
-                case ParameterType.String:
-                    playerPrefString = PlayerPrefs.GetString(playerPrefString);
+                case ParameterType.Int:
                     int.TryParse(playerPrefVal, out playerPrefValInt);
                     break;
             }
@@ -384,7 +531,7 @@ public class TriggerBox : MonoBehaviour
                 conditionMet = CheckCameraConditions();
             }
 
-            if (!conditionMet && playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
+            if (conditionMet && playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
             {
                 conditionMet = CheckPlayerPrefConditions();
             }
@@ -551,8 +698,30 @@ public class TriggerBox : MonoBehaviour
         return false;
     }
 
+    private void GetUpdatedPlayerPrefs()
+    {
+        if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
+        {
+            switch (playerPrefType)
+            {
+                case ParameterType.Float:
+                    playerPrefFloat = PlayerPrefs.GetFloat(playerPrefKey);
+                    break;
+
+                case ParameterType.Int:
+                    playerPrefInt = PlayerPrefs.GetInt(playerPrefKey);
+                    break;
+
+                case ParameterType.String:
+                    playerPrefString = PlayerPrefs.GetString(playerPrefString);
+                    break;
+            }
+        }
+    }
+
     private bool CheckPlayerPrefConditions()
     {
+        GetUpdatedPlayerPrefs();
         if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
         {
             switch (playerPrefType)

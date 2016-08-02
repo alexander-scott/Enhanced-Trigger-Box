@@ -1243,14 +1243,18 @@ public class TriggerBoxInspector : Editor
             var triggerFollowProp = so.FindProperty("triggerFollow");
             RenderPropertyField(triggerFollowProp);
 
-            if (triggerFollowProp.enumValueIndex != 0)
+            if (triggerFollowProp.enumValueIndex == 2)
             {
                 RenderPropertyField(so.FindProperty("followTransform"));
                 RenderPropertyField(so.FindProperty("followTransformName"));
             }
+
+            RenderPropertyField(so.FindProperty("canWander"));
         }
 
         #endregion
+
+        RenderDivider();
 
         #region Camera Conditions
 
@@ -1266,7 +1270,6 @@ public class TriggerBoxInspector : Editor
                 RenderPropertyField(so.FindProperty("viewObject"));
                 RenderPropertyField(so.FindProperty("lookObjectCondition"));
                 RenderPropertyField(so.FindProperty("ignoreObstacles"));
-                RenderPropertyField(so.FindProperty("canWander"));
                 RenderPropertyField(so.FindProperty("conditionTime"));
             }
         }
@@ -1291,6 +1294,8 @@ public class TriggerBoxInspector : Editor
         }
 
         #endregion
+
+        RenderDivider();
 
         #region Animation Responses
 
@@ -1511,6 +1516,12 @@ public class TriggerBoxInspector : Editor
         EditorGUIUtility.LookLikeInspector();
 
         return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
+    }
+
+    private void RenderDivider()
+    {
+        EditorGUI.indentLevel = 0;
+        EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
     }
 
     private void VectorScene(InspectorPlusVar v, string s, Transform t)

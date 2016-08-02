@@ -449,11 +449,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showCallFResponses
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showPPrefResponses
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showSpawnResponses
@@ -494,6 +494,18 @@ Prefab:
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showAudioResponses
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: showBaseOptions
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: setPlayerPrefKey
+      value: DemoProgression
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: setPlayerPrefVal
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
@@ -947,7 +959,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showPPrefResponses
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showSpawnResponses
@@ -971,6 +983,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showLevelResponses
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: setPlayerPrefKey
+      value: DemoProgression
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: setPlayerPrefVal
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: showBaseOptions
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1143,7 +1167,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showSpawnResponses
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showEnableResponses
@@ -1163,7 +1187,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showPPrefResponses
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showCallFResponses
@@ -1179,6 +1203,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showPPrefConditions
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: setPlayerPrefKey
+      value: DemoProgression
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: setPlayerPrefVal
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

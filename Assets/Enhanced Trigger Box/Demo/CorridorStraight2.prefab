@@ -870,10 +870,10 @@ MonoBehaviour:
   messageMethodName: 
   parameterType: 0
   parameterValue: 
-  showPPrefResponses: 0
-  setPlayerPrefKey: 
+  showPPrefResponses: 1
+  setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
-  setPlayerPrefVal: 
+  setPlayerPrefVal: 3
   showSpawnResponses: 0
   prefabToSpawn: {fileID: 0}
   newInstanceName: 
@@ -910,7 +910,7 @@ MonoBehaviour:
   triggerFollow: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  showCameraConditions: 0
+  showCameraConditions: 1
   viewConditionType: 2
   viewObject: {fileID: 168978}
   lookObjectCondition: 0
@@ -939,10 +939,10 @@ MonoBehaviour:
   messageMethodName: 
   parameterType: 0
   parameterValue: 
-  showPPrefResponses: 0
-  setPlayerPrefKey: 
+  showPPrefResponses: 1
+  setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
-  setPlayerPrefVal: 
+  setPlayerPrefVal: 4
   showSpawnResponses: 1
   prefabToSpawn: {fileID: 198598, guid: d80595fa1b463ab449b3143cd896ab9d, type: 2}
   newInstanceName: 
