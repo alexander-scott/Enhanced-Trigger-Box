@@ -1224,9 +1224,11 @@ public class TriggerBoxInspector : Editor
     public override void OnInspectorGUI()
     {
         so.Update();
-        RefreshVars();
+        //RefreshVars();
 
         GUI.enabled = true;
+
+        #region Base Options
 
         so.FindProperty("showBaseOptions").boolValue = RenderHeader("Base Options", so.FindProperty("showBaseOptions").boolValue);
 
@@ -1248,7 +1250,11 @@ public class TriggerBoxInspector : Editor
             }
         }
 
-        so.FindProperty("showCameraConditions").boolValue = RenderHeader("Camera Conditions", so.FindProperty("showCameraConditions").boolValue);
+        #endregion
+
+        #region Camera Conditions
+
+        so.FindProperty("showCameraConditions").boolValue = RenderHeader("Camera Conditions", so.FindProperty("showCameraConditions").boolValue, (so.FindProperty("viewConditionType").enumValueIndex != 0));
 
         if (so.FindProperty("showCameraConditions").boolValue)
         {
@@ -1265,7 +1271,11 @@ public class TriggerBoxInspector : Editor
             }
         }
 
-        so.FindProperty("showPPrefConditions").boolValue = RenderHeader("Player Prefs Conditions", so.FindProperty("showPPrefConditions").boolValue);
+        #endregion
+
+        #region Player Pref Conditions
+
+        so.FindProperty("showPPrefConditions").boolValue = RenderHeader("Player Prefs Conditions", so.FindProperty("showPPrefConditions").boolValue, (so.FindProperty("playerPrefCondition").enumValueIndex != 0));
 
         if (so.FindProperty("showPPrefConditions").boolValue)
         {
@@ -1280,7 +1290,11 @@ public class TriggerBoxInspector : Editor
             }
         }
 
-        so.FindProperty("showAnimResponses").boolValue = RenderHeader("Animation Responses", so.FindProperty("showAnimResponses").boolValue);
+        #endregion
+
+        #region Animation Responses
+
+        so.FindProperty("showAnimResponses").boolValue = RenderHeader("Animation Responses", so.FindProperty("showAnimResponses").boolValue, (so.FindProperty("animationTarget").objectReferenceValue != null || so.FindProperty("stopAnim").boolValue));
 
         if (so.FindProperty("showAnimResponses").boolValue)
         {
@@ -1290,7 +1304,11 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("playLegacyAnimation"));
         }
 
-        so.FindProperty("showAudioResponses").boolValue = RenderHeader("Audio Responses", so.FindProperty("showAudioResponses").boolValue);
+        #endregion
+
+        #region Audio Responses
+
+        so.FindProperty("showAudioResponses").boolValue = RenderHeader("Audio Responses", so.FindProperty("showAudioResponses").boolValue, (so.FindProperty("muteAllAudio").boolValue || so.FindProperty("playMusic").objectReferenceValue != null || so.FindProperty("playSoundEffect").objectReferenceValue != null));
 
         if (so.FindProperty("showAudioResponses").boolValue)
         {
@@ -1301,7 +1319,11 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("playSoundEffect"));
         }
 
-        so.FindProperty("showCallFResponses").boolValue = RenderHeader("Call Function Responses", so.FindProperty("showCallFResponses").boolValue);
+        #endregion
+
+        #region Call Function Responses
+
+        so.FindProperty("showCallFResponses").boolValue = RenderHeader("Call Function Responses", so.FindProperty("showCallFResponses").boolValue, (so.FindProperty("messageTarget").objectReferenceValue != null && !string.IsNullOrEmpty(so.FindProperty("messageMethodName").stringValue)));
 
         if (so.FindProperty("showCallFResponses").boolValue)
         {
@@ -1311,7 +1333,11 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("parameterValue"));
         }
 
-        so.FindProperty("showPPrefResponses").boolValue = RenderHeader("Player Pref Responses", so.FindProperty("showPPrefResponses").boolValue);
+        #endregion
+
+        #region Player Pref Responses
+
+        so.FindProperty("showPPrefResponses").boolValue = RenderHeader("Player Pref Responses", so.FindProperty("showPPrefResponses").boolValue, (!string.IsNullOrEmpty(so.FindProperty("setPlayerPrefKey").stringValue) && !string.IsNullOrEmpty(so.FindProperty("setPlayerPrefVal").stringValue)));
 
         if (so.FindProperty("showPPrefResponses").boolValue)
         {
@@ -1320,7 +1346,11 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("setPlayerPrefVal"));
         }
 
-        so.FindProperty("showSpawnResponses").boolValue = RenderHeader("Spawn GameObject Responses", so.FindProperty("showSpawnResponses").boolValue);
+        #endregion
+
+        #region Spawn Responses
+
+        so.FindProperty("showSpawnResponses").boolValue = RenderHeader("Spawn GameObject Responses", so.FindProperty("showSpawnResponses").boolValue, (so.FindProperty("prefabToSpawn").objectReferenceValue != null));
 
         if (so.FindProperty("showSpawnResponses").boolValue)
         {
@@ -1329,7 +1359,11 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("spawnPosition"));
         }
 
-        so.FindProperty("showDestroyResponses").boolValue = RenderHeader("Destroy GameObject Responses", so.FindProperty("showDestroyResponses").boolValue);
+        #endregion
+
+        #region Destroy Responses
+
+        so.FindProperty("showDestroyResponses").boolValue = RenderHeader("Destroy GameObject Responses", so.FindProperty("showDestroyResponses").boolValue, (so.FindProperty("destroyGameobjects").arraySize > 0 || so.FindProperty("destroyObjectNames").arraySize > 0));
 
         if (so.FindProperty("showDestroyResponses").boolValue)
         {
@@ -1337,14 +1371,22 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("destroyObjectNames"));
         }
 
-        so.FindProperty("showEnableResponses").boolValue = RenderHeader("Enable GameObject Responses", so.FindProperty("showEnableResponses").boolValue);
+        #endregion
+
+        #region Enable Responses
+
+        so.FindProperty("showEnableResponses").boolValue = RenderHeader("Enable GameObject Responses", so.FindProperty("showEnableResponses").boolValue, (so.FindProperty("enableGameObject").arraySize > 0));
 
         if (so.FindProperty("showEnableResponses").boolValue)
         {
             RenderPropertyField(so.FindProperty("enableGameObject"));
         }
 
-        so.FindProperty("showDisableResponses").boolValue = RenderHeader("Disable GameObject Responses", so.FindProperty("showDisableResponses").boolValue);
+        #endregion
+
+        #region Disable Responses
+
+        so.FindProperty("showDisableResponses").boolValue = RenderHeader("Disable GameObject Responses", so.FindProperty("showDisableResponses").boolValue, (so.FindProperty("disableGameObject").arraySize > 0 || so.FindProperty("disableGameObjectName").arraySize > 0));
 
         if (so.FindProperty("showDisableResponses").boolValue)
         {
@@ -1352,13 +1394,19 @@ public class TriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("disableGameObjectName"));
         }
 
-        so.FindProperty("showLevelResponses").boolValue = RenderHeader("Load Level Responses", so.FindProperty("showLevelResponses").boolValue);
+        #endregion
+
+        #region Level Responses
+
+        so.FindProperty("showLevelResponses").boolValue = RenderHeader("Load Level Responses", so.FindProperty("showLevelResponses").boolValue, (!string.IsNullOrEmpty(so.FindProperty("loadLevelName").stringValue)));
 
         if (so.FindProperty("showLevelResponses").boolValue)
         {
             RenderPropertyField(so.FindProperty("loadLevelName"));
             RenderPropertyField(so.FindProperty("loadDelay"));
         }
+
+        #endregion
 
         so.ApplyModifiedProperties();
     }
@@ -1450,10 +1498,12 @@ public class TriggerBoxInspector : Editor
         GUILayout.EndHorizontal();
     }
 
-    private bool RenderHeader(string s, bool optionRef)
+    private bool RenderHeader(string s, bool optionRef, bool bold = true)
     {
         GUIStyle myFoldoutStyle = new GUIStyle(EditorStyles.foldout);
-        myFoldoutStyle.fontStyle = FontStyle.Bold;
+
+        if (bold)
+            myFoldoutStyle.fontStyle = FontStyle.Bold;
 
         GUILayout.Space(10.0f);
 
@@ -1543,7 +1593,6 @@ public class TriggerBoxInspector : Editor
     //some magic to draw the handles
     public void OnSceneGUI()
     {
-
         var script = (TriggerBox)target;
         if (script.prefabToSpawn)
         {
@@ -1552,11 +1601,8 @@ public class TriggerBoxInspector : Editor
             script.spawnPosition = Handles.PositionHandle(script.spawnPosition, Quaternion.identity);
         }
 
-
         if (GUI.changed)
             EditorUtility.SetDirty(target);
-
-
 
         Transform t = ((MonoBehaviour)target).transform;
 
