@@ -413,7 +413,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: drawWire
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: destroyGameobject
@@ -445,7 +445,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showCameraConditions
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showCallFResponses
@@ -469,7 +469,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showDestroyResponses
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showEnableResponses
@@ -489,7 +489,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showPPrefConditions
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: showAudioResponses
@@ -505,6 +505,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: setPlayerPrefVal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: cameraConditionType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: conditionObject
+      value: 
+      objectReference: {fileID: 1173084144}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: componentParameter
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -776,8 +788,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1173084144}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: -0.196, y: 0.126, z: 0.242}
-  m_LocalScale: {x: 0.086203836, y: 0.24559498, z: 0.09242921}
+  m_LocalPosition: {x: 1.357, y: 0.008, z: 0.0334}
+  m_LocalScale: {x: 0.30196244, y: 1.012251, z: 0.09242921}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_Children: []
   m_Father: {fileID: 169855235}
@@ -789,7 +801,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1173084144}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -911,7 +923,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: drawWire
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
       propertyPath: destroyGameobject
@@ -997,6 +1009,14 @@ Prefab:
       propertyPath: showBaseOptions
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: cameraConditionType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: conditionObject
+      value: 
+      objectReference: {fileID: 1944559925}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
   m_IsPrefabParent: 0
@@ -1213,6 +1233,14 @@ Prefab:
       propertyPath: setPlayerPrefVal
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: cameraConditionType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
+      propertyPath: conditionObject
+      value: 
+      objectReference: {fileID: 96109316}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
   m_IsPrefabParent: 0
@@ -1282,7 +1310,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1944559925}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}

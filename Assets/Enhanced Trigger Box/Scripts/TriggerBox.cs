@@ -19,48 +19,57 @@ public class TriggerBox : MonoBehaviour
     public bool showBaseOptions = true;
 
     /// <summary>
-    /// If true then only a wireframe will be displayed instead of a coloured box
-    /// </summary>
-    public bool drawWire;
-
-    /// <summary>
-    /// The colour of the trigger box
-    /// </summary>
-    public Color triggerboxColour;
-
-    /// <summary>
     /// A list of tags belonging to gameobjects which are able to trigger the trigger box
     /// </summary>
+    [Tooltip("Only tags listed here are able to trigger the trigger box. By default the Player tag is used here.")]
     public List<string> triggerTags;
 
     /// <summary>
     /// If true the application will write to the console a message with the name of the trigger that was triggered
     /// </summary>
+    [Tooltip("If true, the script will write to the console when certain events happen such as when the trigger box is triggered.")]
     public bool debugTriggerBox;
+
+    /// <summary>
+    /// If true then only a wireframe will be displayed instead of a coloured box
+    /// </summary>
+    [Tooltip("If true, the trigger box will no longer have a fill colour in the editor and only the edges will be visible.")]
+    public bool drawWire;
+
+    /// <summary>
+    /// The colour of the trigger box
+    /// </summary>
+    [Tooltip("This is the colour the trigger box and it's edges will have in the editor.")]
+    public Color triggerboxColour;
 
     /// <summary>
     /// A set of options for when the trigger box has been trigged. Nothing does nothing. Trigger box destroys trigger box. Parent destroys parent.
     /// </summary>
-    public DestroyTriggerBox destroyOnTrigger;
+    [Tooltip("This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent.")]
+    public AfterTriggerOptions afterTrigger;
 
     /// <summary>
     /// An Enum allowing users to choose whether the trigger box follows the main camera or a selected transform
     /// </summary>
+    [Tooltip("This allows you to choose if you want your trigger box to stay positioned on a moving transform or the main camera. If you pick Follow Transform a field will appear to set which transform you want the trigger box to follow. Or if you pick Follow Main Camera the trigger box will stay positioned on wherever the main camera currently is.")]
     public TriggerFollow triggerFollow;
 
     /// <summary>
     /// This transform is used when trigger follow is set to transform. The trigger boxes position will be set to this transforms position every frame.
     /// </summary>
+    [Tooltip("This is used when Trigger Follow is set to Follow Transform. The trigger box will stay positioned on wherever this transform is currently positioned.")]
     public Transform followTransform;
 
     /// <summary>
     /// This is used when a transform reference for followTransform is unavailable. An object with this named is searched for and used as the followTransform object
     /// </summary>
+    [Tooltip("This is can be used if you cannot get a reference for the above Follow Transform transform. GameObject.Find() will be used to find the gameobject and transform with the name you enter.")]
     public string followTransformName;
 
     /// <summary>
     /// If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
     /// </summary>
+    [Tooltip("If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.")]
     public bool canWander;
 
     /// <summary>
@@ -84,26 +93,31 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The type of condition the user wants, either Looking At an object or Looking Away from an object.
     /// </summary>
-    public LookType viewConditionType;
+    [Tooltip("The type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum.")]
+    public LookType cameraConditionType;
 
     /// <summary>
     /// A reference for the object that the condition is based upon
     /// </summary>
-    public GameObject viewObject;
+    [Tooltip("This is the object that the condition is based upon.")]
+    public GameObject conditionObject;
 
     /// <summary>
     /// The type of condition the object will be checked with, either transform (a vector3 in frame), minimum box collider (any part of a box collider can be in frame) or full box collider (the whole box collider must be in frame).
     /// </summary>
-    public LookObjectCondition lookObjectCondition;
+    [Tooltip("The type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider) or full box collider (the entire box collider). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met.")]
+    public CameraConditionComponentParameters componentParameter;
 
     /// <summary>
     /// If this is true, when checking if the user is looking at an object no raycast checks will be performed to check if there is something preventing the line of sight. This means that as long as the objects position is within the camera frustum the condition will pass.
     /// </summary>
+    [Tooltip("If this is true, when checking if the user is looking at an object no raycast checks will be performed to check if there is something preventing the line of sight. This means that as long as the objects position is within the camera frustum the condition will pass.")]
     public bool ignoreObstacles;
 
     /// <summary>
     /// The time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for condition to pass.
     /// </summary>
+    [Tooltip("This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass.")]
     public float conditionTime = 0f;
 
     /// <summary>
@@ -148,21 +162,25 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to, less than
     /// </summary>
+    [Tooltip("The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to, and less than.")]
     public PlayerPrefCondition playerPrefCondition;
 
     /// <summary>
     /// The value that will be used to check the condition
     /// </summary>
+    [Tooltip("The value that will be used to compare against the value stored in the player pref.")]
     public string playerPrefVal;
 
     /// <summary>
     /// The key of the player pref which will be inspected in the condition
     /// </summary>
+    [Tooltip("The key (ID) of the player pref that will be compared against the above value.")]
     public string playerPrefKey;
 
     /// <summary>
     /// The type of the player pref. Options are int, float or string
     /// </summary>
+    [Tooltip("The data type stored within the player pref.")]
     public ParameterType playerPrefType;
 
     /// <summary>
@@ -202,21 +220,25 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The gameobject to apply the animation to
     /// </summary>
+    [Tooltip("The gameobject to apply the animation to.")]
     public GameObject animationTarget;
 
     /// <summary>
     /// The mecanim trigger string
     /// </summary>
+    [Tooltip("The name of the trigger in the animator that you want to trigger.")]
     public string setMecanimTrigger;
 
     /// <summary>
-    /// Stops the current animation
+    /// Stops the current animation on the animation target
     /// </summary>
+    [Tooltip("Stops the current animation on the animation target")]
     public bool stopAnim;
 
     /// <summary>
     /// The animation clip to play
     /// </summary>
+    [Tooltip("Fades the animation in on the animation target over 0.3 seconds and fades other animations out.")]
     public AnimationClip playLegacyAnimation;
 
     #endregion
@@ -231,26 +253,31 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// If true, all audio is stopped
     /// </summary>
+    [Tooltip("Stops the current audio clip being played on the main camera.")]
     public bool muteAllAudio;
 
     /// <summary>
     /// The audio clip to play on the Main Camera
     /// </summary>
+    [Tooltip("This is the audio clip that will be played on the main camera.")]
     public AudioClip playMusic;
 
     /// <summary>
     /// If true, the audio clip is looped
     /// </summary>
+    [Tooltip("If this is true, the above audio clip will loop when played.")]
     public bool loopMusic;
 
     /// <summary>
     /// The volume of the music. Default is 1.
     /// </summary>
+    [Tooltip("The volume of the audio clip. Default is 1.")]
     public float musicVolume = 1f;
 
     /// <summary>
     /// This is an audio clip, played at the position of this trigger box
     /// </summary>
+    [Tooltip("This is an audio clip which is played at the position of this trigger box.")]
     public AudioClip playSoundEffect;
 
     /// <summary>
@@ -268,23 +295,27 @@ public class TriggerBox : MonoBehaviour
     public bool showCallFResponses = false;
 
     /// <summary>
-    /// The gameobject on which messageMethodName is called on every MonoBehaviour belonging to it.
+    /// The gameobject on which messageMethodName is called.
     /// </summary>
+    [Tooltip("This is the gameobject on which the below function is called on.")]
     public GameObject messageTarget;
 
     /// <summary>
     /// The name of the method which is called on the messageTarget gameobject.
     /// </summary>
+    [Tooltip("This is the function which is called on the above gameobject.")]
     public string messageMethodName;
 
     /// <summary>
     /// The type of parameter that is being sent
     /// </summary>
+    [Tooltip("This is the type of parameter that will be sent to the function. Options are int, float and string.")]
     public ParameterType parameterType;
 
     /// <summary>
     /// The value of the parameter that is being sent
     /// </summary>
+    [Tooltip("This is the value of the parameter that will be sent to the function.")]
     public string parameterValue;
 
     #endregion
@@ -299,16 +330,19 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The player pref key which will hold the value set by the user
     /// </summary>
+    [Tooltip("This is the key (ID) of the player pref which will have its value set.")]
     public string setPlayerPrefKey;
 
     /// <summary>
     /// The type of the player pref. Options are int, float and string
     /// </summary>
+    [Tooltip("This is the type of data stored within the player pref.")]
     public ParameterType setPlayerPrefType;
 
     /// <summary>
     /// The value being set in the player pref
     /// </summary>
+    [Tooltip("This is the value that will be stored in the player pref.")]
     public string setPlayerPrefVal;
 
     #endregion
@@ -323,16 +357,19 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The gameobject or prefab to instanstiate
     /// </summary>
+    [Tooltip("This is the prefab which will be instanstiated (spawned).")]
     public GameObject prefabToSpawn;
 
     /// <summary>
     /// If this isn't empty, the name of the instanciated object will be called this
     /// </summary>
+    [Tooltip("This field is used to set the name of the newly instantiated object. If left blank the name will remain as the prefab's saved name.")]
     public string newInstanceName;
 
     /// <summary>
     /// Position to spawn the gameobject on
     /// </summary>
+    [Tooltip("This is the position which the prefab will be spawned on. If left blank it will use the prefab's saved position.")]
     public Vector3 spawnPosition;
 
     /// <summary>
@@ -350,13 +387,15 @@ public class TriggerBox : MonoBehaviour
     public bool showDestroyResponses = false;
 
     /// <summary>
-    /// A list storing object references that will be destroyed when the trigger box is triggered
+    /// This is a list storing object references that will be destroyed when the trigger box is triggered
     /// </summary>
+    [Tooltip("All gameobjects stored in this list will be destroyed.")]
     public List<GameObject> destroyGameobjects;
 
     /// <summary>
     /// A list storing object names that will be destroyed when the trigger box is triggered
     /// </summary>
+    [Tooltip("If you are unable to provide references to gameobjects you can enter their names here. They will be found using GameObject.Find() and will be destroyed.")]
     public List<string> destroyObjectNames;
 
     #endregion
@@ -371,6 +410,7 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// A list storing gameobject references that will be set to active when this trigger box is triggered
     /// </summary>
+    [Tooltip("This is a list storing gameobject references that will be set to active.")]
     public List<GameObject> enableGameObject;
 
     #endregion
@@ -385,11 +425,13 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// A list storing gameobject references that will be set to inactive when this trigger box is triggered
     /// </summary>
+    [Tooltip("This is a list storing gameobject references that will be set to inactive.")]
     public List<GameObject> disableGameObject;
 
     /// <summary>
     /// A list storing gameobject names that will be set to inactive when this trigger box is triggered
     /// </summary>
+    [Tooltip("If you are unable to provide references to gameobjects you can enter their names here. They will be found using GameObject.Find() and will be set to inactive.")]
     public List<string> disableGameObjectName;
 
     #endregion
@@ -404,11 +446,13 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The name of the level to be loaded
     /// </summary>
+    [Tooltip("This is the scene name you want to be loaded.")]
     public string loadLevelName;
 
     /// <summary>
     /// A delay that will take place before the level gets loaded
     /// </summary>
+    [Tooltip("This is an optional delay that will take place before loading the scene in seconds.")]
     public float loadDelay = 2;
 
     #endregion
@@ -418,7 +462,7 @@ public class TriggerBox : MonoBehaviour
     #region Enums and structs
 
     /// <summary>
-    /// The type of message that will be sent to the recieving gameobject
+    /// Used in various things to determine the datatype of a parameter.
     /// </summary>
     public enum ParameterType
     {
@@ -427,13 +471,19 @@ public class TriggerBox : MonoBehaviour
         String,
     }
 
-    public enum DestroyTriggerBox
+    /// <summary>
+    /// Options that are available to the user after the trigger box has been triggered.
+    /// </summary>
+    public enum AfterTriggerOptions
     {
-        Nothing,
-        TriggerBox,
-        Parent,
+        SetInactive,
+        DestroyTriggerBox,
+        DestroyParent,
     }
 
+    /// <summary>
+    /// The available types of camera conditions.
+    /// </summary>
     public enum LookType
     {
         None,
@@ -441,13 +491,19 @@ public class TriggerBox : MonoBehaviour
         LookingAway,
     }
 
-    public enum LookObjectCondition
+    /// <summary>
+    /// The available component parameters that can be used in the camera condition.
+    /// </summary>
+    public enum CameraConditionComponentParameters
     {
         Transform,
         FullBoxCollider,
         MinimumBoxCollider,
     }
 
+    /// <summary>
+    /// The available types of player pref conditions such as greater than and less than.
+    /// </summary>
     public enum PlayerPrefCondition
     {
         None,
@@ -458,6 +514,9 @@ public class TriggerBox : MonoBehaviour
         LessThan,
     }
 
+    /// <summary>
+    /// The user can select if they want the trigger box to follow an object or the main camera.
+    /// </summary>
     public enum TriggerFollow
     {
         Static,
@@ -469,12 +528,12 @@ public class TriggerBox : MonoBehaviour
 
     void Start()
     {
-        if (viewConditionType != LookType.None)
+        if (cameraConditionType != LookType.None)
         {
-            viewConditionObjectCollider = viewObject.GetComponent<BoxCollider>();
+            viewConditionObjectCollider = conditionObject.GetComponent<BoxCollider>();
             if (viewConditionObjectCollider == null)
             {
-                lookObjectCondition = LookObjectCondition.Transform;
+                componentParameter = CameraConditionComponentParameters.Transform;
             }
         }
 
@@ -521,12 +580,12 @@ public class TriggerBox : MonoBehaviour
 
         if (triggered)
         {
-            if (viewConditionType == LookType.None && playerPrefCondition == PlayerPrefCondition.None)
+            if (cameraConditionType == LookType.None && playerPrefCondition == PlayerPrefCondition.None)
             {
                 conditionMet = true;
             }
 
-            if (!conditionMet && viewConditionType != LookType.None)
+            if (!conditionMet && cameraConditionType != LookType.None)
             {
                 conditionMet = CheckCameraConditions();
             }
@@ -569,17 +628,17 @@ public class TriggerBox : MonoBehaviour
     private bool CheckCameraConditions()
     {
         // Is this necessary? TODO: Find out if this is necessary
-        if (Vector3.Distance(Camera.main.transform.position, viewObject.transform.position) < 2f)
+        if (Vector3.Distance(Camera.main.transform.position, conditionObject.transform.position) < 2f)
         {
             return false;
         }
 
-        if (viewConditionType == LookType.LookingAt)
+        if (cameraConditionType == LookType.LookingAt)
         {
-            if (lookObjectCondition == LookObjectCondition.Transform)
+            if (componentParameter == CameraConditionComponentParameters.Transform)
             {
                 // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
+                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
 
                 // This checks that the object is in our screen
                 if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
@@ -589,7 +648,7 @@ public class TriggerBox : MonoBehaviour
                     {
                         return CheckConditionTimer();
                     }
-                    viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+                    viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
 
                     if (CheckRaycast())
                     {
@@ -597,7 +656,7 @@ public class TriggerBox : MonoBehaviour
                     }
                 }
             }
-            else if (lookObjectCondition == LookObjectCondition.MinimumBoxCollider)
+            else if (componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
             {
                 viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 if (GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
@@ -607,7 +666,7 @@ public class TriggerBox : MonoBehaviour
                         return CheckConditionTimer();
                     }
 
-                    viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+                    viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
 
                     if (CheckRaycast())
                     {
@@ -634,7 +693,7 @@ public class TriggerBox : MonoBehaviour
                             return CheckConditionTimer();
                         }
 
-                        viewConditionDirection = (viewObject.transform.position - Camera.main.transform.position);
+                        viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
 
                         if (CheckRaycast())
                         {
@@ -644,12 +703,12 @@ public class TriggerBox : MonoBehaviour
                 }
             }
         }
-        else if (viewConditionType == LookType.LookingAway)
+        else if (cameraConditionType == LookType.LookingAway)
         {
-            if (lookObjectCondition == LookObjectCondition.Transform)
+            if (componentParameter == CameraConditionComponentParameters.Transform)
             {
                 // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
+                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
 
                 // This checks that the object is in our screen
                 if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
@@ -658,12 +717,12 @@ public class TriggerBox : MonoBehaviour
                     return CheckConditionTimer();
                 }
             }
-            else if (lookObjectCondition == LookObjectCondition.FullBoxCollider)
+            else if (componentParameter == CameraConditionComponentParameters.FullBoxCollider)
             {
                 viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
                 if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
                 {
-                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewObject.transform.position);
+                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
 
                     if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
                         viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
@@ -819,7 +878,7 @@ public class TriggerBox : MonoBehaviour
         // This checks that there's no obstacles in the way
         if (Physics.Raycast(Camera.main.transform.position, viewConditionDirection.normalized, out viewConditionRaycastHit, viewConditionDirection.magnitude))
         {
-            if (viewConditionRaycastHit.transform.position == viewObject.transform.position)
+            if (viewConditionRaycastHit.transform.position == conditionObject.transform.position)
             {
                 if (viewTimer >= conditionTime)
                 {
@@ -990,17 +1049,17 @@ public class TriggerBox : MonoBehaviour
             StartCoroutine("LoadScene");
         }
 
-        switch (destroyOnTrigger)
+        switch (afterTrigger)
         {
-            case DestroyTriggerBox.Nothing:
+            case AfterTriggerOptions.SetInactive:
                 gameObject.SetActive(false);
                 break;
 
-            case DestroyTriggerBox.TriggerBox:
+            case AfterTriggerOptions.DestroyTriggerBox:
                 Destroy(gameObject);
                 break;
 
-            case DestroyTriggerBox.Parent:
+            case AfterTriggerOptions.DestroyParent:
                 Destroy(transform.parent.gameObject);
                 break;
         }

@@ -28,11 +28,11 @@ public class TriggerBoxInspector : Editor
 
         if (so.FindProperty("showBaseOptions").boolValue)
         {
-            RenderPropertyField(so.FindProperty("drawWire"));
-            RenderPropertyField(so.FindProperty("debugTriggerBox"));
             RenderPropertyField(so.FindProperty("triggerTags"));
-            RenderPropertyField(so.FindProperty("destroyOnTrigger"));
+            RenderPropertyField(so.FindProperty("debugTriggerBox"));
+            RenderPropertyField(so.FindProperty("drawWire"));
             RenderPropertyField(so.FindProperty("triggerboxColour"));
+            RenderPropertyField(so.FindProperty("afterTrigger"));
 
             var triggerFollowProp = so.FindProperty("triggerFollow");
             RenderPropertyField(triggerFollowProp);
@@ -52,18 +52,21 @@ public class TriggerBoxInspector : Editor
 
         #region Camera Conditions
 
-        so.FindProperty("showCameraConditions").boolValue = RenderHeader("Camera Conditions", so.FindProperty("showCameraConditions").boolValue, (so.FindProperty("viewConditionType").enumValueIndex != 0));
+        so.FindProperty("showCameraConditions").boolValue = RenderHeader("Camera Conditions", so.FindProperty("showCameraConditions").boolValue, (so.FindProperty("cameraConditionType").enumValueIndex != 0));
 
         if (so.FindProperty("showCameraConditions").boolValue)
         {
-            var viewConditionTypeProp = so.FindProperty("viewConditionType");
+            var viewConditionTypeProp = so.FindProperty("cameraConditionType");
             RenderPropertyField(viewConditionTypeProp);
 
             if (viewConditionTypeProp.enumValueIndex != 0)
             {
-                RenderPropertyField(so.FindProperty("viewObject"));
-                RenderPropertyField(so.FindProperty("lookObjectCondition"));
-                RenderPropertyField(so.FindProperty("ignoreObstacles"));
+                RenderPropertyField(so.FindProperty("conditionObject"));
+                RenderPropertyField(so.FindProperty("componentParameter"));
+
+                if ((so.FindProperty("cameraConditionType").enumValueIndex == 1))
+                    RenderPropertyField(so.FindProperty("ignoreObstacles"));
+
                 RenderPropertyField(so.FindProperty("conditionTime"));
             }
         }
@@ -319,7 +322,6 @@ public class TriggerBoxInspector : Editor
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
     }
 
-    //some magic to draw the handles
     public void OnSceneGUI()
     {
         var script = (TriggerBox)target;
