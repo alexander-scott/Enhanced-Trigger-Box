@@ -30,6 +30,7 @@ public class TriggerBoxInspector : Editor
         {
             RenderPropertyField(so.FindProperty("triggerTags"));
             RenderPropertyField(so.FindProperty("debugTriggerBox"));
+            RenderPropertyField(so.FindProperty("disableStartupChecks"));
             RenderPropertyField(so.FindProperty("drawWire"));
             RenderPropertyField(so.FindProperty("triggerboxColour"));
             RenderPropertyField(so.FindProperty("afterTrigger"));
@@ -65,8 +66,10 @@ public class TriggerBoxInspector : Editor
                 RenderPropertyField(so.FindProperty("componentParameter"));
 
                 if ((so.FindProperty("cameraConditionType").enumValueIndex == 1))
+                {
                     RenderPropertyField(so.FindProperty("ignoreObstacles"));
-
+                }
+                    
                 RenderPropertyField(so.FindProperty("conditionTime"));
             }
         }

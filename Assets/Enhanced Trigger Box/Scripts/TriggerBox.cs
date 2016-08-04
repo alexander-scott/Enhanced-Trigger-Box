@@ -31,6 +31,12 @@ public class TriggerBox : MonoBehaviour
     public bool debugTriggerBox;
 
     /// <summary>
+    /// If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
+    /// </summary>
+    [Tooltip("If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.")]
+    public bool disableStartupChecks;
+
+    /// <summary>
     /// If true then only a wireframe will be displayed instead of a coloured box
     /// </summary>
     [Tooltip("If true, the trigger box will no longer have a fill colour in the editor and only the edges will be visible.")]
@@ -105,7 +111,7 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// The type of condition the object will be checked with, either transform (a vector3 in frame), minimum box collider (any part of a box collider can be in frame) or full box collider (the whole box collider must be in frame).
     /// </summary>
-    [Tooltip("The type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider) or full box collider (the entire box collider). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met.")]
+    [Tooltip("The type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider), full box collider (the entire box collider) or mesh renderer (any part of a mesh). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met.")]
     public CameraConditionComponentParameters componentParameter;
 
     /// <summary>
@@ -139,6 +145,8 @@ public class TriggerBox : MonoBehaviour
     /// This is the box collider of the viewObject. Only used when the condition involves Minimum Box Collider or Full Box Collider
     /// </summary>
     private BoxCollider viewConditionObjectCollider;
+
+    private MeshRenderer viewConditionObjectMeshRenderer;
 
     /// <summary>
     /// The view planes of the camera
@@ -499,6 +507,7 @@ public class TriggerBox : MonoBehaviour
         Transform,
         FullBoxCollider,
         MinimumBoxCollider,
+        MeshRenderer,
     }
 
     /// <summary>
@@ -528,33 +537,152 @@ public class TriggerBox : MonoBehaviour
 
     void Start()
     {
-        if (cameraConditionType != LookType.None)
+        // Perform startup checks
+        if (!disableStartupChecks)
         {
-            viewConditionObjectCollider = conditionObject.GetComponent<BoxCollider>();
-            if (viewConditionObjectCollider == null)
+            // If destroy parent is enable, check if a parent exists
+            if (afterTrigger == AfterTriggerOptions.DestroyParent)
             {
-                componentParameter = CameraConditionComponentParameters.Transform;
+                if (transform.parent == null)
+                {
+                    Debug.Log("You have selected Destroy Parent after the trigger but this trigger box has no parent! The option has been set to Destroy Trigger Box whilst the scene is running to prevent errors.");
+                    afterTrigger = AfterTriggerOptions.DestroyTriggerBox;
+                }
             }
-        }
 
-        if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
-        {
-            switch (playerPrefType)
+            // If follow transform is enabled, check if the user specified a transform
+            if (triggerFollow == TriggerFollow.FollowTransform)
             {
-                case ParameterType.Float:
-                    float.TryParse(playerPrefVal, out playerPrefValFloat);
-                    break;
-
-                case ParameterType.Int:
-                    int.TryParse(playerPrefVal, out playerPrefValInt);
-                    break;
+                if (followTransform == null && string.IsNullOrEmpty(followTransformName))
+                {
+                    Debug.Log("You have selected Follow Transform but you have not specified either a transform reference or a gameobject name! The option has been set to Follow Main Camera whilst the scene is running to prevent errors.");
+                    triggerFollow = TriggerFollow.FollowMainCamera;
+                }
+                else 
+                {
+                    // If the user has entered both a gameobject name and transform reference
+                    if (followTransform != null && !string.IsNullOrEmpty(followTransformName))
+                    {
+                        Debug.Log("You have selected Follow Transform and have entered both a transform reference and a gameobject name! The transform reference will be ignored and the gameobject name will take preference and you should remove one of them.");
+                    }
+                    if (!string.IsNullOrEmpty(followTransformName))
+                    {
+                        GameObject gObj = GameObject.Find(followTransformName);
+                        // If the gameobject will the specified name cannot be found
+                        if (gObj == null)
+                        {
+                            Debug.Log("The gameobject name you have entered for Follow Transform cannot be found. The option has been set to Follow Main Camera whilst the scene is running to prevent errors.");
+                            triggerFollow = TriggerFollow.FollowMainCamera;
+                        }
+                        else
+                        {
+                            followTransform = gObj.transform;
+                        }
+                    }
+                }
             }
-        }
 
-        if (!string.IsNullOrEmpty(followTransformName))
-        {
-            GameObject gObj = GameObject.Find(followTransformName);
-            followTransform = gObj.transform;
+            // If there's a camera condition
+            if (cameraConditionType != LookType.None)
+            {
+                // Check if the user specified a gameobject to focus on
+                if (conditionObject == null)
+                {
+                    Debug.Log("You have selected the " + ((cameraConditionType == LookType.LookingAt) ? "Looking At" : "Looking Away") + " camera condition but have not specified a gameobject reference! The option has been set to None whilst the scene is running to prevent errors.");
+                    cameraConditionType = LookType.None;
+                }
+                else
+                {
+                    // If the user has selected full box collider check the object has a box collider
+                    if (componentParameter == CameraConditionComponentParameters.FullBoxCollider || componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
+                    {
+                        viewConditionObjectCollider = conditionObject.GetComponent<BoxCollider>();
+                        if (viewConditionObjectCollider == null)
+                        {
+                            Debug.Log("You have selected the Component Parameter for the camera condition to be " + ((componentParameter == CameraConditionComponentParameters.FullBoxCollider) ? "Full Box Collider" : "Minimum Box Collider") + " but the object doesn't have a Box Collider component! The option has been set to Transform whilst the scene is running to prevent errors.");
+                            componentParameter = CameraConditionComponentParameters.Transform;
+                        }
+                    } // Else if the user selected mesh render check the object has mesh renderer
+                    else if (componentParameter == CameraConditionComponentParameters.MeshRenderer)
+                    {
+                        viewConditionObjectMeshRenderer = conditionObject.GetComponent<MeshRenderer>();
+                        if (viewConditionObjectMeshRenderer == null)
+                        {
+                            Debug.Log("You have selected the Component Parameter for the camera condition to be Mesh Renderer but the object doesn't have a Mesh Renderer component! The option has been set to Transform whilst the scene is running to prevent errors.");
+                            componentParameter = CameraConditionComponentParameters.Transform;
+                        }
+                    }
+                }
+            }
+
+            // Check that condition time is above 0
+            if (conditionTime < 0f)
+            {
+                Debug.Log("You have set the camera condition timer to be less than 0 which isn't possible! This has been changed to 0 whilst the scene is running to prevent errors.");
+                conditionTime = 0f;
+            }
+
+            // If there is a player pref condition check that there is a value for the condition
+            if (playerPrefCondition != PlayerPrefCondition.None)
+            {
+                if (string.IsNullOrEmpty(playerPrefVal))
+                {
+                    Debug.Log("You have set up a player pref condition but haven't entered a value to be compared against the player pref! This option has been changed to None whilst the scene is running to prevent errors.");
+                    playerPrefCondition = PlayerPrefCondition.None;
+                }
+                else
+                {
+                    // If there's any parsing required do this now
+                    switch (playerPrefType)
+                    {
+                        case ParameterType.Float:
+                            float.TryParse(playerPrefVal, out playerPrefValFloat);
+                            break;
+
+                        case ParameterType.Int:
+                            int.TryParse(playerPrefVal, out playerPrefValInt);
+                            break;
+                    }
+
+                    if (string.IsNullOrEmpty(playerPrefKey))
+                    {
+                        Debug.Log("You have set up a player pref condition but haven't entered a player pref key! This option has been changed to None whilst the scene is running to prevent errors.");
+                        playerPrefCondition = PlayerPrefCondition.None;
+                    }
+                }
+            }
+
+            // If there is a mecanim trigger check there is a target for it
+            if (!string.IsNullOrEmpty((setMecanimTrigger)))
+            {
+                if (animationTarget == null)
+                {
+                    Debug.Log("You have set a Mecanim Trigger as an Animation Response but haven't set an Animation Target to apply it to! This has been removed whilst the scene is running to prevent errors.");
+                    setMecanimTrigger = "";
+                }
+            }
+
+            // If stop anim is set check there is a target for it
+            if (stopAnim)
+            {
+                if (animationTarget == null)
+                {
+                    Debug.Log("You have set Stop Animation as an Animation Response but haven't set an Animation Target to apply it to! This has been disabled whilst the scene is running to prevent errors.");
+                    setMecanimTrigger = "";
+                }
+            }
+
+            // If legacy animat is set to play check there is a target for it
+            if (playLegacyAnimation != null)
+            {
+                if (animationTarget == null)
+                {
+                    Debug.Log("You have chosen to play a legacy animation as an Animation Response but haven't set an Animation Target to apply it to! This has been disabled whilst the scene is running to prevent errors.");
+                    playLegacyAnimation = null;
+                }
+            }
+
+            // TODO: Continue validation from MUTE ALL AUDIO
         }
     }
 
@@ -563,12 +691,14 @@ public class TriggerBox : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
+        // TODO: What happens in this if statement?
         if (prefabToSpawn && !onetime && !Application.isPlaying)
         {
             onetime = true;
             spawnPosition = transform.position + Vector3.forward;
         }
 
+        // This if statement updates the trigger boxes position to either stay on a transform or on the main camera
         if (triggerFollow == TriggerFollow.FollowTransform)
         {
             transform.position = followTransform.position;
@@ -578,23 +708,31 @@ public class TriggerBox : MonoBehaviour
             transform.position = Camera.main.transform.position;
         }
 
+        // If the player has walked inside the trigger box
         if (triggered)
         {
+            // If there is neither a camera condition or a player pref condition, set conditionMet to true
             if (cameraConditionType == LookType.None && playerPrefCondition == PlayerPrefCondition.None)
             {
                 conditionMet = true;
             }
-
-            if (!conditionMet && cameraConditionType != LookType.None)
+            else
             {
-                conditionMet = CheckCameraConditions();
+                // Perform the camera condition checks
+                if (cameraConditionType != LookType.None)
+                {
+                    conditionMet = CheckCameraConditions();
+                }
+
+                // If the camera condition passed then check to see if the player pref condition passes as well.
+                // But of course only if the player pref condition has been set
+                if (conditionMet && playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
+                {
+                    conditionMet = CheckPlayerPrefConditions();
+                }
             }
 
-            if (conditionMet && playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
-            {
-                conditionMet = CheckPlayerPrefConditions();
-            }
-
+            // If all conditions have been met, start executing the responses
             if (conditionMet)
             {
                 ConditionMet();
@@ -603,7 +741,7 @@ public class TriggerBox : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when this box intersects with another gameobject
+    /// Called when this box intersects with another gameobject that has one of the specified triggerTags
     /// </summary>
     /// <param name="other">The collider that this object has collided with</param>
     private void OnTriggerEnter(Collider other)
@@ -614,6 +752,10 @@ public class TriggerBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when a collider exits this collider. Only serves a purpose if the player cannot wander as it forces the condition checks to stop until the user re-enters the trigger box.
+    /// </summary>
+    /// <param name="other">The collider leaving this collider</param>
     private void OnTriggerExit(Collider other)
     {
         if (!canWander)
@@ -625,138 +767,173 @@ public class TriggerBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This function performs the camera condition checks
+    /// </summary>
+    /// <returns>Returns true or false depending on if the conditions pass or not</returns>
     private bool CheckCameraConditions()
     {
-        // Is this necessary? TODO: Find out if this is necessary
+        // This fixes a bug that occured when the player was very close to an object. Is this necessary? TODO: Find out if this is necessary
         if (Vector3.Distance(Camera.main.transform.position, conditionObject.transform.position) < 2f)
         {
             return false;
         }
 
-        if (cameraConditionType == LookType.LookingAt)
+        switch (cameraConditionType)
         {
-            if (componentParameter == CameraConditionComponentParameters.Transform)
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
-
-                // This checks that the object is in our screen
-                if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+            case LookType.LookingAt:
+                switch (componentParameter)
                 {
-                    if (ignoreObstacles)
-                    {
-                        return CheckConditionTimer();
-                    }
-                    viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
+                    case CameraConditionComponentParameters.Transform:
+                        // Get the viewport point of the object from its position
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
 
-                    if (CheckRaycast())
-                    {
-                        return CheckConditionTimer();
-                    }
+                        // This checks that the objects position is within the camera frustum
+                        if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                        {
+                            // If ignore obstacles is true we don't need to raycast to determine if there's anything blocking
+                            // the line of sight
+                            if (ignoreObstacles)
+                            {
+                                return CheckConditionTimer();
+                            }
+
+                            // Get the direction vector from the object to the camera
+                            viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
+
+                            // Check if there's any objects in the way
+                            if (CheckRaycast())
+                            {
+                                // Check if we this condition has been met for longer than the conditionTimer
+                                return CheckConditionTimer();
+                            }
+                        }
+                        break;
+
+                    case CameraConditionComponentParameters.MinimumBoxCollider:
+                        // Get the camera's view planes
+                        viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+
+                        // This test determines wether the bounds are within the planes. What happens if the bounds are larger and
+                        // encapsulate the planes? TODO: Test up close with an object.
+                        if (GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                        {
+                            if (ignoreObstacles)
+                            {
+                                return CheckConditionTimer();
+                            }
+
+                            viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
+
+                            if (CheckRaycast())
+                            {
+                                return CheckConditionTimer();
+                            }
+                        }
+                        break;
+
+                    case CameraConditionComponentParameters.FullBoxCollider:
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
+
+                        // Check that the min bound position is in the camera frustum
+                        if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                        {
+                            viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+
+                            // Check the max bound position is in the camera frustum
+                            if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+                            {
+                                if (ignoreObstacles)
+                                {
+                                    return CheckConditionTimer();
+                                }
+
+                                viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
+
+                                if (CheckRaycast())
+                                {
+                                    return CheckConditionTimer();
+                                }
+                            }
+                        }
+                        break;
+
+                    case CameraConditionComponentParameters.MeshRenderer:
+                        // This is much simpler. Uses the built in isVisible checks to determine if the mesh can be seen by any camera.
+                        if (viewConditionObjectMeshRenderer.isVisible)
+                        {
+                            return true;
+                        }
+                        break;
                 }
-            }
-            else if (componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
-            {
-                viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-                if (GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                break;
+
+            case LookType.LookingAway:
+                switch (componentParameter)
                 {
-                    if (ignoreObstacles)
-                    {
-                        return CheckConditionTimer();
-                    }
+                    case CameraConditionComponentParameters.Transform:
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
 
-                    viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
-
-                    if (CheckRaycast())
-                    {
-                        return CheckConditionTimer();
-                    }
-                }
-            }
-            else
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
-
-                // This checks that the object is in our screen
-                if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
-                {
-                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
-
-                    if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
-                    {
-                        if (ignoreObstacles)
+                        if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
                         {
                             return CheckConditionTimer();
                         }
+                        break;
 
-                        viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
-
-                        if (CheckRaycast())
+                    case CameraConditionComponentParameters.MinimumBoxCollider:
+                        viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
+                        if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
                         {
                             return CheckConditionTimer();
                         }
-                    }
+                        else
+                        {
+                            viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
+
+                            if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                            viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                            {
+                                return CheckConditionTimer();
+                            }
+                        }
+                        break;
+
+                    case CameraConditionComponentParameters.FullBoxCollider:
+                        viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+
+                        if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
+                        {
+                            viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
+
+                            if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+                                viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
+                            {
+                                return CheckConditionTimer();
+                            }
+                        }
+                        break;
+
+                    case CameraConditionComponentParameters.MeshRenderer:
+                        if (!viewConditionObjectMeshRenderer.isVisible)
+                        {
+                            return true;
+                        }
+                        break;
                 }
-            }
+                break;
         }
-        else if (cameraConditionType == LookType.LookingAway)
-        {
-            if (componentParameter == CameraConditionComponentParameters.Transform)
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
 
-                // This checks that the object is in our screen
-                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
-                {
-                    return CheckConditionTimer();
-                }
-            }
-            else if (componentParameter == CameraConditionComponentParameters.FullBoxCollider)
-            {
-                viewConditionCameraPlane = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-                if (!GeometryUtility.TestPlanesAABB(viewConditionCameraPlane, viewConditionObjectCollider.bounds))
-                {
-                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(conditionObject.transform.position);
-
-                    if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                        viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
-                    {
-                        return CheckConditionTimer();
-                    }
-                }
-            }
-            else
-            {
-                // Get the viewport point of the object
-                viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
-
-                // This checks that the object is in our screen
-                if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
-                {
-                    return CheckConditionTimer();
-                }
-                else
-                {
-                    viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.max);
-
-                    if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
-                    viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
-                    {
-                        return CheckConditionTimer();
-                    }
-                }
-            }
-        }
         return false;
     }
 
+    /// <summary>
+    /// This function gets the values set in the player pref
+    /// </summary>
     private void GetUpdatedPlayerPrefs()
     {
         if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
@@ -778,25 +955,24 @@ public class TriggerBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This function determines if the player pref conditions have been met
+    /// </summary>
+    /// <returns>Returns true or false depending on if the player pref conditions have been met.</returns>
     private bool CheckPlayerPrefConditions()
     {
+        // Get the player pref values. We need to do this regularly in case they change at runtime.
         GetUpdatedPlayerPrefs();
+
         if (playerPrefCondition != PlayerPrefCondition.None && !string.IsNullOrEmpty(playerPrefVal))
         {
             switch (playerPrefType)
             {
                 case ParameterType.String:
-                    switch (playerPrefCondition)
-                    {
-                        case PlayerPrefCondition.EqualTo:
-                            if (playerPrefVal == playerPrefString)
-                                return true;
-                            else
-                                return false;
-                        default:
-                            Debug.Log("You can only use Equal To with strings");
-                            return false;
-                    }
+                    if (playerPrefVal == playerPrefString)
+                        return true;
+                    else
+                        return false;
 
                 case ParameterType.Float:
                     switch (playerPrefCondition)
@@ -873,28 +1049,33 @@ public class TriggerBox : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// This function fires a raycast from the camera to the camera condition object to determine if there's any obstacles blocking the camera line of sight.
+    /// </summary>
+    /// <returns>Returns true or false depending if theres any obstacles in the way.</returns>
     private bool CheckRaycast()
     {
-        // This checks that there's no obstacles in the way
+        // Fire raycast from camera in the direction of the viewobject
         if (Physics.Raycast(Camera.main.transform.position, viewConditionDirection.normalized, out viewConditionRaycastHit, viewConditionDirection.magnitude))
         {
-            if (viewConditionRaycastHit.transform.position == conditionObject.transform.position)
+            // If it hit something, inspect the returned data to set if it is the object we are checking that the camera can see
+            if (viewConditionRaycastHit.transform == conditionObject.transform)
             {
-                if (viewTimer >= conditionTime)
-                {
-                    return true;
-                }
-                else
-                {
-                    viewTimer += Time.fixedDeltaTime;
-                    return false;
-                }
+                return true;
             }
+
+            // If it hit something which wasn't the correct object then something is in the way and we return false
             return false;
         }
+
+        // The raycast hit nothing at all so there's nothing in the way so return true
         return true;
     }
 
+    /// <summary>
+    /// This function checks to make sure the condition has been met for a certain amount of time.
+    /// </summary>
+    /// <returns>Returns true or false depending on if the condition has been met for a certain about of time.</returns>
     private bool CheckConditionTimer()
     {
         if (viewTimer >= conditionTime)
@@ -909,8 +1090,12 @@ public class TriggerBox : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// This function executes all the responses and only happens after all the conditions have been met
+    /// </summary>
     private void ConditionMet()
     {
+        // If debugTriggerBox is selected, write to the console saying the trigger box has successfully been triggered
         if (debugTriggerBox)
         {
             Debug.Log(gameObject.name + " has been triggered!");
@@ -931,9 +1116,11 @@ public class TriggerBox : MonoBehaviour
 
         if (playSoundEffect)
         {
+            // This will play the audio clip at the trigger boxes current position
             AudioSource.PlayClipAtPoint(playSoundEffect, transform.position, soundEffectVolume);
         }
 
+        // This will send the messages to the selected gameobjects
         if (messageMethodName != "" && messageTarget)
         {
             if (parameterValue != "")
@@ -962,22 +1149,22 @@ public class TriggerBox : MonoBehaviour
             animationTarget.GetComponent<Animation>().Stop();
         }
 
-
         if (playLegacyAnimation && animationTarget)
         {
+            // Plays an animation clip on the target animation over 0.3 seconds and fades other animations out
             animationTarget.GetComponent<Animation>().CrossFade(playLegacyAnimation.name, 0.3f, PlayMode.StopAll);
         }
 
-        if (setMecanimTrigger != "")
+        if (!string.IsNullOrEmpty(setMecanimTrigger))
         {
             animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
         }
 
         if (prefabToSpawn)
         {
+            // If a newinstancename has been set then we will re-name the instance after it has been created
             if (!string.IsNullOrEmpty(newInstanceName))
             {
-                // Is spawnrotation ever null?
                 var newobj = Instantiate(prefabToSpawn, (spawnPosition != Vector3.zero) ? spawnPosition : prefabToSpawn.transform.position, prefabToSpawn.transform.rotation);
                 newobj.name = newInstanceName;
             }
@@ -1008,7 +1195,14 @@ public class TriggerBox : MonoBehaviour
             if (!string.IsNullOrEmpty(disableGameObjectName[i]))
             {
                 GameObject gameobj = GameObject.Find(disableGameObjectName[i]);
-                gameobj.SetActive(false);
+                if (gameobj == null)
+                {
+                    Debug.Log("Unable to find and disable the gameobject with the name " + disableGameObjectName[i]);
+                }
+                else
+                {
+                    gameobj.SetActive(false);
+                }
             }
         }
 
@@ -1022,7 +1216,14 @@ public class TriggerBox : MonoBehaviour
             if (!string.IsNullOrEmpty(destroyObjectNames[i]))
             {
                 GameObject gameobj = GameObject.Find(destroyObjectNames[i]);
-                Destroy(gameobj);
+                if (gameobj == null)
+                {
+                    Debug.Log("Unable to find and destroy the gameobject with the name " + disableGameObjectName[i]);
+                }
+                else
+                {
+                    Destroy(gameobj);
+                }
             }
         }
 
@@ -1068,7 +1269,7 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// Loads the specified scene
     /// </summary>
-    /// <returns></returns>
+    /// <returns>IEnumerator to load the scene after the loadDelay</returns>
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(loadDelay);
@@ -1076,7 +1277,7 @@ public class TriggerBox : MonoBehaviour
     }
 
     /// <summary>
-    /// Draws the trigger box
+    /// Draws the trigger box in the editor
     /// </summary>
     private void OnDrawGizmos()
     {

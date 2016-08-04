@@ -710,6 +710,7 @@ MonoBehaviour:
   triggerTags:
   - Player
   debugTriggerBox: 1
+  disableStartupChecks: 0
   drawWire: 0
   triggerboxColour: {r: 1, g: 0, b: 0, a: 0.334}
   afterTrigger: 0
@@ -718,8 +719,8 @@ MonoBehaviour:
   followTransformName: 
   canWander: 0
   showCameraConditions: 1
-  cameraConditionType: 0
-  conditionObject: {fileID: 0}
+  cameraConditionType: 1
+  conditionObject: {fileID: 1000013319784124}
   componentParameter: 0
   ignoreObstacles: 1
   conditionTime: 0
@@ -754,9 +755,11 @@ MonoBehaviour:
     type: 2}
   newInstanceName: 
   spawnPosition: {x: 0, y: 0, z: 0}
-  showDestroyResponses: 0
+  showDestroyResponses: 1
   destroyGameobjects: []
-  destroyObjectNames: []
+  destroyObjectNames:
+  - CorridorStraight2(Clone)
+  - NewDoor
   showEnableResponses: 0
   enableGameObject: []
   showDisableResponses: 0
