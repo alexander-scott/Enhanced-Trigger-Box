@@ -760,6 +760,7 @@ MonoBehaviour:
   destroyObjectNames:
   - CorridorStraight2(Clone)
   - NewDoor
+  - CubeShoot(Clone)
   showEnableResponses: 0
   enableGameObject: []
   showDisableResponses: 0

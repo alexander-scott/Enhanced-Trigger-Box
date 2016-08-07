@@ -51,7 +51,7 @@ public class TriggerBox : MonoBehaviour
     /// <summary>
     /// A set of options for when the trigger box has been trigged. Nothing does nothing. Trigger box destroys trigger box. Parent destroys parent.
     /// </summary>
-    [Tooltip("This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent.")]
+    [Tooltip("This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.")]
     public AfterTriggerOptions afterTrigger;
 
     /// <summary>
@@ -487,6 +487,7 @@ public class TriggerBox : MonoBehaviour
         SetInactive,
         DestroyTriggerBox,
         DestroyParent,
+        DoNothing,
     }
 
     /// <summary>
