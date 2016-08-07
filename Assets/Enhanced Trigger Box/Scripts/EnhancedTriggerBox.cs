@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Reflection;
+using System.Linq;
 
-[Serializable]
+[Serializable, ExecuteInEditMode]
 public class EnhancedTriggerBox : MonoBehaviour
 {
     [SerializeField]
@@ -30,9 +32,9 @@ public class EnhancedTriggerBox : MonoBehaviour
 
     public Color triggerboxColour;
 
-    //public AfterTriggerOptions afterTrigger;
+    public AfterTriggerOptions afterTrigger;
 
-    //public TriggerFollow triggerFollow;
+    public TriggerFollow triggerFollow;
 
     public Transform followTransform;
 
@@ -50,11 +52,36 @@ public class EnhancedTriggerBox : MonoBehaviour
     {
         SelectACondition,
         CameraCondition,
+        PlayerPrefCondition,
     }
 
     public enum TriggerBoxResponses
     {
         SelectAResponse,
+        AnimationResponse,
+        AudioResponse,
+        CallFunctionResponse,
+        DestroyGameobjectResponse,
+        DisableGameobjectResponse,
+        EnableGameobjectResponse,
+        LoadLevelResponse,
+        PlayerPrefResponse,
+        SpawnGameobjectResponse,
+    }
+
+    public enum AfterTriggerOptions
+    {
+        SetInactive,
+        DestroyTriggerBox,
+        DestroyParent,
+        DoNothing,
+    }
+
+    public enum TriggerFollow
+    {
+        Static,
+        FollowMainCamera,
+        FollowTransform,
     }
 
     public List<EnhancedTriggerBoxComponent> listConditions
@@ -67,13 +94,45 @@ public class EnhancedTriggerBox : MonoBehaviour
         get { return responses; }
     }
 
-    public void OnEnable()
+    void FixedUpdate()
     {
+        // This if statement updates the trigger boxes position to either stay on a transform or on the main camera
+        if (triggerFollow == TriggerFollow.FollowTransform)
+        {
+            transform.position = followTransform.position;
+        }
+        else if (triggerFollow == TriggerFollow.FollowMainCamera)
+        {
+            transform.position = Camera.main.transform.position;
+        }
 
+        if (triggered)
+        {
+            foreach (var c in conditions)
+            {
+                conditionMet = c.ExecuteAction();
+
+                if (!conditionMet)
+                {
+                    break;
+                }
+            }
+
+            if (conditionMet)
+            {
+                ConditionsMet();
+            }
+        }
     }
 
     public void OnInspectorGUI()
     {
+        // TODO
+        //var types = GetClasses(typeof(EnhancedTriggerBoxComponent));
+
+        EditorGUI.indentLevel = 0;
+        EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+
         foreach (var instance in conditions)
         {
             instance.OnInspectorGUI();
@@ -81,10 +140,11 @@ public class EnhancedTriggerBox : MonoBehaviour
 
         EditorGUI.BeginChangeCheck();
 
+        EditorGUI.indentLevel = 0;
+
         if (conditions.Count > 0)
             GUILayout.Space(10.0f);
 
-        EditorGUI.indentLevel = 0;
         var conditionEnum = (TriggerBoxConditions)EditorGUILayout.EnumPopup("Add new condition:", triggerBoxConditions);
          
         if (EditorGUI.EndChangeCheck())
@@ -92,16 +152,26 @@ public class EnhancedTriggerBox : MonoBehaviour
             switch (conditionEnum)
             {
                 case TriggerBoxConditions.CameraCondition:
-                    CameraCondition newObject = ScriptableObject.CreateInstance<CameraCondition>();
-                    conditions.Add(newObject);
-                    conditionEnum = TriggerBoxConditions.SelectACondition;
+                    conditions.Add(ScriptableObject.CreateInstance<CameraCondition>());
+                    break;
+
+                case TriggerBoxConditions.PlayerPrefCondition:
+                    conditions.Add(ScriptableObject.CreateInstance<PlayerPrefCondition>());
                     break;
             }
+
+            conditionEnum = TriggerBoxConditions.SelectACondition;
         }
 
         EditorGUI.indentLevel = 0;
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
+        if (responses.Count == 0)
+        {
+            EditorGUI.indentLevel = 0;
+            EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+        }
+        
         foreach (var instance in responses)
         {
             instance.OnInspectorGUI();
@@ -120,32 +190,50 @@ public class EnhancedTriggerBox : MonoBehaviour
         {
             switch (responseEnum)
             {
-                
+                case TriggerBoxResponses.AnimationResponse:
+                    responses.Add(ScriptableObject.CreateInstance<AnimationResponse>());
+                    break;
+
+                case TriggerBoxResponses.AudioResponse:
+                    responses.Add(ScriptableObject.CreateInstance<AudioResponse>());
+                    break;
+
+                case TriggerBoxResponses.CallFunctionResponse:
+                    responses.Add(ScriptableObject.CreateInstance<CallFunctionResponse>());
+                    break;
+
+                case TriggerBoxResponses.DestroyGameobjectResponse:
+                    responses.Add(ScriptableObject.CreateInstance<DestroyGameobjectResponse>());
+                    break;
+
+                case TriggerBoxResponses.DisableGameobjectResponse:
+                    responses.Add(ScriptableObject.CreateInstance<DisableGameobjectResponse>());
+                    break;
+
+                case TriggerBoxResponses.EnableGameobjectResponse:
+                    responses.Add(ScriptableObject.CreateInstance<EnableGameobjectResponse>());
+                    break;
+
+                case TriggerBoxResponses.LoadLevelResponse:
+                    responses.Add(ScriptableObject.CreateInstance<LoadLevelResponse>());
+                    break;
+
+                case TriggerBoxResponses.PlayerPrefResponse:
+                    responses.Add(ScriptableObject.CreateInstance<PlayerPrefResponse>());
+                    break;
+
+                case TriggerBoxResponses.SpawnGameobjectResponse:
+                    responses.Add(ScriptableObject.CreateInstance<SpawnGameobjectResponse>());
+                    break;
             }
+
+            responseEnum = TriggerBoxResponses.SelectAResponse;
         }
     }
 
-    void FixedUpdate()
+    public static List<Type> GetClasses(Type baseType)
     {
-        if (triggered)
-        {
-            bool conditionsMet = false;
-
-            foreach (var c in conditions)
-            {
-                conditionsMet = c.ExecuteAction();
-
-                if (!conditionMet)
-                {
-                    break;
-                }
-            }
-
-            if (conditionMet)
-            {
-                ConditionsMet();
-            }
-        }
+        return Assembly.GetEntryAssembly().GetTypes().Where(type => type.IsSubclassOf(baseType)).ToList();
     }
 
     private void ConditionsMet()
@@ -153,6 +241,27 @@ public class EnhancedTriggerBox : MonoBehaviour
         foreach (var c in responses)
         {
             c.ExecuteAction();
+        }
+
+        // If debugTriggerBox is selected, write to the console saying the trigger box has successfully been triggered
+        if (debugTriggerBox)
+        {
+            Debug.Log(gameObject.name + " has been triggered!");
+        }
+
+        switch (afterTrigger)
+        {
+            case AfterTriggerOptions.SetInactive:
+                gameObject.SetActive(false);
+                break;
+
+            case AfterTriggerOptions.DestroyTriggerBox:
+                Destroy(gameObject);
+                break;
+
+            case AfterTriggerOptions.DestroyParent:
+                Destroy(transform.parent.gameObject);
+                break;
         }
     }
 
@@ -172,6 +281,22 @@ public class EnhancedTriggerBox : MonoBehaviour
             {
                 triggered = false;
             }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = triggerboxColour;
+
+        if (!drawWire)
+        {
+            Gizmos.DrawCube(new Vector3(GetComponent<Collider>().bounds.center.x, GetComponent<Collider>().bounds.center.y, GetComponent<Collider>().bounds.center.z),
+                            new Vector3(GetComponent<Collider>().bounds.size.x, GetComponent<Collider>().bounds.size.y, GetComponent<Collider>().bounds.size.z));
+        }
+        else
+        {
+            Gizmos.DrawWireCube(new Vector3(GetComponent<Collider>().bounds.center.x, GetComponent<Collider>().bounds.center.y, GetComponent<Collider>().bounds.center.z),
+                           new Vector3(GetComponent<Collider>().bounds.size.x, GetComponent<Collider>().bounds.size.y, GetComponent<Collider>().bounds.size.z));
         }
     }
 }

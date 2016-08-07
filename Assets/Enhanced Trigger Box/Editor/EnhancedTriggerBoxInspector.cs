@@ -31,8 +31,6 @@ public class EnhancedTriggerBoxInspector : Editor
 
         EditorGUI.BeginChangeCheck();
 
-        EditorGUILayout.Space();
-
         so.FindProperty("showBaseOptions").boolValue = RenderHeader("Base Options", so.FindProperty("showBaseOptions").boolValue, true, true);
 
         if (so.FindProperty("showBaseOptions").boolValue)
@@ -42,16 +40,16 @@ public class EnhancedTriggerBoxInspector : Editor
             RenderPropertyField(so.FindProperty("disableStartupChecks"));
             RenderPropertyField(so.FindProperty("drawWire"));
             RenderPropertyField(so.FindProperty("triggerboxColour"));
-            //RenderPropertyField(so.FindProperty("afterTrigger"));
+            RenderPropertyField(so.FindProperty("afterTrigger"));
 
-            //var triggerFollowProp = so.FindProperty("triggerFollow");
-            //RenderPropertyField(triggerFollowProp);
+            var triggerFollowProp = so.FindProperty("triggerFollow");
+            RenderPropertyField(triggerFollowProp);
 
-            //if (triggerFollowProp.enumValueIndex == 2)
-            //{
-            //    RenderPropertyField(so.FindProperty("followTransform"));
-            //    RenderPropertyField(so.FindProperty("followTransformName"));
-            //}
+            if (triggerFollowProp.enumValueIndex == 2)
+            {
+                RenderPropertyField(so.FindProperty("followTransform"));
+                RenderPropertyField(so.FindProperty("followTransformName"));
+            }
 
             RenderPropertyField(so.FindProperty("canWander"));
         }
@@ -86,7 +84,7 @@ public class EnhancedTriggerBoxInspector : Editor
         if (topspace)
             GUILayout.Space(10.0f);
 
-        EditorGUI.indentLevel = 1;
+        EditorGUI.indentLevel = 0;
         EditorGUIUtility.LookLikeInspector();
 
         return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
@@ -101,7 +99,7 @@ public class EnhancedTriggerBoxInspector : Editor
 
         GUILayout.BeginHorizontal();
 
-        EditorGUI.indentLevel = 2;
+        EditorGUI.indentLevel = 1;
 
         if (sp.hasChildren)
         {
@@ -114,7 +112,7 @@ public class EnhancedTriggerBoxInspector : Editor
                 EditorGUI.indentLevel = sp.depth;
                 bool child = false;
 
-                EditorGUI.indentLevel = 2;
+                EditorGUI.indentLevel = 1;
 
                 if (sp.depth == 0)
                 {
