@@ -30,21 +30,16 @@ public class PlayerPrefResponse : EnhancedTriggerBoxComponent
         String,
     }
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        setPlayerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
+            "This is the key (ID) of the player pref which will have its value set."), setPlayerPrefKey);
 
-        if (hideShowSection)
-        {
-            setPlayerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
-                "This is the key (ID) of the player pref which will have its value set."), setPlayerPrefKey);
+        setPlayerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
+               "This is the type of data stored within the player pref. Options are int, float and string."), setPlayerPrefType);
 
-            setPlayerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
-                   "This is the type of data stored within the player pref. Options are int, float and string."), setPlayerPrefType);
-
-            setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
-                "This is the value that will be stored in the player pref."), setPlayerPrefVal);
-        }
+        setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
+            "This is the value that will be stored in the player pref."), setPlayerPrefVal);
     }
 
     public override bool ExecuteAction()

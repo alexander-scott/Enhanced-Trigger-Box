@@ -11,15 +11,10 @@ public class LoadLevelResponse : EnhancedTriggerBoxComponent
     /// </summary>
     public string loadLevelName;
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
-
-        if (hideShowSection)
-        {
-            loadLevelName = EditorGUILayout.TextField(new GUIContent("Scene Name",
-                "This is the name of the scene you want to be loaded."), loadLevelName);
-        }
+        loadLevelName = EditorGUILayout.TextField(new GUIContent("Scene Name",
+            "This is the name of the scene you want to be loaded."), loadLevelName);
     }
 
     public override bool ExecuteAction()

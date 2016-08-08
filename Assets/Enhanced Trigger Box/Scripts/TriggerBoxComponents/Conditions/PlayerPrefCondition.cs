@@ -74,35 +74,29 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
         LessThan,
     }
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        playerPrefCondition = (PrefCondition)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+            " The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than"), playerPrefCondition);
 
-        if (hideShowSection)
+        playerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
+            "The key (ID) of the player pref that will be compared against the above value."), playerPrefKey);
+
+        playerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
+               "This is the type of data stored within the player pref. Options are int, float and string."), playerPrefType);
+
+        playerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
+            "This is the value that will be stored in the player pref."), playerPrefVal);
+
+        switch (playerPrefType)
         {
-            playerPrefCondition = (PrefCondition)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
-                " The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than"), playerPrefCondition);
+            case ParameterType.Float:
+                float.TryParse(playerPrefVal, out playerPrefValFloat);
+                break;
 
-            playerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
-                "The key (ID) of the player pref that will be compared against the above value."), playerPrefKey);
-
-            playerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
-                   "This is the type of data stored within the player pref. Options are int, float and string."), playerPrefType);
-
-            playerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
-                "This is the value that will be stored in the player pref."), playerPrefVal);
-
-            switch (playerPrefType)
-            {
-                case ParameterType.Float:
-                    float.TryParse(playerPrefVal, out playerPrefValFloat);
-                    break;
-
-                case ParameterType.Int:
-                    int.TryParse(playerPrefVal, out playerPrefValInt);
-                    break;
-            }
-
+            case ParameterType.Int:
+                int.TryParse(playerPrefVal, out playerPrefValInt);
+                break;
         }
     }
 

@@ -20,22 +20,17 @@ public class SpawnGameobjectResponse : EnhancedTriggerBoxComponent
     /// </summary>
     public Transform customPositionRotation;
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        prefabToSpawn = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Prefab to spawn",
+            "This is the prefab which will be instanstiated (spawned)."), prefabToSpawn, typeof(GameObject), true);
 
-        if (hideShowSection)
-        {
-            prefabToSpawn = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Prefab to spawn",
-                "This is the prefab which will be instanstiated (spawned)."), prefabToSpawn, typeof(GameObject), true);
+        newInstanceName = EditorGUILayout.TextField(new GUIContent("New instance name",
+            "This field is used to set the name of the newly instantiated object. If left blank the name will remain as the prefab's saved name."), newInstanceName);
 
-            newInstanceName = EditorGUILayout.TextField(new GUIContent("New instance name",
-                "This field is used to set the name of the newly instantiated object. If left blank the name will remain as the prefab's saved name."), newInstanceName);
-
-            customPositionRotation = (Transform)EditorGUILayout.ObjectField(new GUIContent("Custom Position / Rotation",
-                "This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes."),
-                customPositionRotation, typeof(Transform), true);
-        }
+        customPositionRotation = (Transform)EditorGUILayout.ObjectField(new GUIContent("Custom Position / Rotation",
+            "This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes."),
+            customPositionRotation, typeof(Transform), true);
     }
 
     public override bool ExecuteAction()

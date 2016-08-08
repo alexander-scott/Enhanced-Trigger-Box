@@ -10,15 +10,10 @@ public class EnableGameobjectResponse : EnhancedTriggerBoxComponent
     /// </summary>
     public GameObject enableGameObject;
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
-
-        if (hideShowSection)
-        {
-            enableGameObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Enable GameObject",
-                 "The gameobject that will be set to active."), enableGameObject, typeof(GameObject), true);
-        }
+        enableGameObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Enable GameObject",
+             "The gameobject that will be set to active."), enableGameObject, typeof(GameObject), true);
     }
 
     public override bool ExecuteAction()

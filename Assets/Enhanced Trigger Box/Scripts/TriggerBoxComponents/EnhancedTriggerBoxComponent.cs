@@ -10,14 +10,44 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
     [SerializeField]
     protected bool hideShowSection = true;
 
-    public virtual void OnInspectorGUI()
+    [SerializeField]
+    public bool deleted = false;
+
+    [SerializeField]
+    public bool showWarnings = true;
+
+    public void OnInspectorGUI()
     {
+        GUILayout.BeginHorizontal();
+
+        // Draw the foldout header
         hideShowSection = RenderHeader(AddSpacesToSentence(ToString().Replace("(","").Replace(")",""), true), hideShowSection, true);
 
+        // Draw the delete button
+        if (GUILayout.Button(new GUIContent("X","Remove component"), GUILayout.Width(25)))
+        {
+            deleted = true;
+        }
+
+        GUILayout.EndHorizontal();
+
         EditorGUI.indentLevel = 1;
+
+        if (hideShowSection)
+        {
+            DrawInspectorGUI();
+        }
     }
 
-    public virtual bool ExecuteAction() { return false; }
+    public virtual void DrawInspectorGUI()
+    {
+
+    }
+
+    public virtual bool ExecuteAction()
+    {
+        return false;
+    }
 
     protected bool RenderHeader(string s, bool optionRef, bool bold = true, bool topspace = false)
     {
@@ -39,6 +69,12 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
     {
         EditorGUI.indentLevel = 0;
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+    }
+
+    protected void ShowErrorMessage(string message)
+    {
+        if (showWarnings)
+            EditorGUILayout.HelpBox(message, MessageType.Warning);
     }
 
     private string AddSpacesToSentence(string text, bool preserveAcronyms)

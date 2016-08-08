@@ -35,24 +35,19 @@ public class CallFunctionResponse : EnhancedTriggerBoxComponent
         String,
     }
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        messageTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Message Target",
+                 "This is the gameobject on which the below function is called on."), messageTarget, typeof(GameObject), true);
 
-        if (hideShowSection)
-        {
-            messageTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Message Target",
-                     "This is the gameobject on which the below function is called on."), messageTarget, typeof(GameObject), true);
+        messageFunctionName = EditorGUILayout.TextField(new GUIContent("Message Function Name",
+            "This is the function which is called on the above gameobject."), messageFunctionName);
 
-            messageFunctionName = EditorGUILayout.TextField(new GUIContent("Message Function Name",
-                "This is the function which is called on the above gameobject."), messageFunctionName);
+        parameterType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Message Type",
+               "This is the type of parameter that will be sent to the function. Options are int, float and string."), parameterType);
 
-            parameterType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Message Type",
-                   "This is the type of parameter that will be sent to the function. Options are int, float and string."), parameterType);
-
-            parameterValue = EditorGUILayout.TextField(new GUIContent("Message Value",
-                "This is the value of the parameter that will be sent to the function."), parameterValue);
-        }
+        parameterValue = EditorGUILayout.TextField(new GUIContent("Message Value",
+            "This is the value of the parameter that will be sent to the function."), parameterValue);
     }
 
     public override bool ExecuteAction()

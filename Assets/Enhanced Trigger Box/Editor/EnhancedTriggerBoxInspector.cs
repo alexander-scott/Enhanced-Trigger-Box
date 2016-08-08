@@ -37,7 +37,7 @@ public class EnhancedTriggerBoxInspector : Editor
         {
             RenderPropertyField(so.FindProperty("triggerTags"));
             RenderPropertyField(so.FindProperty("debugTriggerBox"));
-            RenderPropertyField(so.FindProperty("disableStartupChecks"));
+            RenderPropertyField(so.FindProperty("hideWarnings"));
             RenderPropertyField(so.FindProperty("drawWire"));
             RenderPropertyField(so.FindProperty("triggerboxColour"));
             RenderPropertyField(so.FindProperty("afterTrigger"));
@@ -62,12 +62,18 @@ public class EnhancedTriggerBoxInspector : Editor
 
             foreach (EnhancedTriggerBoxComponent o in theObject.listConditions)
             {
-                EditorUtility.SetDirty(o);
+                if (o)
+                {
+                    EditorUtility.SetDirty(o);
+                }
             }
 
             foreach (EnhancedTriggerBoxComponent o in theObject.listResponses)
             {
-                EditorUtility.SetDirty(o);
+                if (o)
+                {
+                    EditorUtility.SetDirty(o);
+                }
             }
         }
 

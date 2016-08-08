@@ -15,18 +15,13 @@ public class DisableGameobjectResponse : EnhancedTriggerBoxComponent
     /// </summary>
     public string disableGameObjectName;
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        disableGameObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Disable GameObject",
+             "The gameobject that will be set to inactive."), disableGameObject, typeof(GameObject), true);
 
-        if (hideShowSection)
-        {
-            disableGameObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Disable GameObject",
-                 "The gameobject that will be set to inactive."), disableGameObject, typeof(GameObject), true);
-
-            disableGameObjectName = EditorGUILayout.TextField(new GUIContent("Disable Object By Name",
-               "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and set to inactive."), disableGameObjectName);
-        }
+        disableGameObjectName = EditorGUILayout.TextField(new GUIContent("Disable Object By Name",
+           "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and set to inactive."), disableGameObjectName);
     }
 
     public override bool ExecuteAction()

@@ -25,25 +25,20 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
     /// </summary>
     public AnimationClip playLegacyAnimation;
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        animationTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Animation Target",
+            "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
 
-        if (hideShowSection)
-        {
-            animationTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Animation Target", 
-                "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
+        setMecanimTrigger = EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
+            "The name of the trigger in the animator that you want to trigger."), setMecanimTrigger);
 
-            setMecanimTrigger = EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
-                "The name of the trigger in the animator that you want to trigger."), setMecanimTrigger);
+        stopAnim = EditorGUILayout.Toggle(new GUIContent("Stop Animation",
+            "Stops the current animation on the animation target."), stopAnim);
 
-            stopAnim = EditorGUILayout.Toggle(new GUIContent("Stop Animation", 
-                "Stops the current animation on the animation target."), stopAnim);
-
-            playLegacyAnimation = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
-                "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."), 
-                playLegacyAnimation, typeof(AnimationClip), true);
-        }
+        playLegacyAnimation = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
+            "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."),
+            playLegacyAnimation, typeof(AnimationClip), true);
     }
 
     public override bool ExecuteAction()

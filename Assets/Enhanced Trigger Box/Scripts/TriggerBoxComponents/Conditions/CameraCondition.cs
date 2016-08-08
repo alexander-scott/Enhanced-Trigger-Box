@@ -6,8 +6,6 @@ using UnityEditor;
 [Serializable]
 public class CameraCondition : EnhancedTriggerBoxComponent
 {
-    public bool showCameraConditions = false;
-
     /// <summary>
     /// The type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum.
     /// </summary>
@@ -89,31 +87,65 @@ public class CameraCondition : EnhancedTriggerBoxComponent
         MeshRenderer,
     }
 
-    public override void OnInspectorGUI()
+    public override void DrawInspectorGUI()
     {
-        base.OnInspectorGUI();
+        cameraConditionType = (LookType)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+            "The type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum."), cameraConditionType);
 
-        if (hideShowSection)
+        if (cameraConditionType != LookType.None)
         {
-            cameraConditionType = (LookType)EditorGUILayout.EnumPopup(new GUIContent("Camera Condition Type",
-                "The type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum."), cameraConditionType);
+            conditionObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Condition Object",
+                "This is the object that the condition is based upon."), conditionObject, typeof(GameObject), true);
 
-            if (cameraConditionType != LookType.None)
+            componentParameter = (CameraConditionComponentParameters)EditorGUILayout.EnumPopup(new GUIContent("Component Parameter",
+                "The type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider), full box collider (the entire box collider) or mesh renderer (any part of a mesh). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met."), componentParameter);
+
+            if (cameraConditionType == LookType.LookingAt)
             {
-                conditionObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Condition Object",
-                    "This is the object that the condition is based upon."), conditionObject, typeof(GameObject), true);
+                ignoreObstacles = EditorGUILayout.Toggle(new GUIContent("Ignore Obstacles",
+                    "If this is true, when checking if the user is looking at an object no raycast checks will be performed to check if there is something preventing the line of sight. This means that as long as the objects position is within the camera frustum the condition will pass."), ignoreObstacles);
+            }
 
-                componentParameter = (CameraConditionComponentParameters)EditorGUILayout.EnumPopup(new GUIContent("Component Parameter",
-                    "The type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider), full box collider (the entire box collider) or mesh renderer (any part of a mesh). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met."), componentParameter);
+            conditionTime = EditorGUILayout.FloatField(new GUIContent("Condition Time",
+                "This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass."), conditionTime);
+        }
 
-                if (cameraConditionType == LookType.LookingAt)
+        Validation();
+    }
+
+    public void Validation()
+    {
+        // If there's a camera condition
+        if (cameraConditionType != LookType.None)
+        {
+            // Check if the user specified a gameobject to focus on
+            if (conditionObject == null)
+            {
+                ShowErrorMessage("You have selected the " + ((cameraConditionType == LookType.LookingAt) ? "Looking At" : "Looking Away") + " camera condition but have not specified a gameobject reference!");
+            }
+            else
+            {
+                // If the user has selected full box collider check the object has a box collider
+                if (componentParameter == CameraConditionComponentParameters.FullBoxCollider || componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
                 {
-                    ignoreObstacles = EditorGUILayout.Toggle(new GUIContent("Ignore Obstacles",
-                        "If this is true, when checking if the user is looking at an object no raycast checks will be performed to check if there is something preventing the line of sight. This means that as long as the objects position is within the camera frustum the condition will pass."), ignoreObstacles);
+                    if (conditionObject.GetComponent<BoxCollider>() == null)
+                    {
+                        ShowErrorMessage("You have selected the Component Parameter for the camera condition to be " + ((componentParameter == CameraConditionComponentParameters.FullBoxCollider) ? "Full Box Collider" : "Minimum Box Collider") + " but the object doesn't have a Box Collider component!");
+                    }
+                } // Else if the user selected mesh render check the object has mesh renderer
+                else if (componentParameter == CameraConditionComponentParameters.MeshRenderer)
+                {
+                    if (conditionObject.GetComponent<MeshRenderer>() == null)
+                    {
+                        ShowErrorMessage("You have selected the Component Parameter for the camera condition to be Mesh Renderer but the object doesn't have a Mesh Renderer component!");
+                    }
                 }
+            }
 
-                conditionTime = EditorGUILayout.FloatField(new GUIContent("Condition Time",
-                    "This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass."), conditionTime);
+            // Check that condition time is above 0
+            if (conditionTime < 0f)
+            {
+                ShowErrorMessage("You have set the camera condition timer to be less than 0 which isn't possible!");
             }
         }
     }
