@@ -31,6 +31,15 @@ public class SpawnGameobjectResponse : EnhancedTriggerBoxComponent
         customPositionRotation = (Transform)EditorGUILayout.ObjectField(new GUIContent("Custom Position / Rotation",
             "This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes."),
             customPositionRotation, typeof(Transform), true);
+
+        //if (prefabToSpawn)
+        //{
+        //    Handles.Label((customPositionRotation == null) ? prefabToSpawn.transform.position : customPositionRotation.position, 
+        //        "Spawn " + (string.IsNullOrEmpty(newInstanceName) ? prefabToSpawn.name : newInstanceName));
+
+        //    Handles.PositionHandle((customPositionRotation == null) ? prefabToSpawn.transform.position : customPositionRotation.position,
+        //        (customPositionRotation == null) ? prefabToSpawn.transform.rotation : customPositionRotation.rotation);
+        //}
     }
 
     public override bool ExecuteAction()
@@ -66,18 +75,4 @@ public class SpawnGameobjectResponse : EnhancedTriggerBoxComponent
 
         return true;
     }
-
-    //public void OnSceneGUI()
-    //{
-    //    var script = (EnhancedTriggerBox)target;
-    //    if (script.prefabToSpawn)
-    //    {
-    //        Handles.Label(script.spawnPosition, "Spawn " + script.prefabToSpawn.name);
-
-    //        script.spawnPosition = Handles.PositionHandle(script.spawnPosition, Quaternion.identity);
-    //    }
-
-    //    if (GUI.changed)
-    //        EditorUtility.SetDirty(target);
-    //}
 }

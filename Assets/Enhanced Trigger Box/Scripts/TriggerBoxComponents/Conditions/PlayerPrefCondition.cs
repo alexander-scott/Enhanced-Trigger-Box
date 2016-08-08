@@ -100,6 +100,22 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
         }
     }
 
+    public override void Validation()
+    {
+        // If there is a player pref condition check that there is a value for the condition
+        if (playerPrefCondition != PrefCondition.None)
+        {
+            if (string.IsNullOrEmpty(playerPrefVal))
+            {
+                ShowErrorMessage("You have set up a player pref condition but haven't entered a value to be compared against the player pref!");
+            }
+            else if (string.IsNullOrEmpty(playerPrefKey))
+            {
+                ShowErrorMessage("You have set up a player pref condition but haven't entered a player pref key!");
+            }
+        }
+    }
+
     public override bool ExecuteAction()
     {
         // Get the player pref values. We need to do this regularly in case they change at runtime.

@@ -37,6 +37,11 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
         {
             DrawInspectorGUI();
         }
+
+        if (showWarnings)
+        {
+            Validation();
+        }
     }
 
     public virtual void DrawInspectorGUI()
@@ -47,6 +52,11 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
     public virtual bool ExecuteAction()
     {
         return false;
+    }
+
+    public virtual void Validation()
+    {
+
     }
 
     protected bool RenderHeader(string s, bool optionRef, bool bold = true, bool topspace = false)
@@ -73,8 +83,7 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
 
     protected void ShowErrorMessage(string message)
     {
-        if (showWarnings)
-            EditorGUILayout.HelpBox(message, MessageType.Warning);
+        EditorGUILayout.HelpBox(message, MessageType.Warning);
     }
 
     private string AddSpacesToSentence(string text, bool preserveAcronyms)

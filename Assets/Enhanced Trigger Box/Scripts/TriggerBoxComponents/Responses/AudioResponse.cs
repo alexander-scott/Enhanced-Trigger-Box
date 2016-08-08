@@ -56,6 +56,18 @@ public class AudioResponse : EnhancedTriggerBoxComponent
             "The position the sound effect will be played at."), soundEffectPosition, typeof(Transform), true);
     }
 
+    public override void Validation()
+    {
+        // If we're playing a sound effect a position must be specified
+        if (playSoundEffect)
+        {
+            if (!soundEffectPosition)
+            {
+                ShowErrorMessage("You have chosen to play a sound effect but haven't set a position for it to play at!");
+            }
+        }
+    }
+
     public override bool ExecuteAction()
     {
         if (muteAllAudio)

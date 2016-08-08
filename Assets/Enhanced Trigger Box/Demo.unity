@@ -181,6 +181,10 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: -26.4
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 95bbe2885334e3c46b79c3419edb469c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 95bbe2885334e3c46b79c3419edb469c, type: 2}
   m_IsPrefabParent: 0
@@ -329,8 +333,7 @@ MonoBehaviour:
   responses:
   - {fileID: 1809627799}
   showBaseOptions: 1
-  triggerTags:
-  - Player
+  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
   drawWire: 0

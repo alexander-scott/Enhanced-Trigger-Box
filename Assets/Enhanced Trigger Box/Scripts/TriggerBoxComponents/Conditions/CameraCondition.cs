@@ -109,11 +109,9 @@ public class CameraCondition : EnhancedTriggerBoxComponent
             conditionTime = EditorGUILayout.FloatField(new GUIContent("Condition Time",
                 "This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass."), conditionTime);
         }
-
-        Validation();
     }
 
-    public void Validation()
+    public override void Validation()
     {
         // If there's a camera condition
         if (cameraConditionType != LookType.None)

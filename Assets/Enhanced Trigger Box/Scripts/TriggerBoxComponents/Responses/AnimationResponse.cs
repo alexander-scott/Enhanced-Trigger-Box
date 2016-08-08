@@ -41,6 +41,36 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
             playLegacyAnimation, typeof(AnimationClip), true);
     }
 
+    public override void Validation()
+    {
+        // If there is a mecanim trigger check there is a target for it
+        if (!string.IsNullOrEmpty((setMecanimTrigger)))
+        {
+            if (animationTarget == null)
+            {
+                ShowErrorMessage("You have set a Mecanim Trigger as an Animation Response but haven't set an Animation Target to apply it to!");
+            }
+        }
+
+        // If stop anim is set check there is a target for it
+        if (stopAnim)
+        {
+            if (animationTarget == null)
+            {
+                ShowErrorMessage("You have set Stop Animation as an Animation Response but haven't set an Animation Target to apply it to!");
+            }
+        }
+
+        // If legacy animat is set to play check there is a target for it
+        if (playLegacyAnimation != null)
+        {
+            if (animationTarget == null)
+            {
+                ShowErrorMessage("You have chosen to play a legacy animation as an Animation Response but haven't set an Animation Target to apply it to!");
+            }
+        }
+    }
+
     public override bool ExecuteAction()
     {
         if (stopAnim && animationTarget)

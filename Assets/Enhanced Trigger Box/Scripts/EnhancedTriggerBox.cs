@@ -158,7 +158,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     /// A list of tags belonging to gameobjects which are able to trigger the trigger box
     /// </summary>
     [Tooltip("Only tags listed here are able to trigger the trigger box. By default the Player tag is used here.")]
-    public List<string> triggerTags;
+    public string triggerTags;
 
     /// <summary>
     /// If true the application will write to the console a message with the name of the trigger that was triggered
@@ -440,7 +440,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     /// <param name="other">The collider that this object has collided with</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (triggerTags.Count >= 0 && (triggerTags.Contains(other.gameObject.tag)))
+        if ((triggerTags.Split(',').Contains(other.gameObject.tag)))
         {
             triggered = true;
         }
@@ -454,7 +454,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     {
         if (!canWander)
         {
-            if (triggerTags.Count >= 0 && (triggerTags.Contains(other.gameObject.tag)))
+            if ((triggerTags.Split(',').Contains(other.gameObject.tag)))
             {
                 triggered = false;
             }

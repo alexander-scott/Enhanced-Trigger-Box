@@ -42,6 +42,19 @@ public class PlayerPrefResponse : EnhancedTriggerBoxComponent
             "This is the value that will be stored in the player pref."), setPlayerPrefVal);
     }
 
+    public override void Validation()
+    {
+        // Check that the correct combination of fields have been filled in
+        if (string.IsNullOrEmpty(setPlayerPrefKey) && !string.IsNullOrEmpty(setPlayerPrefVal))
+        {
+            ShowErrorMessage("You have entered a value to save to a player pref but you haven't specified which player pref to save it to!");
+        }
+        else if (!string.IsNullOrEmpty(setPlayerPrefKey) && string.IsNullOrEmpty(setPlayerPrefVal))
+        {
+            ShowErrorMessage("You have set the player pref key but the value to save in it is empty!");
+        }
+    }
+
     public override bool ExecuteAction()
     {
         if (!string.IsNullOrEmpty(setPlayerPrefKey))
