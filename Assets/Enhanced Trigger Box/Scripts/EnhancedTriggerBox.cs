@@ -201,7 +201,7 @@ public class EnhancedTriggerBox : MonoBehaviour
                     if (conditions[i].deleted)
                     {
                         // If the condition has been deleted we will destroy it
-                        DestroyImmediate(conditions[i]);
+                        Undo.DestroyObjectImmediate(conditions[i]);
                     }
                     else
                     {
@@ -229,8 +229,13 @@ public class EnhancedTriggerBox : MonoBehaviour
         // If the selected drop down list value gets changed we need to create the selected condition
         if (EditorGUI.EndChangeCheck())
         {
-            var obj = gameObject.AddComponent(Type.GetType(conditionEnum.ToString())) as EnhancedTriggerBoxComponent;
+            // Determine the type of the component that needs to be added
+            Type conType = Type.GetType(conditionEnum.ToString());
+
+            // Create a new instance of this component and register an undo operation so that the user can undo adding this component
+            var obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
             obj.hideFlags = HideFlags.HideInInspector;
+
             conditions.Add(obj);
 
             // Reset the drop down list
@@ -248,7 +253,8 @@ public class EnhancedTriggerBox : MonoBehaviour
                 {
                     if (responses[i].deleted)
                     {
-                        DestroyImmediate(responses[i]);
+                        Undo.DestroyObjectImmediate(responses[i]);
+                        responses.RemoveAll(r => r == null);
                     }
                     else
                     {
@@ -261,8 +267,6 @@ public class EnhancedTriggerBox : MonoBehaviour
                 }
             }
 
-            responses.RemoveAll(r => r == null);
-
             GUILayout.Space(10.0f);
         }
 
@@ -274,16 +278,25 @@ public class EnhancedTriggerBox : MonoBehaviour
 
         if (EditorGUI.EndChangeCheck())
         {
-            var obj = gameObject.AddComponent(Type.GetType(responseEnum.ToString())) as EnhancedTriggerBoxComponent;
+            // Determine the type of the component that needs to be added
+            Type conType = Type.GetType(responseEnum.ToString());
+
+            // Create a new instance of this component and register an undo operation so that the user can undo adding this component
+            var obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
             obj.hideFlags = HideFlags.HideInInspector;
+
             responses.Add(obj);
 
             responseEnum = TriggerBoxResponses.SelectAResponse;
         }
     }
 
+    /// <summary>
+    /// Called when the game is first started
+    /// </summary>
     void Start()
     {
+        // If a name of an object is entered then we will find that object and map it to followTransform
         if (!string.IsNullOrEmpty(followTransformName))
         {
             try
@@ -297,6 +310,7 @@ public class EnhancedTriggerBox : MonoBehaviour
             }
         }
 
+        // Do all the OnAwake functions for conditions/responses
         for (int i = 0; i < conditions.Count; i++)
         {
             conditions[i].OnAwake();
@@ -410,7 +424,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     }
 
     /// <summary>
-    /// Draws the trigger box in the editor
+    /// Draws a visual representation of the trigger box in the editor
     /// </summary>
     private void OnDrawGizmos()
     {

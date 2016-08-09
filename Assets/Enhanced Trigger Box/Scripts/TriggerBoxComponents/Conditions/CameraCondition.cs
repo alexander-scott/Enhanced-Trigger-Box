@@ -147,11 +147,13 @@ public class CameraCondition : EnhancedTriggerBoxComponent
         }
     }
 
+    /// <summary>
+    /// Cache the collider or mesh renderer so we do not do GetComponent every frame
+    /// </summary>
     public override void OnAwake()
     {
         if (conditionObject)
         {
-            // Cache the collider
             if (componentParameter == CameraConditionComponentParameters.FullBoxCollider || componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
             {
                 if (conditionObject.GetComponent<BoxCollider>() != null)
