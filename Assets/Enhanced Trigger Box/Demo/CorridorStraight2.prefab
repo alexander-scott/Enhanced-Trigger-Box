@@ -93,25 +93,13 @@ GameObject:
   m_Component:
   - 4: {fileID: 441140}
   - 65: {fileID: 6543078}
-  - 82: {fileID: 8282430}
-  - 114: {fileID: 11456486}
+  - 114: {fileID: 114000010431513068}
+  - 114: {fileID: 114000013400408064}
+  - 114: {fileID: 114000013620131770}
+  - 114: {fileID: 114000012686508358}
+  - 114: {fileID: 114000010228043394}
   m_Layer: 0
-  m_Name: Trigger Box Anim
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &168978
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 485850}
-  m_Layer: 0
-  m_Name: Trigger Box Cube Target
+  m_Name: Trigger Box 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,24 +160,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &193886
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 443704}
-  - 65: {fileID: 6577224}
-  - 82: {fileID: 8228510}
-  - 114: {fileID: 11477588}
-  m_Layer: 0
-  m_Name: Trigger Box Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &401174
 Transform:
   m_ObjectHideFlags: 1
@@ -207,7 +177,6 @@ Transform:
   - {fileID: 483618}
   - {fileID: 402638}
   - {fileID: 441140}
-  - {fileID: 443704}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &402638
@@ -275,20 +244,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 401174}
   m_RootOrder: 5
---- !u!4 &443704
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193886}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -52.77999, y: 2.15, z: 40.529995}
-  m_LocalScale: {x: 1.4479493, y: 3.4813817, z: 7.3188267}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 485850}
-  m_Father: {fileID: 401174}
-  m_RootOrder: 6
 --- !u!4 &445464
 Transform:
   m_ObjectHideFlags: 1
@@ -317,19 +272,6 @@ Transform:
   - {fileID: 404278}
   m_Father: {fileID: 401174}
   m_RootOrder: 3
---- !u!4 &485850
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168978}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 1.808}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 443704}
-  m_RootOrder: 0
 --- !u!4 &492936
 Transform:
   m_ObjectHideFlags: 1
@@ -643,166 +585,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &6577224
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193886}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.31, y: 1, z: 2.23}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!82 &8228510
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193886}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
---- !u!82 &8282430
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162534}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
 --- !u!95 &9570560
 Animator:
   serializedVersion: 3
@@ -820,145 +602,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11456486
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d66628cfae09554483adedc6b29f7e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showBaseOptions: 1
-  triggerTags:
-  - Player
-  debugTriggerBox: 0
-  drawWire: 0
-  triggerboxColour: {r: 1, g: 0, b: 0, a: 0.334}
-  afterTrigger: 0
-  triggerFollow: 0
-  followTransform: {fileID: 0}
-  followTransformName: 
-  canWander: 0
-  showCameraConditions: 0
-  cameraConditionType: 0
-  conditionObject: {fileID: 0}
-  componentParameter: 0
-  ignoreObstacles: 0
-  conditionTime: 0
-  showPPrefConditions: 0
-  playerPrefCondition: 0
-  playerPrefVal: 
-  playerPrefKey: 
-  playerPrefType: 0
-  showAnimResponses: 0
-  animationTarget: {fileID: 180686}
-  setMecanimTrigger: SlideDown
-  stopAnim: 0
-  playLegacyAnimation: {fileID: 0}
-  showAudioResponses: 0
-  muteAllAudio: 0
-  playMusic: {fileID: 0}
-  loopMusic: 0
-  musicVolume: 1
-  playSoundEffect: {fileID: 0}
-  soundEffectVolume: 1
-  showCallFResponses: 0
-  messageTarget: {fileID: 0}
-  messageMethodName: 
-  parameterType: 0
-  parameterValue: 
-  showPPrefResponses: 1
-  setPlayerPrefKey: DemoProgression
-  setPlayerPrefType: 0
-  setPlayerPrefVal: 3
-  showSpawnResponses: 0
-  prefabToSpawn: {fileID: 0}
-  newInstanceName: 
-  spawnPosition: {x: 0, y: 0, z: 0}
-  showDestroyResponses: 0
-  destroyGameobjects: []
-  destroyObjectNames: []
-  showEnableResponses: 0
-  enableGameObject: []
-  showDisableResponses: 0
-  disableGameObject: []
-  disableGameObjectName: []
-  showLevelResponses: 0
-  loadLevelName: 
-  loadDelay: 0
---- !u!114 &11477588
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d66628cfae09554483adedc6b29f7e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showBaseOptions: 1
-  triggerTags:
-  - Player
-  debugTriggerBox: 1
-  drawWire: 0
-  triggerboxColour: {r: 1, g: 0, b: 0, a: 0.334}
-  afterTrigger: 0
-  triggerFollow: 0
-  followTransform: {fileID: 0}
-  followTransformName: 
-  canWander: 0
-  showCameraConditions: 1
-  cameraConditionType: 0
-  conditionObject: {fileID: 193886}
-  componentParameter: 0
-  ignoreObstacles: 0
-  conditionTime: 0
-  showPPrefConditions: 0
-  playerPrefCondition: 0
-  playerPrefVal: 
-  playerPrefKey: 
-  playerPrefType: 0
-  showAnimResponses: 0
-  animationTarget: {fileID: 0}
-  setMecanimTrigger: 
-  stopAnim: 0
-  playLegacyAnimation: {fileID: 0}
-  showAudioResponses: 0
-  muteAllAudio: 0
-  playMusic: {fileID: 0}
-  loopMusic: 0
-  musicVolume: 1
-  playSoundEffect: {fileID: 0}
-  soundEffectVolume: 1
-  showCallFResponses: 0
-  messageTarget: {fileID: 0}
-  messageMethodName: 
-  parameterType: 0
-  parameterValue: 
-  showPPrefResponses: 1
-  setPlayerPrefKey: DemoProgression
-  setPlayerPrefType: 0
-  setPlayerPrefVal: 4
-  showSpawnResponses: 1
-  prefabToSpawn: {fileID: 198598, guid: d80595fa1b463ab449b3143cd896ab9d, type: 2}
-  newInstanceName: 
-  spawnPosition: {x: 0, y: 0, z: 0}
-  showDestroyResponses: 0
-  destroyGameobjects: []
-  destroyObjectNames:
-  - OpenAreaWithDoor
-  showEnableResponses: 0
-  enableGameObject: []
-  showDisableResponses: 0
-  disableGameObject: []
-  disableGameObjectName: []
-  showLevelResponses: 0
-  loadLevelName: 
-  loadDelay: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -970,3 +613,99 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 113420}
   m_IsPrefabParent: 1
+--- !u!114 &114000010228043394
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a413dc2ecc3a741881907878de94d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  destroyGameObject: {fileID: 0}
+  destroyGameObjectName: OpenAreaWithDoor
+--- !u!114 &114000010431513068
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a62fb07d8923234c83625cb5bdebfd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conditions: []
+  responses:
+  - {fileID: 114000013400408064}
+  - {fileID: 114000013620131770}
+  - {fileID: 114000012686508358}
+  - {fileID: 114000010228043394}
+  showBaseOptions: 1
+  triggerTags: Player
+  debugTriggerBox: 1
+  hideWarnings: 0
+  drawWire: 0
+  triggerboxColour: {r: 0.7794118, g: 0.17192905, b: 0.17192905, a: 0.678}
+  afterTrigger: 0
+  triggerFollow: 0
+  followTransform: {fileID: 0}
+  followTransformName: 
+  canWander: 0
+--- !u!114 &114000012686508358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959fa7d3f047b8c479df6c53c49f242f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  prefabToSpawn: {fileID: 198598, guid: d80595fa1b463ab449b3143cd896ab9d, type: 2}
+  newInstanceName: 
+  customPositionRotation: {fileID: 0}
+--- !u!114 &114000013400408064
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7293fe2c2c0bd849a75e98471c4f8b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  animationTarget: {fileID: 180686}
+  setMecanimTrigger: SlideDown
+  stopAnim: 0
+  playLegacyAnimation: {fileID: 0}
+--- !u!114 &114000013620131770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bd875188aa7484ab2319e1ce5a9608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  setPlayerPrefKey: DemoProgression
+  setPlayerPrefType: 0
+  setPlayerPrefVal: 4

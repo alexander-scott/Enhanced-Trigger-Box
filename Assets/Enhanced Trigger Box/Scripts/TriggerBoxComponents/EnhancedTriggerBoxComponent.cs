@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Text;
 
-[Serializable]
-public class EnhancedTriggerBoxComponent : ScriptableObject
+[Serializable, HideInInspector]
+public class EnhancedTriggerBoxComponent : MonoBehaviour
 {
     [SerializeField]
     protected bool hideShowSection = true;
@@ -21,7 +21,9 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
         GUILayout.BeginHorizontal();
 
         // Draw the foldout header
-        hideShowSection = RenderHeader(AddSpacesToSentence(ToString().Replace("(","").Replace(")",""), true), hideShowSection, true);
+        hideShowSection = RenderHeader(AddSpacesToSentence(GetType().Name.Replace("(","").Replace(")",""), true), hideShowSection, true);
+
+        hideFlags = HideFlags.HideInInspector;
 
         // Draw the delete button
         if (GUILayout.Button(new GUIContent("X","Remove component"), GUILayout.Width(25)))
@@ -42,6 +44,11 @@ public class EnhancedTriggerBoxComponent : ScriptableObject
         {
             Validation();
         }
+    }
+
+    public virtual void OnAwake()
+    {
+
     }
 
     public virtual void DrawInspectorGUI()

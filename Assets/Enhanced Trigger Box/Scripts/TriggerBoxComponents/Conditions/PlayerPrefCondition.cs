@@ -87,17 +87,6 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
 
         playerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
             "This is the value that will be stored in the player pref."), playerPrefVal);
-
-        switch (playerPrefType)
-        {
-            case ParameterType.Float:
-                float.TryParse(playerPrefVal, out playerPrefValFloat);
-                break;
-
-            case ParameterType.Int:
-                int.TryParse(playerPrefVal, out playerPrefValInt);
-                break;
-        }
     }
 
     public override void Validation()
@@ -113,6 +102,20 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
             {
                 ShowErrorMessage("You have set up a player pref condition but haven't entered a player pref key!");
             }
+        }
+    }
+
+    public override void OnAwake()
+    {
+        switch (playerPrefType)
+        {
+            case ParameterType.Float:
+                float.TryParse(playerPrefVal, out playerPrefValFloat);
+                break;
+
+            case ParameterType.Int:
+                int.TryParse(playerPrefVal, out playerPrefValInt);
+                break;
         }
     }
 

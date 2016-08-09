@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[Serializable]
 public class CameraCondition : EnhancedTriggerBoxComponent
 {
     /// <summary>
@@ -148,6 +147,28 @@ public class CameraCondition : EnhancedTriggerBoxComponent
         }
     }
 
+    public override void OnAwake()
+    {
+        if (conditionObject)
+        {
+            // Cache the collider
+            if (componentParameter == CameraConditionComponentParameters.FullBoxCollider || componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
+            {
+                if (conditionObject.GetComponent<BoxCollider>() != null)
+                {
+                    viewConditionObjectCollider = conditionObject.GetComponent<BoxCollider>();
+                }
+            }
+            else if (componentParameter != CameraConditionComponentParameters.MeshRenderer) // Cache the mesh renderer
+            {
+                if (conditionObject.GetComponent<MeshRenderer>() == null)
+                {
+                    viewConditionObjectMeshRenderer = conditionObject.GetComponent<MeshRenderer>();
+                }
+            }
+        }
+    }
+
     public override bool ExecuteAction()
     {
         // This fixes a bug that occured when the player was very close to an object. Is this necessary? TODO: Find out if this is necessary
@@ -263,6 +284,7 @@ public class CameraCondition : EnhancedTriggerBoxComponent
 
                     case CameraConditionComponentParameters.MinimumBoxCollider:
                         viewConditionScreenPoint = Camera.main.WorldToViewportPoint(viewConditionObjectCollider.bounds.min);
+
                         if (!(viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
                             viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1))
                         {

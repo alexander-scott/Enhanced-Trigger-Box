@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.Reflection;
 using System.Linq;
 
 [Serializable, ExecuteInEditMode]
@@ -36,75 +35,6 @@ public class EnhancedTriggerBox : MonoBehaviour
         LoadLevelResponse,
         PlayerPrefResponse,
         SpawnGameobjectResponse,
-    }
-
-    //public List<EnhancedTriggerBoxComponent> test = new List<EnhancedTriggerBoxComponent>() {
-    //    new CameraCondition(),
-    //    new PlayerPrefCondition()
-    //};
-
-    /// <summary>
-    /// This function will add a condition to the list of conditions dependending on the enum index selected.
-    /// </summary>
-    /// <param name="condition">The new condition the user has selected</param>
-    public void CreateCondition(TriggerBoxConditions condition)
-    {
-        switch (condition)
-        {
-            case TriggerBoxConditions.CameraCondition:
-                conditions.Add(ScriptableObject.CreateInstance<CameraCondition>());
-                break;
-
-            case TriggerBoxConditions.PlayerPrefCondition:
-                conditions.Add(ScriptableObject.CreateInstance<PlayerPrefCondition>());
-                break;
-        }
-    }
-
-    /// <summary>
-    /// This function will add a response to the list of responses dependending on the enum index selected.
-    /// </summary>
-    /// <param name="response">The new response the user has selected</param>
-    public void CreateResponse(TriggerBoxResponses response)
-    {
-        switch (response)
-        {
-            case TriggerBoxResponses.AnimationResponse:
-                responses.Add(ScriptableObject.CreateInstance<AnimationResponse>());
-                break;
-
-            case TriggerBoxResponses.AudioResponse:
-                responses.Add(ScriptableObject.CreateInstance<AudioResponse>());
-                break;
-
-            case TriggerBoxResponses.CallFunctionResponse:
-                responses.Add(ScriptableObject.CreateInstance<CallFunctionResponse>());
-                break;
-
-            case TriggerBoxResponses.DestroyGameobjectResponse:
-                responses.Add(ScriptableObject.CreateInstance<DestroyGameobjectResponse>());
-                break;
-
-            case TriggerBoxResponses.DisableGameobjectResponse:
-                responses.Add(ScriptableObject.CreateInstance<DisableGameobjectResponse>());
-                break;
-
-            case TriggerBoxResponses.EnableGameobjectResponse:
-                responses.Add(ScriptableObject.CreateInstance<EnableGameobjectResponse>());
-                break;
-
-            case TriggerBoxResponses.LoadLevelResponse:
-                responses.Add(ScriptableObject.CreateInstance<LoadLevelResponse>());
-                break;
-
-            case TriggerBoxResponses.PlayerPrefResponse:
-                responses.Add(ScriptableObject.CreateInstance<PlayerPrefResponse>());
-                break;
-
-            case TriggerBoxResponses.SpawnGameobjectResponse:
-                responses.Add(ScriptableObject.CreateInstance<SpawnGameobjectResponse>());
-                break;
-        }
     }
 
     #endregion
@@ -260,40 +190,33 @@ public class EnhancedTriggerBox : MonoBehaviour
         EditorGUI.indentLevel = 0;
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
+        // This gets rid of any null objects, caused by conditions being deleted
         if (conditions.Count > 0)
         {
-            bool removeNulls = false;
-
             // Display all the conditions
             for (int i = 0; i < conditions.Count; i++)
             {
-                if (!removeNulls)
+                if (conditions[i])
                 {
-                    removeNulls = conditions[i].deleted;
-                }
+                    if (conditions[i].deleted)
+                    {
+                        // If the condition has been deleted we will destroy it
+                        DestroyImmediate(conditions[i]);
+                    }
+                    else
+                    {
+                        conditions[i].showWarnings = !hideWarnings;
+                        conditions[i].OnInspectorGUI();
 
-                if (conditions[i].deleted)
-                {
-                    // If the condition has been deleted we will destroy it
-                    DestroyImmediate(conditions[i]);
+                        if (i != conditions.Count - 1)
+                            GUILayout.Space(10.0f);
+                    }
                 }
-                else
-                {
-                    conditions[i].showWarnings = !hideWarnings;
-                    conditions[i].OnInspectorGUI();
-
-                    if (i != conditions.Count - 1)
-                        GUILayout.Space(10.0f);
-                }
-            }
-
-            if (removeNulls)
-            {
-                // This gets rid of any null objects, caused by conditions being deleted
-                conditions.RemoveAll(r => r == null);
             }
 
             GUILayout.Space(10.0f);
+
+            conditions.RemoveAll(r => r == null);
         }
 
         EditorGUI.BeginChangeCheck();
@@ -306,7 +229,9 @@ public class EnhancedTriggerBox : MonoBehaviour
         // If the selected drop down list value gets changed we need to create the selected condition
         if (EditorGUI.EndChangeCheck())
         {
-            CreateCondition(conditionEnum);
+            var obj = gameObject.AddComponent(Type.GetType(conditionEnum.ToString())) as EnhancedTriggerBoxComponent;
+            obj.hideFlags = HideFlags.HideInInspector;
+            conditions.Add(obj);
 
             // Reset the drop down list
             conditionEnum = TriggerBoxConditions.SelectACondition;
@@ -317,33 +242,26 @@ public class EnhancedTriggerBox : MonoBehaviour
 
         if (responses.Count > 0)
         {
-            bool removeNulls = false;
-
             for (int i = 0; i < responses.Count; i++)
             {
-                if (!removeNulls)
+                if (responses[i])
                 {
-                    removeNulls = responses[i].deleted;
-                }
+                    if (responses[i].deleted)
+                    {
+                        DestroyImmediate(responses[i]);
+                    }
+                    else
+                    {
+                        responses[i].showWarnings = !hideWarnings;
+                        responses[i].OnInspectorGUI();
 
-                if (responses[i].deleted)
-                {
-                    DestroyImmediate(responses[i]);
-                }
-                else
-                {
-                    responses[i].showWarnings = !hideWarnings;
-                    responses[i].OnInspectorGUI();
-
-                    if (i != responses.Count - 1)
-                        GUILayout.Space(10.0f);
+                        if (i != responses.Count - 1)
+                            GUILayout.Space(10.0f);
+                    }
                 }
             }
 
-            if (removeNulls)
-            {
-                responses.RemoveAll(r => r == null);
-            }
+            responses.RemoveAll(r => r == null);
 
             GUILayout.Space(10.0f);
         }
@@ -356,9 +274,37 @@ public class EnhancedTriggerBox : MonoBehaviour
 
         if (EditorGUI.EndChangeCheck())
         {
-            CreateResponse(responseEnum);
+            var obj = gameObject.AddComponent(Type.GetType(responseEnum.ToString())) as EnhancedTriggerBoxComponent;
+            obj.hideFlags = HideFlags.HideInInspector;
+            responses.Add(obj);
 
             responseEnum = TriggerBoxResponses.SelectAResponse;
+        }
+    }
+
+    void Start()
+    {
+        if (!string.IsNullOrEmpty(followTransformName))
+        {
+            try
+            {
+                followTransform = GameObject.Find(followTransformName).transform;
+            }
+            catch
+            {
+                Debug.Log("Unable to find game object" + followTransformName + " for Trigger Follow. Reverting to follow main camera.");
+                triggerFollow = TriggerFollow.FollowMainCamera;
+            }
+        }
+
+        for (int i = 0; i < conditions.Count; i++)
+        {
+            conditions[i].OnAwake();
+        }
+
+        for (int i = 0; i < responses.Count; i++)
+        {
+            responses[i].OnAwake();
         }
     }
 
@@ -380,6 +326,8 @@ public class EnhancedTriggerBox : MonoBehaviour
         // If the player has entered the trigger box
         if (triggered)
         {
+            conditionMet = true;
+
             // Loop through each condition to check if it has been met
             foreach (var c in conditions)
             {
