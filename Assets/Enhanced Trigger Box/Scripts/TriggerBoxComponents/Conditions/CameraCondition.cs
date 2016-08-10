@@ -156,17 +156,11 @@ public class CameraCondition : EnhancedTriggerBoxComponent
         {
             if (componentParameter == CameraConditionComponentParameters.FullBoxCollider || componentParameter == CameraConditionComponentParameters.MinimumBoxCollider)
             {
-                if (conditionObject.GetComponent<BoxCollider>() != null)
-                {
-                    viewConditionObjectCollider = conditionObject.GetComponent<BoxCollider>();
-                }
+                viewConditionObjectCollider = conditionObject.GetComponent<BoxCollider>();
             }
-            else if (componentParameter != CameraConditionComponentParameters.MeshRenderer) // Cache the mesh renderer
+            else if (componentParameter == CameraConditionComponentParameters.MeshRenderer) // Cache the mesh renderer
             {
-                if (conditionObject.GetComponent<MeshRenderer>() == null)
-                {
-                    viewConditionObjectMeshRenderer = conditionObject.GetComponent<MeshRenderer>();
-                }
+                 viewConditionObjectMeshRenderer = conditionObject.GetComponent<MeshRenderer>();
             }
         }
     }
@@ -265,7 +259,15 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                         // This is much simpler. Uses the built in isVisible checks to determine if the mesh can be seen by any camera.
                         if (viewConditionObjectMeshRenderer.isVisible)
                         {
-                            return true;
+                            // Get the direction vector from the object to the camera
+                            viewConditionDirection = (conditionObject.transform.position - Camera.main.transform.position);
+
+                            // Check if there's any objects in the way
+                            if (CheckRaycast())
+                            {
+                                // Check if we this condition has been met for longer than the conditionTimer
+                                return CheckConditionTimer();
+                            }
                         }
                         break;
                 }
@@ -322,7 +324,7 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                     case CameraConditionComponentParameters.MeshRenderer:
                         if (!viewConditionObjectMeshRenderer.isVisible)
                         {
-                            return true;
+                            return CheckConditionTimer();
                         }
                         break;
                 }

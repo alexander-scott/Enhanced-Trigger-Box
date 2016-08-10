@@ -51,12 +51,12 @@ public class SpawnGameobjectResponse : EnhancedTriggerBoxComponent
             {
                 if (customPositionRotation)
                 {
-                    var newobj = Instantiate(prefabToSpawn, customPositionRotation.position, customPositionRotation.rotation);
+                    GameObject newobj = Instantiate(prefabToSpawn, customPositionRotation.position, customPositionRotation.rotation) as GameObject;
                     newobj.name = newInstanceName;
                 }
                 else
                 {
-                    var newobj = Instantiate(prefabToSpawn);
+                    GameObject newobj = Instantiate(prefabToSpawn) as GameObject;
                     newobj.name = newInstanceName;
                 }
             }

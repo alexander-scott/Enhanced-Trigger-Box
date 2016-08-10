@@ -34,6 +34,7 @@ public class EnhancedTriggerBox : MonoBehaviour
         EnableGameobjectResponse,
         LoadLevelResponse,
         PlayerPrefResponse,
+        RigidbodyResponse,
         SpawnGameobjectResponse,
     }
 
@@ -224,7 +225,7 @@ public class EnhancedTriggerBox : MonoBehaviour
         EditorGUI.indentLevel = 0;
 
         // Display the enum (drop down list) containing all the conditions
-        var conditionEnum = (TriggerBoxConditions)EditorGUILayout.EnumPopup("Add new condition:", triggerBoxConditions);
+        TriggerBoxConditions conditionEnum = (TriggerBoxConditions)EditorGUILayout.EnumPopup("Add new condition:", triggerBoxConditions);
 
         // If the selected drop down list value gets changed we need to create the selected condition
         if (EditorGUI.EndChangeCheck())
@@ -233,7 +234,7 @@ public class EnhancedTriggerBox : MonoBehaviour
             Type conType = Type.GetType(conditionEnum.ToString());
 
             // Create a new instance of this component and register an undo operation so that the user can undo adding this component
-            var obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
+            EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
             obj.hideFlags = HideFlags.HideInInspector;
 
             conditions.Add(obj);
@@ -274,7 +275,7 @@ public class EnhancedTriggerBox : MonoBehaviour
 
         EditorGUI.indentLevel = 0;
 
-        var responseEnum = (TriggerBoxResponses)EditorGUILayout.EnumPopup("Add new response:", triggerBoxResponses);
+        TriggerBoxResponses responseEnum = (TriggerBoxResponses)EditorGUILayout.EnumPopup("Add new response:", triggerBoxResponses);
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -282,7 +283,7 @@ public class EnhancedTriggerBox : MonoBehaviour
             Type conType = Type.GetType(responseEnum.ToString());
 
             // Create a new instance of this component and register an undo operation so that the user can undo adding this component
-            var obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
+            EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
             obj.hideFlags = HideFlags.HideInInspector;
 
             responses.Add(obj);
@@ -343,7 +344,7 @@ public class EnhancedTriggerBox : MonoBehaviour
             conditionMet = true;
 
             // Loop through each condition to check if it has been met
-            foreach (var c in conditions)
+            foreach (EnhancedTriggerBoxComponent c in conditions)
             {
                 conditionMet = c.ExecuteAction();
 
@@ -368,7 +369,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     private void ConditionsMet()
     {
         // Execute every response
-        foreach (var r in responses)
+        foreach (EnhancedTriggerBoxComponent r in responses)
         {
             r.ExecuteAction();
         }
