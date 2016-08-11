@@ -63,7 +63,7 @@ public class AudioResponse : EnhancedTriggerBoxComponent
         {
             if (!soundEffectPosition)
             {
-                ShowErrorMessage("You have chosen to play a sound effect but haven't set a position for it to play at!");
+                ShowWarningMessage("You have chosen to play a sound effect but haven't set a position for it to play at!");
             }
         }
     }

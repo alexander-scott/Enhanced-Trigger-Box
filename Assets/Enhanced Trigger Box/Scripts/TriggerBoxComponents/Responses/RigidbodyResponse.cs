@@ -239,7 +239,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
     {
         if (!rigbody)
         {
-            ShowErrorMessage("For the rigidbody response you need to add a rigidbody reference!");
+            ShowWarningMessage("For the rigidbody response you need to add a rigidbody reference!");
         }
 
         if (!string.IsNullOrEmpty(setMass))
@@ -247,7 +247,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
             int temp;
             if (!int.TryParse(setMass, out temp))
             {
-                ShowErrorMessage("You have entered a mass but it couldn't be parsed. Please make sure it is a valid integer.");
+                ShowWarningMessage("You have entered a mass but it couldn't be parsed. Please make sure it is a valid integer.");
             }
         }
 
@@ -256,7 +256,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
             int temp2;
             if (!int.TryParse(setDrag, out temp2))
             {
-                ShowErrorMessage("You have entered a drag but it couldn't be parsed. Please make sure it is a valid integer.");
+                ShowWarningMessage("You have entered a drag but it couldn't be parsed. Please make sure it is a valid integer.");
             }
         }
 
@@ -265,7 +265,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
             float temp3;
             if (!float.TryParse(setAngularDrag, out temp3))
             {
-                ShowErrorMessage("You have entered a angular drag but it couldn't be parsed. Please make sure it is a valid float.");
+                ShowWarningMessage("You have entered a angular drag but it couldn't be parsed. Please make sure it is a valid float.");
             }
         }
     }

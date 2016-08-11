@@ -88,8 +88,8 @@ public class EnhancedTriggerBox : MonoBehaviour
     /// <summary>
     /// A list of tags belonging to gameobjects which are able to trigger the trigger box
     /// </summary>
-    [Tooltip("Only tags listed here are able to trigger the trigger box. By default the Player tag is used here.")]
-    public string triggerTags;
+    [Tooltip("Only tags listed here are able to trigger the trigger box. To have more than one string, put a comma between them. By default the Player tag is used here.")]
+    public string triggerTags = "Player";
 
     /// <summary>
     /// If true the application will write to the console a message with the name of the trigger that was triggered

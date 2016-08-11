@@ -55,15 +55,15 @@ public class CallFunctionResponse : EnhancedTriggerBoxComponent
         // Check that the correct combination of fields have been filled in
         if (messageTarget && string.IsNullOrEmpty(messageFunctionName))
         {
-            ShowErrorMessage("You have selected a object for the message to be sent to but haven't specified which function to call!");
+            ShowWarningMessage("You have selected a object for the message to be sent to but haven't specified which function to call!");
         }
         else if (!messageTarget && !string.IsNullOrEmpty(messageFunctionName))
         {
-            ShowErrorMessage("You have entered a function to call but haven't specified the object to send it to!");
+            ShowWarningMessage("You have entered a function to call but haven't specified the object to send it to!");
         }
         else if (messageTarget && !string.IsNullOrEmpty(messageFunctionName) && string.IsNullOrEmpty(parameterValue))
         {
-            ShowErrorMessage("You have entered a function and gameobject to send a message to but the message has no value!");
+            ShowWarningMessage("You have entered a function and gameobject to send a message to but the message has no value!");
         }
     }
 

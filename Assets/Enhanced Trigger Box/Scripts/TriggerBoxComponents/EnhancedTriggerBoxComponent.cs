@@ -87,7 +87,7 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
         {
             // The if statement ensures the fields in EnhancedTriggerBoxComponent aren't drawn. Is there a better way to do this?
             if (f.Name != "showWarnings" && f.Name != "deleted" && f.Name != "hideShowSection")
-                RenderField(f);
+                RenderGeneric(f);
         }
     }
 
@@ -105,7 +105,7 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
 
     /// <summary>
     /// This optional function is called after the inspector GUI has been drawn and is used to display warnings if any of the inputted data
-    /// is invalid or missing. Only shown if showWarnings is true. Use ShowErrorMessage("") to display the warnings. 
+    /// is invalid or missing. Only shown if showWarnings is true. Use ShowWarningMessage("") to display the warnings. 
     /// </summary>
     public virtual void Validation()
     {
@@ -116,7 +116,7 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
     /// Draws each generic variable in the component. Not all types can be drawn. Enums are the most prominent that cannot be drawn.
     /// </summary>
     /// <param name="o">The field that will be drawn</param>
-    protected void RenderField(System.Reflection.FieldInfo o)
+    protected void RenderGeneric(System.Reflection.FieldInfo o)
     {
         if (o.FieldType == typeof(GameObject))
         {
@@ -182,7 +182,7 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
     /// Draws the warning message
     /// </summary>
     /// <param name="message">The message to display in the warning</param>
-    protected void ShowErrorMessage(string message)
+    protected void ShowWarningMessage(string message)
     {
         EditorGUILayout.HelpBox(message, MessageType.Warning);
     }

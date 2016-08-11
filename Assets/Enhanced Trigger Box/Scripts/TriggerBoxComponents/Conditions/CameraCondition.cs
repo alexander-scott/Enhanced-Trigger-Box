@@ -118,7 +118,7 @@ public class CameraCondition : EnhancedTriggerBoxComponent
             // Check if the user specified a gameobject to focus on
             if (conditionObject == null)
             {
-                ShowErrorMessage("You have selected the " + ((cameraConditionType == LookType.LookingAt) ? "Looking At" : "Looking Away") + " camera condition but have not specified a gameobject reference!");
+                ShowWarningMessage("You have selected the " + ((cameraConditionType == LookType.LookingAt) ? "Looking At" : "Looking Away") + " camera condition but have not specified a gameobject reference!");
             }
             else
             {
@@ -127,14 +127,14 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                 {
                     if (conditionObject.GetComponent<BoxCollider>() == null)
                     {
-                        ShowErrorMessage("You have selected the Component Parameter for the camera condition to be " + ((componentParameter == CameraConditionComponentParameters.FullBoxCollider) ? "Full Box Collider" : "Minimum Box Collider") + " but the object doesn't have a Box Collider component!");
+                        ShowWarningMessage("You have selected the Component Parameter for the camera condition to be " + ((componentParameter == CameraConditionComponentParameters.FullBoxCollider) ? "Full Box Collider" : "Minimum Box Collider") + " but the object doesn't have a Box Collider component!");
                     }
                 } // Else if the user selected mesh render check the object has mesh renderer
                 else if (componentParameter == CameraConditionComponentParameters.MeshRenderer)
                 {
                     if (conditionObject.GetComponent<MeshRenderer>() == null)
                     {
-                        ShowErrorMessage("You have selected the Component Parameter for the camera condition to be Mesh Renderer but the object doesn't have a Mesh Renderer component!");
+                        ShowWarningMessage("You have selected the Component Parameter for the camera condition to be Mesh Renderer but the object doesn't have a Mesh Renderer component!");
                     }
                 }
             }
@@ -142,7 +142,7 @@ public class CameraCondition : EnhancedTriggerBoxComponent
             // Check that condition time is above 0
             if (conditionTime < 0f)
             {
-                ShowErrorMessage("You have set the camera condition timer to be less than 0 which isn't possible!");
+                ShowWarningMessage("You have set the camera condition timer to be less than 0 which isn't possible!");
             }
         }
     }

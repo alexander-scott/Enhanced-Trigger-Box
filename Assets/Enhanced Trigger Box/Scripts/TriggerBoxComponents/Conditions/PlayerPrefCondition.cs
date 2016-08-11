@@ -96,11 +96,11 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
         {
             if (string.IsNullOrEmpty(playerPrefVal))
             {
-                ShowErrorMessage("You have set up a player pref condition but haven't entered a value to be compared against the player pref!");
+                ShowWarningMessage("You have set up a player pref condition but haven't entered a value to be compared against the player pref!");
             }
             else if (string.IsNullOrEmpty(playerPrefKey))
             {
-                ShowErrorMessage("You have set up a player pref condition but haven't entered a player pref key!");
+                ShowWarningMessage("You have set up a player pref condition but haven't entered a player pref key!");
             }
         }
     }

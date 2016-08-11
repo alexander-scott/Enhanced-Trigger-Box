@@ -48,7 +48,7 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
         {
             if (animationTarget == null)
             {
-                ShowErrorMessage("You have set a Mecanim Trigger as an Animation Response but haven't set an Animation Target to apply it to!");
+                ShowWarningMessage("You have set a Mecanim Trigger as an Animation Response but haven't set an Animation Target to apply it to!");
             }
         }
 
@@ -57,7 +57,7 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
         {
             if (animationTarget == null)
             {
-                ShowErrorMessage("You have set Stop Animation as an Animation Response but haven't set an Animation Target to apply it to!");
+                ShowWarningMessage("You have set Stop Animation as an Animation Response but haven't set an Animation Target to apply it to!");
             }
         }
 
@@ -66,7 +66,7 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
         {
             if (animationTarget == null)
             {
-                ShowErrorMessage("You have chosen to play a legacy animation as an Animation Response but haven't set an Animation Target to apply it to!");
+                ShowWarningMessage("You have chosen to play a legacy animation as an Animation Response but haven't set an Animation Target to apply it to!");
             }
         }
     }

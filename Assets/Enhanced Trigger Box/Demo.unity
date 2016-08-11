@@ -90,10 +90,28 @@ NavMeshSettings:
     cellSize: 0.16666666
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &139433616 stripped
+--- !u!1 &139433616
 GameObject:
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
   m_PrefabInternal: {fileID: 687538867}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 169855235}
+  - 65: {fileID: 139433618}
+  - 114: {fileID: 139433617}
+  - 114: {fileID: 139433619}
+  - 114: {fileID: 139433620}
+  - 114: {fileID: 139433621}
+  - 114: {fileID: 139433622}
+  - 114: {fileID: 139433623}
+  m_Layer: 2
+  m_Name: Trigger Box 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!114 &139433617
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -111,6 +129,19 @@ MonoBehaviour:
   prefabToSpawn: {fileID: 100080, guid: 2fe6f74b3b275374ca5d82be806e41fd, type: 2}
   newInstanceName: 
   customPositionRotation: {fileID: 0}
+--- !u!65 &139433618
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 6500000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85,
+    type: 2}
+  m_PrefabInternal: {fileID: 687538867}
+  m_GameObject: {fileID: 139433616}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.31, y: 1, z: 2.23}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &139433619
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -241,10 +272,20 @@ Transform:
   - {fileID: 1700837945}
   m_Father: {fileID: 0}
   m_RootOrder: 5
---- !u!4 &169855235 stripped
+--- !u!4 &169855235
 Transform:
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
   m_PrefabInternal: {fileID: 687538867}
+  m_GameObject: {fileID: 139433616}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -65.37995, y: 2.29, z: 41.249977}
+  m_LocalScale: {x: 10.819092, y: 4.0717444, z: 11.600413}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 1173084145}
+  m_Father: {fileID: 717927604}
+  m_RootOrder: 5
 --- !u!1001 &219589821
 Prefab:
   m_ObjectHideFlags: 0
@@ -437,10 +478,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 161392771}
   m_RootOrder: 2
---- !u!4 &312267987 stripped
+--- !u!4 &312267987
 Transform:
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
   m_PrefabInternal: {fileID: 1307386219}
+  m_GameObject: {fileID: 1084286707}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -65.37994, y: 2.29, z: 41.24997}
+  m_LocalScale: {x: 10.81909, y: 4.0717444, z: 11.600411}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 1944559926}
+  m_Father: {fileID: 717927604}
+  m_RootOrder: 6
 --- !u!1001 &346055066
 Prefab:
   m_ObjectHideFlags: 0
@@ -1518,10 +1569,27 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 974882538}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1084286707 stripped
+--- !u!1 &1084286707
 GameObject:
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85, type: 2}
   m_PrefabInternal: {fileID: 1307386219}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 312267987}
+  - 65: {fileID: 1084286709}
+  - 114: {fileID: 1084286708}
+  - 114: {fileID: 1084286710}
+  - 114: {fileID: 1084286711}
+  - 114: {fileID: 1084286712}
+  - 114: {fileID: 1084286713}
+  m_Layer: 2
+  m_Name: Trigger Box 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!114 &1084286708
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1539,6 +1607,19 @@ MonoBehaviour:
   prefabToSpawn: {fileID: 113420, guid: 9e6fa9642951a2a4499d69dfedd1b4d8, type: 2}
   newInstanceName: 
   customPositionRotation: {fileID: 0}
+--- !u!65 &1084286709
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 6500000, guid: 13f4ed01c918fbb4eae4a8a0a19caa85,
+    type: 2}
+  m_PrefabInternal: {fileID: 1307386219}
+  m_GameObject: {fileID: 1084286707}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.31, y: 1, z: 2.23}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1084286710
 MonoBehaviour:
   m_ObjectHideFlags: 2

@@ -47,11 +47,11 @@ public class PlayerPrefResponse : EnhancedTriggerBoxComponent
         // Check that the correct combination of fields have been filled in
         if (string.IsNullOrEmpty(setPlayerPrefKey) && !string.IsNullOrEmpty(setPlayerPrefVal))
         {
-            ShowErrorMessage("You have entered a value to save to a player pref but you haven't specified which player pref to save it to!");
+            ShowWarningMessage("You have entered a value to save to a player pref but you haven't specified which player pref to save it to!");
         }
         else if (!string.IsNullOrEmpty(setPlayerPrefKey) && string.IsNullOrEmpty(setPlayerPrefVal))
         {
-            ShowErrorMessage("You have set the player pref key but the value to save in it is empty!");
+            ShowWarningMessage("You have set the player pref key but the value to save in it is empty!");
         }
     }
 
