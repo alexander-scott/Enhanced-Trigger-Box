@@ -7,7 +7,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
     /// <summary>
     /// The rigidbody that will be changed
     /// </summary>
-    public Rigidbody rigidbody;
+    public Rigidbody rigbody;
 
     /// <summary>
     /// Set the mass of this rigidbody. If left blank the value will not be changed.
@@ -103,8 +103,8 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
 
     public override void DrawInspectorGUI()
     {
-        rigidbody = (Rigidbody)EditorGUILayout.ObjectField(new GUIContent("Rigidbody",
-                "The rigidbody that will be changed"), rigidbody, typeof(Rigidbody), true);
+        rigbody = (Rigidbody)EditorGUILayout.ObjectField(new GUIContent("Rigidbody",
+                "The rigidbody that will be changed"), rigbody, typeof(Rigidbody), true);
 
         setMass = EditorGUILayout.TextField(new GUIContent("Set Mass", 
             "Set the mass of this rigidbody. If left blank the value will not be changed."), setMass);
@@ -142,7 +142,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
             int mass;
             if (int.TryParse(setMass, out mass))
             {
-                rigidbody.mass = mass;
+                rigbody.mass = mass;
             }
             else
             {
@@ -155,7 +155,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
             int drag;
             if (int.TryParse(setDrag, out drag))
             {
-                rigidbody.drag = drag;
+                rigbody.drag = drag;
             }
             else
             {
@@ -168,7 +168,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
             float aDrag;
             if (float.TryParse(setAngularDrag, out aDrag))
             {
-                rigidbody.angularDrag = aDrag;
+                rigbody.angularDrag = aDrag;
             }
             else
             {
@@ -179,56 +179,56 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
         switch (changeGravity)
         {
             case ChangeBool.SetFalse:
-                rigidbody.useGravity = false;
+                rigbody.useGravity = false;
                 break;
 
             case ChangeBool.SetTrue:
-                rigidbody.useGravity = true;
+                rigbody.useGravity = true;
                 break;
 
             case ChangeBool.Toggle:
-                rigidbody.useGravity = !rigidbody.useGravity;
+                rigbody.useGravity = !rigbody.useGravity;
                 break;
         }
 
         switch (changeKinematic)
         {
             case ChangeBool.SetFalse:
-                rigidbody.isKinematic = false;
+                rigbody.isKinematic = false;
                 break;
 
             case ChangeBool.SetTrue:
-                rigidbody.isKinematic = true;
+                rigbody.isKinematic = true;
                 break;
 
             case ChangeBool.Toggle:
-                rigidbody.isKinematic = !rigidbody.isKinematic;
+                rigbody.isKinematic = !rigbody.isKinematic;
                 break;
         }
 
         switch (changeInterpolate)
         {
             case ChangeInterpolate.SetExtrapolate:
-                rigidbody.interpolation = RigidbodyInterpolation.Extrapolate;
+                rigbody.interpolation = RigidbodyInterpolation.Extrapolate;
                 break;
 
             case ChangeInterpolate.SetInterpolate:
-                rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+                rigbody.interpolation = RigidbodyInterpolation.Interpolate;
                 break;
         }
 
         switch (changeCollisionDetection)
         {
             case ChangeCollisionDetection.SetContinuous:
-                rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                rigbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
                 break;
 
             case ChangeCollisionDetection.SetDiscrete:
-                rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                rigbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
                 break;
 
             case ChangeCollisionDetection.SetContinuousDynamic:
-                rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                rigbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 break;
         }
 
@@ -237,7 +237,7 @@ public class RigidbodyResponse : EnhancedTriggerBoxComponent {
 
     public override void Validation()
     {
-        if (!rigidbody)
+        if (!rigbody)
         {
             ShowErrorMessage("For the rigidbody response you need to add a rigidbody reference!");
         }

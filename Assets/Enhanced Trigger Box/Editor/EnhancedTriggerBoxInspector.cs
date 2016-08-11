@@ -6,7 +6,7 @@ using System.Collections;
 public class EnhancedTriggerBoxInspector : Editor
 {
     string dispName;
-    string name;
+    string baseName;
 
     EnhancedTriggerBox theObject;
     SerializedObject so;
@@ -111,17 +111,14 @@ public class EnhancedTriggerBoxInspector : Editor
             GUILayout.Space(10.0f);
 
         EditorGUI.indentLevel = 0;
-        EditorGUIUtility.LookLikeInspector();
 
         return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
     }
 
     private void RenderPropertyField(SerializedProperty sp, bool slider = false)
     {
-        name = sp.name;
+        baseName = sp.name;
         dispName = sp.displayName;
-
-        EditorGUIUtility.LookLikeControls(180.0f, 50.0f);
 
         GUILayout.BeginHorizontal();
 
@@ -132,7 +129,7 @@ public class EnhancedTriggerBoxInspector : Editor
             GUILayout.BeginVertical();
             while (true)
             {
-                if (sp.propertyPath != name && !sp.propertyPath.StartsWith(name + "."))
+                if (sp.propertyPath != baseName && !sp.propertyPath.StartsWith(baseName + "."))
                     break;
 
                 EditorGUI.indentLevel = sp.depth;

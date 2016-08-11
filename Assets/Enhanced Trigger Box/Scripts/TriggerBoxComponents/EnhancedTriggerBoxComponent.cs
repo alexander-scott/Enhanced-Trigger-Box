@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Text;
+using System.Linq;
 
 [Serializable, HideInInspector]
 public class EnhancedTriggerBoxComponent : MonoBehaviour
@@ -61,7 +62,8 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// This optional function is called when the game first starts and should be used if anything needs to be initalised or retrieved in-game. This function should be overriden by each inheirited component.
+    /// This optional function is called when the game first starts and should be used if anything needs to be initalised or retrieved in-game. 
+    /// This function should be overriden by each inheirited component.
     /// </summary>
     public virtual void OnAwake()
     {
@@ -69,11 +71,24 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// This function draws the specific component fields. This function should be overriden by each inheirited component.
+    /// This function draws the specific component fields. If not overridden some of the GUI fields will still be drawn however 
+    /// certain types such as enums will not be drawn and the fields will have no tooltips. Ideally you should override this function
+    /// in each component.
     /// </summary>
     public virtual void DrawInspectorGUI()
     {
+        var fieldValues = GetType()
+                     .GetFields()
+                     .Select(field => field)
+                     .ToList();
 
+        // Draw all the fields
+        foreach (var f in fieldValues)
+        {
+            // The if statement ensures the fields in EnhancedTriggerBoxComponent aren't drawn. Is there a better way to do this?
+            if (f.Name != "showWarnings" && f.Name != "deleted" && f.Name != "hideShowSection")
+                RenderField(f);
+        }
     }
 
     /// <summary>
@@ -98,6 +113,40 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
     }
 
     /// <summary>
+    /// Draws each generic variable in the component. Not all types can be drawn. Enums are the most prominent that cannot be drawn.
+    /// </summary>
+    /// <param name="o">The field that will be drawn</param>
+    protected void RenderField(System.Reflection.FieldInfo o)
+    {
+        if (o.FieldType == typeof(GameObject))
+        {
+            o.SetValue(this,(GameObject)EditorGUILayout.ObjectField(new GUIContent(AddSpacesToSentence(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(o.Name), true)
+                ,"No description provided"),(GameObject)o.GetValue(this), typeof(GameObject), true));
+        }
+        else if (o.FieldType == typeof(bool))
+        {
+            o.SetValue(this, EditorGUILayout.Toggle(new GUIContent(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(AddSpacesToSentence(o.Name, true)),
+                    "No description provided"), (bool)o.GetValue(this)));
+        }
+        else if (o.FieldType == typeof(float))
+        {
+            o.SetValue(this, EditorGUILayout.FloatField(new GUIContent(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(AddSpacesToSentence(o.Name, true)),
+                    "No description provided"), (float)o.GetValue(this)));
+        }
+        else if (o.FieldType == typeof(int))
+        {
+            o.SetValue(this, EditorGUILayout.IntField(new GUIContent(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(AddSpacesToSentence(o.Name, true)),
+                    "No description provided"), (int)o.GetValue(this)));
+        }
+        else if (o.FieldType == typeof(string))
+        {
+            o.SetValue(this, EditorGUILayout.TextField(new GUIContent(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(AddSpacesToSentence(o.Name, true)),
+                    "No description provided"), (string)o.GetValue(this)));
+        }
+        // TODO: Add more generic types
+    }
+
+    /// <summary>
     /// Draws the component header
     /// </summary>
     /// <param name="s">The name of the header</param>
@@ -116,7 +165,6 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
             GUILayout.Space(10.0f);
 
         EditorGUI.indentLevel = 0;
-        EditorGUIUtility.LookLikeInspector();
 
         return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
     }
