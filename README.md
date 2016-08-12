@@ -91,13 +91,12 @@ public GameObject exampleGameobject;
 
 DrawInspectorGUI() is recommended to override. This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. You will not be able to use any custom structs or enums and you won't be able to add your own tooltips.
 
-Here's how you would draw a gameobject to a inspector (example in the codeblock). EditorGUILayout.ObjectField is the typical object reference field you
+Here's how you would draw a gameobject to a inspector (first example in the codeblock). EditorGUILayout.ObjectField is the typical object reference field you
 always see in Unity. It returns the object which we will need to save as exampleGameObject so we do exampleGameObject = ObjectField.
 Notice the (GameObject) before EditorGUILayout? This is because the ObjectField returns a object not a GameObject so we must 
 explicitly convert it to a GameObject. For the first bit of object field we'll create a new GUIContent which will hold the field name 
-(label before the field) and field tooltip (text that is displayed on hover). Example Game Object is this fields name and 
-Example tooltip is this fields tooltip. After that we pass in exampleGameObject again as the ObjectField needs the current object 
-stored in there so it is displayed correctly. Then we set the type which is in this case gameobject. The final 'true' allows the 
+(label before the field) and field tooltip (text that is displayed on hover). After that we pass in exampleGameObject again as the ObjectField 
+needs the current object there so it is displayed correctly. Then we set the type which is in this case gameobject. The final 'true' allows the 
 user to use gameobjects currently in the scene which we want so set it to true.
 
 ``` csharp
@@ -147,7 +146,7 @@ initalised. The most common uses will be for caching components or objects or ge
 public override void OnAwake()
 {
         exampleBoxCollider = targetObject.GetComponent<BoxCollider>();
-		float.TryParse(PlayerPrefs.GetFloat("PlayerPrefKey"), out examplePlayerPref);
+		float.TryParse(PlayerPrefs.GetString("PlayerPrefKey"), out examplePlayerPref);
 }
 ```
 

@@ -71,16 +71,6 @@ public class EnhancedTriggerBox : MonoBehaviour
     }
 
     /// <summary>
-    /// An instance of the enum containing all the conditions available to the user
-    /// </summary>
-    private TriggerBoxConditions triggerBoxConditions;
-
-    /// <summary>
-    /// An instance of the enum containing all the responses available to the user
-    /// </summary>
-    private TriggerBoxResponses triggerBoxResponses;
-
-    /// <summary>
     /// This bool is used to store whether the base options tab is open in the inspector so it can persist across sessions
     /// </summary>
     public bool showBaseOptions = true;
@@ -192,12 +182,14 @@ public class EnhancedTriggerBox : MonoBehaviour
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
         // This gets rid of any null objects, caused by conditions being deleted
+        conditions.RemoveAll(r => r == null);
+        
         if (conditions.Count > 0)
         {
             // Display all the conditions
             for (int i = 0; i < conditions.Count; i++)
             {
-                if (conditions[i])
+                if (conditions[i] != null)
                 {
                     if (conditions[i].deleted)
                     {
@@ -216,8 +208,6 @@ public class EnhancedTriggerBox : MonoBehaviour
             }
 
             GUILayout.Space(10.0f);
-
-            conditions.RemoveAll(r => r == null);
         }
 
         EditorGUI.BeginChangeCheck();
@@ -225,37 +215,43 @@ public class EnhancedTriggerBox : MonoBehaviour
         EditorGUI.indentLevel = 0;
 
         // Display the enum (drop down list) containing all the conditions
-        TriggerBoxConditions conditionEnum = (TriggerBoxConditions)EditorGUILayout.EnumPopup("Add new condition:", triggerBoxConditions);
+        TriggerBoxConditions conditionEnum = (TriggerBoxConditions)EditorGUILayout.EnumPopup("Add new condition:", new TriggerBoxConditions());
 
         // If the selected drop down list value gets changed we need to create the selected condition
         if (EditorGUI.EndChangeCheck())
         {
-            // Determine the type of the component that needs to be added
-            Type conType = Type.GetType(conditionEnum.ToString());
+            if (conditionEnum != TriggerBoxConditions.SelectACondition)
+            {
+                // Determine the type of the component that needs to be added
+                Type conType = Type.GetType(conditionEnum.ToString());
 
-            // Create a new instance of this component and register an undo operation so that the user can undo adding this component
-            EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
-            obj.hideFlags = HideFlags.HideInInspector;
+                // Create a new instance of this component and register an undo operation so that the user can undo adding this component
+                EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
+                obj.hideFlags = HideFlags.HideInInspector;
 
-            conditions.Add(obj);
+                conditions.Add(obj);
 
-            // Reset the drop down list
-            conditionEnum = TriggerBoxConditions.SelectACondition;
+                // Reset the drop down list
+                conditionEnum = TriggerBoxConditions.SelectACondition;
+            }
         }
+
+        // The below code is identical to the above, just conditions has changed to responses
 
         EditorGUI.indentLevel = 0;
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+
+        responses.RemoveAll(r => r == null);
 
         if (responses.Count > 0)
         {
             for (int i = 0; i < responses.Count; i++)
             {
-                if (responses[i])
+                if (responses[i] != null)
                 {
                     if (responses[i].deleted)
                     {
                         Undo.DestroyObjectImmediate(responses[i]);
-                        responses.RemoveAll(r => r == null);
                     }
                     else
                     {
@@ -275,20 +271,21 @@ public class EnhancedTriggerBox : MonoBehaviour
 
         EditorGUI.indentLevel = 0;
 
-        TriggerBoxResponses responseEnum = (TriggerBoxResponses)EditorGUILayout.EnumPopup("Add new response:", triggerBoxResponses);
+        TriggerBoxResponses responseEnum = (TriggerBoxResponses)EditorGUILayout.EnumPopup("Add new response:", new TriggerBoxResponses());
 
         if (EditorGUI.EndChangeCheck())
         {
-            // Determine the type of the component that needs to be added
-            Type conType = Type.GetType(responseEnum.ToString());
+            if (responseEnum != TriggerBoxResponses.SelectAResponse)
+            {
+                Type conType = Type.GetType(responseEnum.ToString());
 
-            // Create a new instance of this component and register an undo operation so that the user can undo adding this component
-            EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
-            obj.hideFlags = HideFlags.HideInInspector;
+                EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
+                obj.hideFlags = HideFlags.HideInInspector;
 
-            responses.Add(obj);
+                responses.Add(obj);
 
-            responseEnum = TriggerBoxResponses.SelectAResponse;
+                responseEnum = TriggerBoxResponses.SelectAResponse;
+            }
         }
     }
 

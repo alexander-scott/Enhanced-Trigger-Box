@@ -31,8 +31,15 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
     /// </summary>
     public void OnInspectorGUI()
     {
-        GUILayout.BeginHorizontal();
-
+        try
+        {
+            GUILayout.BeginHorizontal();
+        }
+        catch
+        {
+            return;
+        }
+        
         // Draw the foldout header
         hideShowSection = RenderHeader(AddSpacesToSentence(GetType().Name.Replace("(", "").Replace(")", ""), true), hideShowSection, true);
 
