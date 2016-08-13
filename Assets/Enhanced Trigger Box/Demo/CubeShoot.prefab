@@ -665,8 +665,7 @@ GameObject:
   - 65: {fileID: 65000013899792132}
   - 82: {fileID: 82000013422148626}
   - 114: {fileID: 114000010849937044}
-  - 114: {fileID: 114000010278660120}
-  - 114: {fileID: 114000011954566140}
+  - 114: {fileID: 114000011245862312}
   m_Layer: 0
   m_Name: Trigger Box
   m_TagString: Untagged
@@ -2733,25 +2732,6 @@ MonoBehaviour:
   followTransform: {fileID: 0}
   followTransformName: RigidBodyFPSController
   canWander: 0
---- !u!114 &114000010278660120
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013994644848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  cameraConditionType: 2
-  conditionObject: {fileID: 1000011570414696}
-  componentParameter: 1
-  ignoreObstacles: 0
-  conditionTime: 2
 --- !u!114 &114000010412678796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2777,10 +2757,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000014232611596}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000010472237506
 MonoBehaviour:
@@ -2796,10 +2777,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000012427853702}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000010589029992
 MonoBehaviour:
@@ -2815,10 +2797,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000012704725324}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000010780564280
 MonoBehaviour:
@@ -2868,18 +2851,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a62fb07d8923234c83625cb5bdebfd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conditions:
-  - {fileID: 114000010278660120}
-  - {fileID: 114000011954566140}
-  responses: []
+  conditions: []
+  responses:
+  - {fileID: 114000011245862312}
   showBaseOptions: 1
   triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
   drawWire: 0
   triggerboxColour: {r: 0.8088235, g: 0.1903114, b: 0.1903114, a: 0.597}
-  afterTrigger: 2
-  triggerFollow: 2
+  afterTrigger: 0
+  triggerFollow: 0
   followTransform: {fileID: 0}
   followTransformName: RigidBodyFPSController
   canWander: 0
@@ -2897,10 +2879,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000012847513188}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000010888725002
 MonoBehaviour:
@@ -3007,10 +2990,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000011463037102}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000011074328614
 MonoBehaviour:
@@ -3026,11 +3010,29 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000010747783412}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
+--- !u!114 &114000011245862312
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013994644848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959fa7d3f047b8c479df6c53c49f242f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  prefabToSpawn: {fileID: 0}
+  newInstanceName: 
+  customPositionRotation: {fileID: 0}
 --- !u!114 &114000011279130754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3100,10 +3102,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000014175941592}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000011412347564
 MonoBehaviour:
@@ -3151,24 +3154,6 @@ MonoBehaviour:
   setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
   setPlayerPrefVal: 5
---- !u!114 &114000011954566140
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013994644848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f5ffe1855f7454499c8976a964bff02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  playerPrefCondition: 3
-  playerPrefVal: 6
-  playerPrefKey: DemoProgression
-  playerPrefType: 0
 --- !u!114 &114000012098863066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3183,10 +3168,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 1
   conditionObject: {fileID: 118168}
   componentParameter: 0
-  ignoreObstacles: 1
+  raycastIntensity: 3
   conditionTime: 0
 --- !u!114 &114000012353080590
 MonoBehaviour:
@@ -3328,10 +3314,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000012166174408}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000012744511968
 MonoBehaviour:
@@ -3413,10 +3400,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000013358751734}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000013235335386
 MonoBehaviour:
@@ -3467,10 +3455,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 0}
   cameraConditionType: 2
   conditionObject: {fileID: 1000011141544108}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &114000013392347978
 MonoBehaviour:

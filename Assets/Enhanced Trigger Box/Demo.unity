@@ -173,10 +173,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 1108359025}
   cameraConditionType: 2
   conditionObject: {fileID: 1173084144}
   componentParameter: 1
-  ignoreObstacles: 0
+  raycastIntensity: 3
   conditionTime: 0
 --- !u!114 &139433621
 MonoBehaviour:
@@ -492,6 +493,101 @@ Transform:
   - {fileID: 1944559926}
   m_Father: {fileID: 717927604}
   m_RootOrder: 6
+--- !u!1 &342188439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 342188444}
+  - 33: {fileID: 342188443}
+  - 65: {fileID: 342188442}
+  - 23: {fileID: 342188441}
+  - 54: {fileID: 342188440}
+  m_Layer: 0
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!54 &342188440
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342188439}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!23 &342188441
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342188439}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!65 &342188442
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342188439}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &342188443
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342188439}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &342188444
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342188439}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -67.91995, y: 10.16, z: 45.880825}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
 --- !u!1001 &346055066
 Prefab:
   m_ObjectHideFlags: 0
@@ -560,7 +656,8 @@ GameObject:
   - 4: {fileID: 370416576}
   - 65: {fileID: 370416575}
   - 114: {fileID: 370416574}
-  m_Layer: 0
+  - 114: {fileID: 370416577}
+  m_Layer: 2
   m_Name: Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,7 +675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a62fb07d8923234c83625cb5bdebfd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conditions: []
+  conditions:
+  - {fileID: 370416577}
   responses: []
   showBaseOptions: 1
   triggerTags: Player
@@ -590,7 +688,7 @@ MonoBehaviour:
   triggerFollow: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
+  canWander: 1
 --- !u!65 &370416575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -610,12 +708,32 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 370416573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.11522, y: 5.185628, z: 27.181171}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -64.53, y: 5.185628, z: 48.89}
+  m_LocalScale: {x: 36.738262, y: 8.426808, z: 22.100706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
+--- !u!114 &370416577
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 370416573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  cam: {fileID: 1108359025}
+  cameraConditionType: 0
+  conditionObject: {fileID: 0}
+  componentParameter: 0
+  raycastIntensity: 3
+  conditionTime: 0
 --- !u!1 &441788227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,10 +1532,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 1108359025}
   cameraConditionType: 1
   conditionObject: {fileID: 1700837941}
   componentParameter: 0
-  ignoreObstacles: 1
+  raycastIntensity: 3
   conditionTime: 0
 --- !u!114 &954587735
 MonoBehaviour:
@@ -1733,10 +1852,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 1108359025}
   cameraConditionType: 1
   conditionObject: {fileID: 1944559925}
   componentParameter: 0
-  ignoreObstacles: 1
+  raycastIntensity: 3
   conditionTime: 2
 --- !u!114 &1084286713
 MonoBehaviour:
@@ -1769,6 +1889,11 @@ MonoBehaviour:
 --- !u!1 &1108359024 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100004, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 2}
+  m_PrefabInternal: {fileID: 1970738182}
+--- !u!20 &1108359025 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 2000000, guid: c6453f8e1f814744d8b94e5a6d1f9942,
+    type: 2}
   m_PrefabInternal: {fileID: 1970738182}
 --- !u!82 &1108359029
 AudioSource:
@@ -1934,10 +2059,11 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  cam: {fileID: 1108359025}
   cameraConditionType: 1
   conditionObject: {fileID: 2110441795}
   componentParameter: 0
-  ignoreObstacles: 1
+  raycastIntensity: 3
   conditionTime: 0
 --- !u!114 &1276980725
 MonoBehaviour:

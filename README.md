@@ -5,14 +5,14 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 You can easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.2.0][dist]*
+*Current version: [v0.2.0]*
 
 Getting started
 ---------------
 
 Download the asset from the asset store and import it into your project. Or download the zip file from GitHub and place it in your project. From there you can open up the demo scene and explore that (the demo scene uses the RigidBodyFPSController from the standard assets which will also need importing).
 
-> The demo scene shows various conditions and responses in action. To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder.
+The demo scene shows various conditions and responses in action. To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder. From there you can add any conditions or responses using the drop down lists.
 
 How it works
 ---------------
@@ -20,60 +20,62 @@ At the top level you have the Enhanced Trigger Box script. It has some base opti
 
 When a Enhanced Trigger Box gets triggered (another gameobject collides with it's box collider), all the conditions get checked to see if the condition has been met. If all the conditions have been met, all the responses get executed. 
 
-> If you click on one of the Enhanced Trigger Boxes in the scene or drag one in from the prefabs folder you can see the what the script looks like in the inspector.
+If you click on one of the Enhanced Trigger Boxes in the scene or drag one in from the prefabs folder you can see the what the script looks like in the inspector.
 
 ### Base Options Overview
 
+![Test Image](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/BaseOptions.png)
+
 Trigger Tags:- Only tags listed here are able to trigger the trigger box. To have more than one string, put a comma between them. By default the Player tag is used here.
 
-> Debug Trigger Box:- If true, the script will write to the console when certain events happen such as when the trigger box is triggered.
+Debug Trigger Box:- If true, the script will write to the console when certain events happen such as when the trigger box is triggered.
 
 Hide Warnings:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
 
-> TriggerBox Colour:- This is the colour the trigger box and it's edges will have in the editor.
+TriggerBox Colour:- This is the colour the trigger box and it's edges will have in the editor.
 
 After Trigger:- This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.
 
-> Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
+Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
 
 Trigger Follow:- This allows you to choose if you want your trigger box to stay positioned on a moving transform or the main camera. If you pick Follow Transform a field will appear to set which transform you want the trigger box to follow. Or if you pick Follow Main Camera the trigger box will stay positioned on wherever the main camera currently is.
 
-> Can Wander:- If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
+Can Wander:- If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
 
 ### Conditions Overview
 
 After the base options there is a divider and then all the conditions added to this Enhanced Trigger Box will be listed. 
 
-> If you have added a blank copy from the prefabs folder you will not see any conditions.
+If you have added a blank copy from the prefabs folder you will not see any conditions.
 
 Beneath the list of conditions (or if there's no conditions this is the only thing you can see) will be a drop down list called Add A New Condition. 
 
-> In this drop down list are all the available conditions that you can add. You can add as many conditions as you want.
+In this drop down list are all the available conditions that you can add. You can add as many conditions as you want.
 
 Selecting a condition from this list will add it to the Enhanced Trigger Box and you will see if above the Add A New Condition drop down list. 
 
-> The structure of each component will be different and each will be explained in detail later down the page.
+The structure of each component will be different and each will be explained in detail later down the page.
 
 You have now added a condition. When this Enhanced Trigger Box gets triggered this condition will be checked and will have to pass before any responses get executed. Each condition will have various options that will affect how the condition gets met. 
 
-> To remove a condition click the X in the top right of the component.
+To remove a condition click the X in the top right of the component.
 
 ### Responses Overview
 
 Below the conditions section is the responses section. Similarly, there is a drop down list that displays all available responses which you can add to this Enhanced Trigger Box. 
 
-> Each response will do something different and will only do it when all conditions have been met, in the order that they are listed. 
+Each response will do something different and will only do it when all conditions have been met, in the order that they are listed. 
 
-Adding a new Component
+Creating a new Component
 ---------------
 
-Adding a new Condition or Response is relatively painless. Open up NewComponentExample.cs in Scripts/TriggerBoxComponents. You can use this example as a template for new components.
+Creating a new Condition or Response is relatively painless. Open up NewComponentExample.cs in Scripts/TriggerBoxComponents. You can use this example as a template for new components.
 
 All you need to do in inherit the EnhancedTriggerBoxComponent, override some functions from it and then add it to a list. There are 4 functions you can override. 1 is mandatory, 1 is recommended and the other two are optional. These will be explained in detail below.
 
-> If you want to view more advanced examples, go to Scripts/TriggerBoxComponents/Conditions or Scripts/TriggerBoxComponents/Responses and take a look at some of them.
+If you want to view more advanced examples, go to Scripts/TriggerBoxComponents/Conditions or Scripts/TriggerBoxComponents/Responses and take a look at some of them.
 
-#### The Power of Inheirtance
+#### Inherit EnhancedTriggerBoxComponent
 
 The most important thing to do is to inherit EnhancedTriggerBoxComponent in the class definition. 
 
@@ -89,7 +91,7 @@ public GameObject exampleGameobject;
 
 #### DrawInspectorGUI()
 
-DrawInspectorGUI() is recommended to override. This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. You will not be able to use any custom structs or enums and you won't be able to add your own tooltips.
+It is recommened that you override DrawInspectorGUI(). This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. You will not be able to use any custom structs or enums and you won't be able to add your own tooltips.
 
 Here's how you would draw a gameobject to a inspector (first example in the codeblock). EditorGUILayout.ObjectField is the typical object reference field you
 always see in Unity. It returns the object which we will need to save as exampleGameObject so we do exampleGameObject = ObjectField.
@@ -195,7 +197,46 @@ get checked to see if they have been met. Once they all have been met, all the r
 
 ### Camera Condition
 
-The camera condition can be used to see if the player is looking at something or if something is out of sight. 
+The camera condition can be used to see if a camera is looking at or not looking at something. To use this condition, simply drag something onto Condition Object and select either Looking At or Looking Away.
+
+#### How does the Looking At condition type work?
+
+Once you supply an object for Condition Object you can select the component parameter which will be what the condition works with. For example, transform will mean the condition can only pass if the transform's position is within the camera planes or Full Box Collider will mean that the entire box collider must be in view.
+
+For Transform it first transforms the condition object's position from world space into the selected camera's viewport space. It then checks that position to see if it's within the camera's planes by using the following if statement:
+
+ ``` csharp
+ if (viewConditionScreenPoint.z > 0 && viewConditionScreenPoint.x > 0 &&
+     viewConditionScreenPoint.x < 1 && viewConditionScreenPoint.y > 0 && viewConditionScreenPoint.y < 1)
+```
+
+If this statement is true then it means the object is in the cameras view. It will then fire a raycast from the camera in the direction of the object to make sure no objects are blocking it's view (unless ignore obstacles is ticked). If that succeeds it means there was either nothing in the way or it hit our object and the condition has passed.
+
+If the component parameter is set to Full Box Collider, the entire box collider must be within the cameras view. So instead of doing the above if statement on just the transform it does it on all of the box colliders points to ensure it is all in view. Minimum Box Collider is similar but only one point on the box collider needs to be visible for it to pass. Mesh Renderer uses the in-built isVisible function to work out if it is visible in a camera.
+
+Raycast intensity allows you to customise the raycasts that get fired when checking if there's anything blocking the cameras view to the object. Ignore obstacles won't do any raycast check at all, meaning you just have to look in the direction of the object and the condition will pass, even if there's something in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
+
+#### How doing the Looking Away condition type work?
+
+It is essentially the opposite of the Looking At condition. For example, with the transform component type, if the objects position is outside of the cameras view frustum the condition will pass. Full Box Collider will pass if the whole box collider is outside of the cameras view. Minimum Box Collider will pass if any part of the box collider is outside of the cameras view. Mesh Renderer will pass if the isVisible function is false.
+
+One thing to note is that it doesn't do any raycast checks. This means that if an object is hidden behind an obstacle it won't pass if the camera is looking in it's direction. This will be added shortly. 
+
+#### Component fields
+
+Camera:- This is the camera that will be used for the condition. By default this is the main camera.
+
+Condition Type:- This is the type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum.
+
+Condition Object:- This is the object that the condition is based upon.
+
+Component Parameter:- This is the type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider), full box collider (the entire box collider) or mesh renderer (any part of a mesh). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met.
+
+Raycast Intesity:- When using the Looking At condition type raycasts are fired to make sure nothing is blocking the cameras line of sight to the object. Here you can customise how those raycasts should be fired. Ignore obstacles fires no raycasts and mean the condition will pass even if there is an object in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
+
+Condition Time:- This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass.
+
+![Test Image](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CameraCondition.png)
 
 Individual Responses
 ---------------
