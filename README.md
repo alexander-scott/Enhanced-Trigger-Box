@@ -246,6 +246,10 @@ The player pref condition can be used to compare values stored in player prefs. 
 
 It's quite simple. The value in the player pref with playerPrefKey gets compared against playerPrefValue using the condition type. If you tick refresh every frame the value in the player pref will be retrieved every time the condition is checked. If you untick refresh every frame it will retrieve it once and cache it when you first start the game.
 
+ ``` csharp
+playerPrefString = PlayerPrefs.GetString(playerPrefKey);
+```
+
 #### Component fields
 
 Condition Type:- The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than.
@@ -268,3 +272,160 @@ get checked to see if they have been met. Once they all have been met, all the r
 
 ### Animation Response
 
+The animation response can be used to set a mecanim trigger on a gameobject, stop all animations on a gameobject or play an animation clip on a gameobject.
+
+#### How does it work?
+
+This response is very self-explanatory as it literally just calls Unity animator functions. One thing to note is that when playing the animation clip it will plays an animation clip on the target animation over 0.3 seconds and will fade other animations out.
+
+ ``` csharp
+if (stopAnim && animationTarget)
+{
+    animationTarget.GetComponent<Animation>().Stop();
+}
+
+if (animationClip && animationTarget)
+{
+    animationTarget.GetComponent<Animation>().CrossFade(animationClip.name, 0.3f, PlayMode.StopAll);
+}
+
+if (!string.IsNullOrEmpty(setMecanimTrigger) && animationTarget)
+{
+    animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
+}
+```
+
+#### Component Fields
+
+Animation Target:- The gameobject to apply the animation to.
+
+Set Mecanim Trigger:- The name of the trigger on the gameobject animator that you want to trigger.
+
+Stop Animation:- Stops the current animation on the animation target.
+
+Animation Clip:- The animation clip to play.
+
+![Animation Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/AnimationResponse.png)
+
+### Audio Response
+
+The audio response can be used to play music, mute audio on the main camera and play sound effects at any position. There is also the option to loop the music and change the volume of the music and sound effect.
+
+#### How does it work?
+
+This response is very self-explanatory as it literally just calls Unity audio functions. One thing to note is playing music (and stopping music) will use the main cameras audio source. Perhaps I will add support for playing music at a different audio source but right now I don't think there's any demand for it.
+
+ ``` csharp
+if (muteAllAudio)
+{
+    Camera.main.GetComponent<AudioSource>().Stop();
+}
+
+if (playMusic)
+{
+    Camera.main.GetComponent<AudioSource>().loop = loopMusic;
+    Camera.main.GetComponent<AudioSource>().clip = playMusic;
+    Camera.main.GetComponent<AudioSource>().volume = musicVolume;
+    Camera.main.GetComponent<AudioSource>().Play();
+}
+
+if (playSoundEffect)
+{
+    AudioSource.PlayClipAtPoint(playSoundEffect, soundEffectPosition.position, musicVolume);
+}
+```
+
+#### Component Fields
+
+Mute All Audio:- Stops the current audio clip being played on the main camera.
+
+Play Music:- This is the audio clip that will be played on the main camera.
+
+Loop Music:- If this is true, the above audio clip will loop when played.
+
+Music Volume:- The volume of the music when played. Default is 1.
+
+Play Sound Effect:- This is an audio clip, played at a certain position in world space as defined below.
+
+Sound Effect Position:- The position the sound effect will be played at.
+
+![Audio Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/AudioResponse.png)
+
+### Call Function Response
+
+The call function response can be used to call a function on a select gameobject and pass in a parameter as well. Supported parameter types currently include int, float and string.
+
+#### How does it work?
+
+The call function response uses Unity's inbuilt GameObject.SendMessage() function to send a value to a function on another gameobject. If you select int or float it will parse the message value before sending it.
+
+``` csharp
+messageTarget.SendMessage(messageFunctionName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
+```
+
+#### Component Fields
+
+Message Target:- This is the gameobject on which the below function is called on.
+
+Message Function Name:- This is the function which is called on the above gameobject.
+
+Message Type:- This is the type of parameter that will be sent to the function. Options are int, float and string.
+
+Message Value:- This is the value of the parameter that will be sent to the function.
+
+![Call Function Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CallFunctionResponse.png)
+
+### Load Level Response
+
+This response allows you to load a new scene. All you need to do is supply the scene name. Make sure it is included in the build settings.
+
+``` csharp
+UnityEngine.SceneManagement.SceneManager.LoadScene(loadLevelName);
+```
+
+![Load Level Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LoadLevelResponse.png)
+
+### Modify GameObject Response
+
+This response allows you to modify a gameobject by either disabling, enabling or destroying it. You can either pass in a gameobject reference or pass in the gameobjects name and the object will be found using GameObject.Find().
+
+You are unable to enable a gameobject by name because GameObject.Find() cannot be used on inactive objects and the workarounds require you to modify your game which is not what I want. It is good practice to use object references instead of searching for objects anyway.
+
+``` csharp
+gameObject.SetActive(true);
+gameObject.SetActive(false);
+Destroy(gameObject);
+```
+
+#### Component Fields
+
+gameObject:- The gameobject that will modified.
+
+gameObjectName:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified
+
+modifyType:- This is the type of modification you want to happen to the gameobject. Options are destroy, disable and enable.
+
+![Modify GameObject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SpawnGameObjectResponse.png)
+
+### Player Pref Response
+
+This response allows you to save a value to a player pref. The supported data types are int, float and string.
+
+``` csharp
+PlayerPrefs.SetString(setPlayerPrefKey, setPlayerPrefVal);
+```
+#### Component Fields
+
+Player Pref Key:- This is the key (ID) of the player pref which will have its value set.
+
+Player Pref Type:- This is the type of data stored within the player pref.
+
+Player Pref Value:- This is the value that will be stored in the player pref.
+
+![Player Pref Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/PlayerPrefResponse.png)
+
+### Rigidbody Response
+
+This response allows you to modify a rigidbody component on another gameobject. 
+
+TODO

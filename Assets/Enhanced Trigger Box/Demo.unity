@@ -686,7 +686,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.6985294, g: 0.15408735, b: 0.15408735, a: 0.553}
   afterTrigger: 0
   triggerFollow: 0
-  conditionTime: 3
+  conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -723,16 +723,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 370416573}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7293fe2c2c0bd849a75e98471c4f8b5, type: 3}
+  m_Script: {fileID: 11500000, guid: de9e48af55de30f4c8a1ea37a244f537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
-  animationTarget: {fileID: 0}
-  setMecanimTrigger: 
-  stopAnim: 0
-  playLegacyAnimation: {fileID: 0}
+  rigbody: {fileID: 0}
+  setMass: 
+  setDrag: 
+  setAngularDrag: 
+  changeGravity: 0
+  changeKinematic: 0
+  changeInterpolate: 0
+  changeCollisionDetection: 0
 --- !u!1 &441788227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,9 +1631,9 @@ MonoBehaviour:
   deleted: 0
   showWarnings: 1
   playerPrefCondition: 3
-  playerPrefVal: 1
   playerPrefKey: DemoProgression
   playerPrefType: 0
+  playerPrefVal: 1
   refreshEveryFrame: 1
 --- !u!114 &954587740
 MonoBehaviour:

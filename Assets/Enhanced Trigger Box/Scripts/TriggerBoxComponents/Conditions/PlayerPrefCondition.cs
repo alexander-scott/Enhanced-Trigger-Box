@@ -225,7 +225,7 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
     /// </summary>
     private void GetUpdatedPlayerPrefs()
     {
-        if (!string.IsNullOrEmpty(playerPrefVal))
+        if (!string.IsNullOrEmpty(playerPrefVal) && !string.IsNullOrEmpty(playerPrefKey))
         {
             switch (playerPrefType)
             {
@@ -238,7 +238,7 @@ public class PlayerPrefCondition : EnhancedTriggerBoxComponent
                     break;
 
                 case ParameterType.String:
-                    playerPrefString = PlayerPrefs.GetString(playerPrefString);
+                    playerPrefString = PlayerPrefs.GetString(playerPrefKey);
                     break;
             }
         }

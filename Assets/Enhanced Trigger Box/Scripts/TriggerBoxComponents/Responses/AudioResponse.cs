@@ -85,7 +85,7 @@ public class AudioResponse : EnhancedTriggerBoxComponent
 
         if (playSoundEffect)
         {
-            // This will play the audio clip at the trigger boxes current position
+            // This will play the audio clip at soundEffectPosition's position with the volume of musicVolume
             AudioSource.PlayClipAtPoint(playSoundEffect, soundEffectPosition.position, musicVolume);
         }
 

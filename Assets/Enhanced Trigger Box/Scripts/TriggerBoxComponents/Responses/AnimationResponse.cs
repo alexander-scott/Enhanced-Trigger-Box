@@ -11,19 +11,19 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
     public GameObject animationTarget;
 
     /// <summary>
-    /// The name of the trigger in the animator that you want to trigger.
+    /// The name of the trigger on the gameobject animator that you want to trigger.
     /// </summary>
     public string setMecanimTrigger;
 
     /// <summary>
-    /// Fades the animation in on the animation target over 0.3 seconds and fades other animations out.
+    /// Stops the current animation on the animation target.
     /// </summary>
     public bool stopAnim;
 
     /// <summary>
-    /// The animation clip to play
+    /// The animation clip to play.
     /// </summary>
-    public AnimationClip playLegacyAnimation;
+    public AnimationClip animationClip;
 
     public override void DrawInspectorGUI()
     {
@@ -31,14 +31,14 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
             "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
 
         setMecanimTrigger = EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
-            "The name of the trigger in the animator that you want to trigger."), setMecanimTrigger);
+            "The name of the trigger on the gameobject animator that you want to trigger."), setMecanimTrigger);
 
         stopAnim = EditorGUILayout.Toggle(new GUIContent("Stop Animation",
             "Stops the current animation on the animation target."), stopAnim);
 
-        playLegacyAnimation = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
+        animationClip = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
             "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."),
-            playLegacyAnimation, typeof(AnimationClip), true);
+            animationClip, typeof(AnimationClip), true);
     }
 
     public override void Validation()
@@ -62,7 +62,7 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
         }
 
         // If legacy animat is set to play check there is a target for it
-        if (playLegacyAnimation != null)
+        if (animationClip != null)
         {
             if (animationTarget == null)
             {
@@ -78,13 +78,13 @@ public class AnimationResponse : EnhancedTriggerBoxComponent
             animationTarget.GetComponent<Animation>().Stop();
         }
 
-        if (playLegacyAnimation && animationTarget)
+        if (animationClip && animationTarget)
         {
             // Plays an animation clip on the target animation over 0.3 seconds and fades other animations out
-            animationTarget.GetComponent<Animation>().CrossFade(playLegacyAnimation.name, 0.3f, PlayMode.StopAll);
+            animationTarget.GetComponent<Animation>().CrossFade(animationClip.name, 0.3f, PlayMode.StopAll);
         }
 
-        if (!string.IsNullOrEmpty(setMecanimTrigger))
+        if (!string.IsNullOrEmpty(setMecanimTrigger) && animationTarget)
         {
             animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
         }

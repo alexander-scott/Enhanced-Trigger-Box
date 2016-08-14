@@ -65,6 +65,23 @@ public class CallFunctionResponse : EnhancedTriggerBoxComponent
         {
             ShowWarningMessage("You have entered a function and gameobject to send a message to but the message has no value!");
         }
+
+        if (parameterType == ParameterType.Int && !string.IsNullOrEmpty(parameterValue))
+        {
+            int i;
+            if (!int.TryParse(parameterValue, out i))
+            {
+                ShowWarningMessage("The message value you have entered is not a valid int. Please make sure you enter a valid int for the message value.");
+            }
+        } 
+        else if (parameterType == ParameterType.Float && !string.IsNullOrEmpty(parameterValue))
+        {
+            float f;
+            if (!float.TryParse(parameterValue, out f))
+            {
+                ShowWarningMessage("The message value you have entered is not a valid float. Please make sure you enter a valid float for the message value.");
+            }
+        }
     }
 
     public override bool ExecuteAction()
