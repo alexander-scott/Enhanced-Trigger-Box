@@ -78,7 +78,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     /// <summary>
     /// A list of tags belonging to gameobjects which are able to trigger the trigger box
     /// </summary>
-    [Tooltip("Only tags listed here are able to trigger the trigger box. To have more than one string, put a comma between them. By default the Player tag is used here.")]
+    [Tooltip("Only tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. By default the Player tag is used here.")]
     public string triggerTags = "Player";
 
     /// <summary>
@@ -118,6 +118,12 @@ public class EnhancedTriggerBox : MonoBehaviour
     public TriggerFollow triggerFollow;
 
     /// <summary>
+    /// This is the time that the conditions must be met for in seconds.
+    /// </summary>
+    [Tooltip("This is the total time that the conditions must be met for in seconds before the responses get executed.")]
+    public float conditionTime = 0f;
+
+    /// <summary>
     /// This transform is used when trigger follow is set to transform. The trigger boxes position will be set to this transforms position every frame.
     /// </summary>
     [Tooltip("This is used when Trigger Follow is set to Follow Transform. The trigger box will stay positioned on wherever this transform is currently positioned.")]
@@ -144,6 +150,11 @@ public class EnhancedTriggerBox : MonoBehaviour
     /// This is set to true when all the conditions have been met.
     /// </summary>
     private bool conditionMet = false;
+
+    /// <summary>
+    /// This is a timer used to make sure the time the condition has been met for is longer than conditionTime
+    /// </summary>
+    private float conditionTimer = 0f;
 
     #endregion
 
@@ -352,13 +363,15 @@ public class EnhancedTriggerBox : MonoBehaviour
                 }
             }
 
-            // If all have conditions have been met, execute the responses
-            if (conditionMet)
+            // If all have conditions have been met we must check that they have been met for longer than the specified conditionTime
+            if (conditionMet && CheckConditionTimer())
             {
                 ConditionsMet();
             }
         }
     }
+
+
 
     /// <summary>
     /// This function executes all the responses and only happens after all the conditions have been met
@@ -438,5 +451,23 @@ public class EnhancedTriggerBox : MonoBehaviour
             Gizmos.DrawWireCube(new Vector3(GetComponent<Collider>().bounds.center.x, GetComponent<Collider>().bounds.center.y, GetComponent<Collider>().bounds.center.z),
                            new Vector3(GetComponent<Collider>().bounds.size.x, GetComponent<Collider>().bounds.size.y, GetComponent<Collider>().bounds.size.z));
         }
+    }
+
+    /// <summary>
+    /// This function checks to make sure the conditions have been met for a certain amount of time.
+    /// </summary>
+    /// <returns>Returns true or false depending on if the conditions have been met for a certain about of time.</returns>
+    private bool CheckConditionTimer()
+    {
+        if (conditionTimer >= conditionTime)
+        {
+            return true;
+        }
+        else
+        {
+            conditionTimer += Time.fixedDeltaTime;
+        }
+
+        return false;
     }
 }

@@ -178,7 +178,6 @@ MonoBehaviour:
   conditionObject: {fileID: 1173084144}
   componentParameter: 1
   raycastIntensity: 3
-  conditionTime: 0
 --- !u!114 &139433621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +204,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.75735295, g: 0.32855752, b: 0.32855752, a: 0.509}
   afterTrigger: 0
   triggerFollow: 0
+  conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -675,9 +675,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a62fb07d8923234c83625cb5bdebfd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conditions:
+  conditions: []
+  responses:
   - {fileID: 370416577}
-  responses: []
   showBaseOptions: 1
   triggerTags: Player
   debugTriggerBox: 1
@@ -686,9 +686,10 @@ MonoBehaviour:
   triggerboxColour: {r: 0.6985294, g: 0.15408735, b: 0.15408735, a: 0.553}
   afterTrigger: 0
   triggerFollow: 0
+  conditionTime: 3
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 1
+  canWander: 0
 --- !u!65 &370416575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -722,18 +723,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 370416573}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
+  m_Script: {fileID: 11500000, guid: a7293fe2c2c0bd849a75e98471c4f8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
-  cam: {fileID: 1108359025}
-  cameraConditionType: 0
-  conditionObject: {fileID: 0}
-  componentParameter: 0
-  raycastIntensity: 3
-  conditionTime: 0
+  animationTarget: {fileID: 0}
+  setMecanimTrigger: 
+  stopAnim: 0
+  playLegacyAnimation: {fileID: 0}
 --- !u!1 &441788227
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +910,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.8455882, g: 0.50983995, b: 0.50983995, a: 0.578}
   afterTrigger: 0
   triggerFollow: 0
+  conditionTime: 0
   followTransform: {fileID: 604583591}
   followTransformName: 
   canWander: 0
@@ -1069,6 +1069,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0, g: 0, b: 0, a: 0}
   afterTrigger: 0
   triggerFollow: 0
+  conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -1537,7 +1538,6 @@ MonoBehaviour:
   conditionObject: {fileID: 1700837941}
   componentParameter: 0
   raycastIntensity: 3
-  conditionTime: 0
 --- !u!114 &954587735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1566,6 +1566,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.6915874, g: 0.8308824, b: 0.29936203, a: 0}
   afterTrigger: 0
   triggerFollow: 2
+  conditionTime: 0
   followTransform: {fileID: 604583591}
   followTransformName: 
   canWander: 0
@@ -1629,6 +1630,7 @@ MonoBehaviour:
   playerPrefVal: 1
   playerPrefKey: DemoProgression
   playerPrefType: 0
+  refreshEveryFrame: 1
 --- !u!114 &954587740
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1857,7 +1859,6 @@ MonoBehaviour:
   conditionObject: {fileID: 1944559925}
   componentParameter: 0
   raycastIntensity: 3
-  conditionTime: 2
 --- !u!114 &1084286713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1883,6 +1884,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.18166089, g: 0.58823526, b: 0.38635004, a: 0.609}
   afterTrigger: 0
   triggerFollow: 0
+  conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -2064,7 +2066,6 @@ MonoBehaviour:
   conditionObject: {fileID: 2110441795}
   componentParameter: 0
   raycastIntensity: 3
-  conditionTime: 0
 --- !u!114 &1276980725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2089,6 +2090,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.17901169, g: 0.5661765, b: 0.502094, a: 0.522}
   afterTrigger: 0
   triggerFollow: 0
+  conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0

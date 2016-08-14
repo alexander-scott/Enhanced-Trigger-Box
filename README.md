@@ -32,13 +32,15 @@ Debug Trigger Box:- If true, the script will write to the console when certain e
 
 Hide Warnings:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
 
+Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
+
 TriggerBox Colour:- This is the colour the trigger box and it's edges will have in the editor.
 
 After Trigger:- This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.
 
-Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
-
 Trigger Follow:- This allows you to choose if you want your trigger box to stay positioned on a moving transform or the main camera. If you pick Follow Transform a field will appear to set which transform you want the trigger box to follow. Or if you pick Follow Main Camera the trigger box will stay positioned on wherever the main camera currently is.
+
+Condition Time:- This lets you set an additional time requirement on top of the conditions. This is the total time that the conditions must be met for in seconds.
 
 Can Wander:- If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
 
@@ -234,9 +236,35 @@ Component Parameter:- This is the type of component the condition will be checke
 
 Raycast Intesity:- When using the Looking At condition type raycasts are fired to make sure nothing is blocking the cameras line of sight to the object. Here you can customise how those raycasts should be fired. Ignore obstacles fires no raycasts and mean the condition will pass even if there is an object in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
 
-Condition Time:- This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass.
+![Camera Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CameraCondition.png)
 
-![Test Image](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CameraCondition.png)
+### Player Pref Condition
+
+The player pref condition can be used to compare values stored in player prefs. For example, the player pref, LevelProgression, must have a value of over 5 before this condition gets met. To use this condition select the condition type, such as greater than, then enter the key of the player pref and finally the value that you want to compare that player pref with. 
+
+#### How does it work?
+
+It's quite simple. The value in the player pref with playerPrefKey gets compared against playerPrefValue using the condition type. If you tick refresh every frame the value in the player pref will be retrieved every time the condition is checked. If you untick refresh every frame it will retrieve it once and cache it when you first start the game.
+
+#### Component fields
+
+Condition Type:- The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than.
+
+Player Pref Key:- The key (ID) of the player pref that will be compared against the above value.
+
+Player Pref Type:- This is the type of data stored within the player pref. Options are int, float and string.
+
+Player Pref Value:- The value that will be used to compare against the value stored in the player pref.
+
+Refresh Every Frame:- If true, the value in the player pref will be retrieved every time the condition check happens. If false, it will only retrieve the player pref value once, when the game first starts.
+
+![Player Pref Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/PlayerPrefCondition.png)
 
 Individual Responses
 ---------------
+
+Below this, all of the current responses will be listed and described in detail. Remember once the trigger box gets entered, all the conditions
+get checked to see if they have been met. Once they all have been met, all the responses get executed.
+
+### Animation Response
+

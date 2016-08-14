@@ -36,11 +36,6 @@ public class CameraCondition : EnhancedTriggerBoxComponent
     public RaycastIntensity raycastIntensity = RaycastIntensity.Med;
 
     /// <summary>
-    /// This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass.
-    /// </summary>
-    public float conditionTime = 0f;
-
-    /// <summary>
     /// The world to viewport point of the object the viewObject
     /// </summary>
     private Vector3 viewConditionScreenPoint = new Vector3();
@@ -64,11 +59,6 @@ public class CameraCondition : EnhancedTriggerBoxComponent
     /// The view planes of the camera
     /// </summary>
     private Plane[] viewConditionCameraPlane;
-
-    /// <summary>
-    /// This is a timer used to make sure the time the condition has been met for is longer than conditionTime
-    /// </summary>
-    private float viewTimer = 0f;
 
     /// <summary>
     /// The bool dictates whether the raycast check can be performed or not. 
@@ -126,9 +116,6 @@ public class CameraCondition : EnhancedTriggerBoxComponent
             raycastIntensity = (RaycastIntensity)EditorGUILayout.EnumPopup(new GUIContent("Raycast Intesity",
                 "When using the Looking At condition type raycasts are fired to make sure nothing is blocking the cameras line of sight to the object. Here you can customise how those raycasts should be fired. Ignore obstacles fires no raycasts and mean the condition will pass even if there is an object in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider."), raycastIntensity);
         }
-
-        conditionTime = EditorGUILayout.FloatField(new GUIContent("Condition Time",
-            "This is the time that this camera condition must be met for in seconds. E.g. camera must be looking at object for 2 seconds for the condition to pass."), conditionTime);
     }
 
     public override void Validation()
@@ -171,12 +158,6 @@ public class CameraCondition : EnhancedTriggerBoxComponent
         {
             ShowWarningMessage("High raycast intensity will have no extra effect than med when using mesh renderer. This is because high intensity uses all the points from the a box colliders bounds but mesh renderers do not have bounds.");
         }
-
-        // Check that condition time is above 0
-        if (conditionTime < 0f)
-        {
-            ShowWarningMessage("You have set the camera condition timer to be less than 0 which isn't possible!");
-        }
     }
 
     /// <summary>
@@ -218,16 +199,14 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                             // the line of sight
                             if (raycastIntensity == RaycastIntensity.IgnoreObstacles)
                             {
-                                // Check if we this condition has been met for longer than the conditionTimer
-                                return CheckConditionTimer();
+                                return true;
                             }
                             else
                             {
                                 // Check if there's any objects in the way using raycasts
                                 if (CheckRaycastTransform(conditionObject.transform.position - cam.transform.position))
                                 {
-                                    // Check if we this condition has been met for longer than the conditionTimer
-                                    return CheckConditionTimer();
+                                    return true;
                                 }
                             }
                         }
@@ -239,21 +218,21 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                         {
                             if (raycastIntensity == RaycastIntensity.IgnoreObstacles)
                             {
-                                return CheckConditionTimer();
+                                return true;
                             }
                             else if (raycastIntensity == RaycastIntensity.High)
                             {
                                 // If raycast intensity is set to high we'll raycast to every corner on the bounds instead of just the position
                                 if (CheckRaycastMinimumCollider(viewConditionObjectCollider.bounds))
                                 {
-                                    return CheckConditionTimer();
+                                    return true;
                                 }
                             }
                             else
                             {
                                 if (CheckRaycastTransform(conditionObject.transform.position - cam.transform.position))
                                 {
-                                    return CheckConditionTimer();
+                                    return true;
                                 }
                             }
                         }
@@ -265,20 +244,20 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                         {
                             if (raycastIntensity == RaycastIntensity.IgnoreObstacles)
                             {
-                                return CheckConditionTimer();
+                                return true;
                             }
                             else if (raycastIntensity == RaycastIntensity.High)
                             {
                                 if (CheckRaycastFullCollider(viewConditionObjectCollider.bounds))
                                 {
-                                    return CheckConditionTimer();
+                                    return true;
                                 }
                             }
                             else
                             {
                                 if (CheckRaycastTransform(conditionObject.transform.position - cam.transform.position))
                                 {
-                                    return CheckConditionTimer();
+                                    return true;
                                 }
                             }
                         }
@@ -290,13 +269,13 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                         {
                             if (raycastIntensity != RaycastIntensity.IgnoreObstacles)
                             {
-                                return CheckConditionTimer();
+                                return true;
                             }
                             else
                             {
                                 if (CheckRaycastTransform(conditionObject.transform.position - cam.transform.position))
                                 {
-                                    return CheckConditionTimer();
+                                    return true;
                                 }
                             }
                         }
@@ -310,28 +289,28 @@ public class CameraCondition : EnhancedTriggerBoxComponent
                     case CameraConditionComponentParameters.Transform:
                         if (!IsInCameraFrustum(conditionObject.transform.position))
                         {
-                            return CheckConditionTimer();
+                            return true;
                         }
                         break;
 
                     case CameraConditionComponentParameters.MinimumBoxCollider:
                         if (CheckMinimumBoxCollider(viewConditionObjectCollider.bounds))
                         {
-                            return CheckConditionTimer();
+                            return true;
                         }
                         break;
 
                     case CameraConditionComponentParameters.FullBoxCollider:
                         if (CheckFullBoxCollider(viewConditionObjectCollider.bounds))
                         {
-                            return CheckConditionTimer();
+                            return true;
                         }
                         break;
 
                     case CameraConditionComponentParameters.MeshRenderer:
                         if (!viewConditionObjectMeshRenderer.isVisible)
                         {
-                            return CheckConditionTimer();
+                            return true;
                         }
                         break;
                 }
@@ -607,24 +586,6 @@ public class CameraCondition : EnhancedTriggerBoxComponent
         {
             return false;
         }
-    }
-
-    /// <summary>
-    /// This function checks to make sure the condition has been met for a certain amount of time.
-    /// </summary>
-    /// <returns>Returns true or false depending on if the condition has been met for a certain about of time.</returns>
-    private bool CheckConditionTimer()
-    {
-        if (viewTimer >= conditionTime)
-        {
-            return true;
-        }
-        else
-        {
-            viewTimer += Time.fixedDeltaTime;
-        }
-
-        return false;
     }
 
     /// <summary>

@@ -51,6 +51,7 @@ public class EnhancedTriggerBoxInspector : Editor
                 RenderPropertyField(so.FindProperty("followTransformName"));
             }
 
+            RenderPropertyField(so.FindProperty("conditionTime"));
             RenderPropertyField(so.FindProperty("canWander"));
         }
 
