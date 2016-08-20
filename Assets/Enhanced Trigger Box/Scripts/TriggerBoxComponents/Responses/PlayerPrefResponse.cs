@@ -2,7 +2,6 @@
 using UnityEditor;
 using System;
 
-[Serializable]
 public class PlayerPrefResponse : EnhancedTriggerBoxComponent
 {
     /// <summary>

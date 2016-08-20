@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class RigidbodyResponse : EnhancedTriggerBoxComponent {
+public class ModifyRigidbodyResponse : EnhancedTriggerBoxComponent {
     /// <summary>
     /// The rigidbody that will be changed
     /// </summary>

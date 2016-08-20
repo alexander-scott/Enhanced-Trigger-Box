@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: a7bed68887a07e34394d4191b3081359, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0919308, g: 0.14170936, b: 0.18327698, a: 1}
+  m_IndirectSpecularColor: {r: 0.09193065, g: 0.14170906, b: 0.18327665, a: 1}
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -219,11 +219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a413dc2ecc3a741881907878de94d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  destroyGameObject: {fileID: 1653758927}
-  destroyGameObjectName: 
 --- !u!114 &139433623
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -235,11 +230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a413dc2ecc3a741881907878de94d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  destroyGameObject: {fileID: 161392770}
-  destroyGameObjectName: 
 --- !u!1 &161392770
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +530,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -676,8 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   conditions: []
-  responses:
-  - {fileID: 370416577}
+  responses: []
   showBaseOptions: 1
   triggerTags: Player
   debugTriggerBox: 1
@@ -723,20 +712,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 370416573}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de9e48af55de30f4c8a1ea37a244f537, type: 3}
+  m_Script: {fileID: 11500000, guid: e585ae70c585991458951865f220217f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hideShowSection: 1
-  deleted: 0
+  deleted: 1
   showWarnings: 1
-  rigbody: {fileID: 0}
-  setMass: 
-  setDrag: 
-  setAngularDrag: 
-  changeGravity: 0
-  changeKinematic: 0
-  changeInterpolate: 0
-  changeCollisionDetection: 0
+  muteAllAudio: 0
+  playMusic: {fileID: 0}
+  loopMusic: 0
+  musicVolume: 1
+  playSoundEffect: {fileID: 0}
+  soundEffectPosition: {fileID: 0}
 --- !u!1 &441788227
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,10 +803,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!1 &442860250 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 168242, guid: b3baf7be96e4df548acd7b1c31498804, type: 2}
-  m_PrefabInternal: {fileID: 219589821}
 --- !u!1 &553811321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,11 +1484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2fa35f4f34a4ed448d052f4982163ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  disableGameObject: {fileID: 577214494}
-  disableGameObjectName: 
 --- !u!114 &954587733
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1558,10 +1536,7 @@ MonoBehaviour:
   - {fileID: 954587739}
   responses:
   - {fileID: 954587733}
-  - {fileID: 954587732}
   - {fileID: 954587738}
-  - {fileID: 954587741}
-  - {fileID: 954587740}
   showBaseOptions: 1
   triggerTags: Player
   debugTriggerBox: 1
@@ -1646,10 +1621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc4ec886394b8f46a5b638abb2f10fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  enableGameObject: {fileID: 442860250}
 --- !u!114 &954587741
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1661,10 +1632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc4ec886394b8f46a5b638abb2f10fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  enableGameObject: {fileID: 1653758927}
 --- !u!1 &974882538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,11 +1789,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2fa35f4f34a4ed448d052f4982163ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  disableGameObject: {fileID: 802626297}
-  disableGameObjectName: 
 --- !u!114 &1084286711
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -2047,10 +2009,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc4ec886394b8f46a5b638abb2f10fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  enableGameObject: {fileID: 1700837941}
 --- !u!114 &1276980724
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -2084,7 +2042,6 @@ MonoBehaviour:
   conditions:
   - {fileID: 1276980724}
   responses:
-  - {fileID: 1276980723}
   - {fileID: 1276980728}
   showBaseOptions: 1
   triggerTags: Player

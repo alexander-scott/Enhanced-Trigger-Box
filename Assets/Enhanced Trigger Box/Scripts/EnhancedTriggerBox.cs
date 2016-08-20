@@ -28,11 +28,12 @@ public class EnhancedTriggerBox : MonoBehaviour
         SelectAResponse,
         AnimationResponse,
         AudioResponse,
-        CallFunctionResponse,
         LoadLevelResponse,
-        ModifyGameobjectResponse,
+		ModifyGameobjectResponse,
+		ModifyMaterialResponse,
+		ModifyRigidbodyResponse,
         PlayerPrefResponse,
-        RigidbodyResponse,
+		SendMessageResponse,
         SpawnGameobjectResponse,
     }
 
@@ -88,7 +89,7 @@ public class EnhancedTriggerBox : MonoBehaviour
     /// <summary>
     /// If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
     /// </summary>
-    [Tooltip("If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.")]
+    [Tooltip("If this is true, you won't see any warnings in the editor when you're missing references or if there's something which could cause an error.")]
     public bool hideWarnings;
 
     /// <summary>
@@ -190,9 +191,6 @@ public class EnhancedTriggerBox : MonoBehaviour
         EditorGUI.indentLevel = 0;
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
-        // This gets rid of any null objects, caused by conditions being deleted
-        conditions.RemoveAll(r => r == null);
-        
         if (conditions.Count > 0)
         {
             // Display all the conditions
@@ -204,19 +202,17 @@ public class EnhancedTriggerBox : MonoBehaviour
                     {
                         // If the condition has been deleted we will destroy it
                         Undo.DestroyObjectImmediate(conditions[i]);
+						conditions.RemoveAt (i);
                     }
                     else
                     {
                         conditions[i].showWarnings = !hideWarnings;
                         conditions[i].OnInspectorGUI();
 
-                        if (i != conditions.Count - 1)
-                            GUILayout.Space(10.0f);
+                        GUILayout.Space(10.0f);
                     }
                 }
             }
-
-            GUILayout.Space(10.0f);
         }
 
         EditorGUI.BeginChangeCheck();
@@ -250,8 +246,6 @@ public class EnhancedTriggerBox : MonoBehaviour
         EditorGUI.indentLevel = 0;
         EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
-        responses.RemoveAll(r => r == null);
-
         if (responses.Count > 0)
         {
             for (int i = 0; i < responses.Count; i++)
@@ -261,19 +255,17 @@ public class EnhancedTriggerBox : MonoBehaviour
                     if (responses[i].deleted)
                     {
                         Undo.DestroyObjectImmediate(responses[i]);
+						responses.RemoveAt (i);
                     }
                     else
                     {
                         responses[i].showWarnings = !hideWarnings;
                         responses[i].OnInspectorGUI();
 
-                        if (i != responses.Count - 1)
-                            GUILayout.Space(10.0f);
+                        GUILayout.Space(10.0f);
                     }
                 }
             }
-
-            GUILayout.Space(10.0f);
         }
 
         EditorGUI.BeginChangeCheck();
@@ -350,9 +342,9 @@ public class EnhancedTriggerBox : MonoBehaviour
             conditionMet = true;
 
             // Loop through each condition to check if it has been met
-            foreach (EnhancedTriggerBoxComponent c in conditions)
+			for (int i = 0; i < conditions.Count; i++)
             {
-                conditionMet = c.ExecuteAction();
+				conditionMet = conditions[i].ExecuteAction();
 
                 // If one has failed we don't need to check the rest so break out of the loop
                 if (!conditionMet)
@@ -377,9 +369,9 @@ public class EnhancedTriggerBox : MonoBehaviour
     private void ConditionsMet()
     {
         // Execute every response
-        foreach (EnhancedTriggerBoxComponent r in responses)
+		for (int i = 0; i < responses.Count; i++)
         {
-            r.ExecuteAction();
+			responses[i].ExecuteAction();
         }
 
         // If debugTriggerBox is selected, write to the console saying the trigger box has successfully been triggered

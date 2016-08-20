@@ -2,7 +2,6 @@
 using UnityEditor;
 using System;
 
-[Serializable]
 public class AnimationResponse : EnhancedTriggerBoxComponent
 {
     /// <summary>

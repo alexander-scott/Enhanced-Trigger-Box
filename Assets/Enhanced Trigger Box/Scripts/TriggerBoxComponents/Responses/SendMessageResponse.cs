@@ -2,13 +2,17 @@
 using UnityEditor;
 using System;
 
-[Serializable]
-public class CallFunctionResponse : EnhancedTriggerBoxComponent
+public class SendMessageResponse : EnhancedTriggerBoxComponent
 {
     /// <summary>
     /// This is the gameobject on which the below function is called on.
     /// </summary>
     public GameObject messageTarget;
+
+	/// <summary>
+	/// If you are unable to provide a reference for a gameobject you can enter it's name here and it will be found using GameObject.Find()
+	/// </summary>
+	public string messageTargetName;
 
     /// <summary>
     /// This is the function which is called on the above gameobject.
@@ -37,16 +41,19 @@ public class CallFunctionResponse : EnhancedTriggerBoxComponent
 
     public override void DrawInspectorGUI()
     {
-        messageTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Message Target",
+        messageTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target",
                  "This is the gameobject on which the below function is called on."), messageTarget, typeof(GameObject), true);
 
-        messageFunctionName = EditorGUILayout.TextField(new GUIContent("Message Function Name",
+		messageTargetName = EditorGUILayout.TextField(new GUIContent("Target Name",
+			"If you are unable to provide a reference for a gameobject you can enter it's name here and it will be found using GameObject.Find(). If you have entered a gameobject reference above, leave this field blank."), messageTargetName);
+
+		messageFunctionName = EditorGUILayout.TextField(new GUIContent("Function Name",
             "This is the function which is called on the above gameobject."), messageFunctionName);
 
         parameterType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Message Type",
                "This is the type of parameter that will be sent to the function. Options are int, float and string."), parameterType);
 
-        parameterValue = EditorGUILayout.TextField(new GUIContent("Message Value",
+        parameterValue = EditorGUILayout.TextField(new GUIContent("Value",
             "This is the value of the parameter that will be sent to the function."), parameterValue);
     }
 
@@ -57,14 +64,21 @@ public class CallFunctionResponse : EnhancedTriggerBoxComponent
         {
             ShowWarningMessage("You have selected a object for the message to be sent to but haven't specified which function to call!");
         }
-        else if (!messageTarget && !string.IsNullOrEmpty(messageFunctionName))
+
+        if (!messageTarget && !string.IsNullOrEmpty(messageFunctionName))
         {
             ShowWarningMessage("You have entered a function to call but haven't specified the object to send it to!");
         }
-        else if (messageTarget && !string.IsNullOrEmpty(messageFunctionName) && string.IsNullOrEmpty(parameterValue))
+
+        if (messageTarget && !string.IsNullOrEmpty(messageFunctionName) && string.IsNullOrEmpty(parameterValue))
         {
             ShowWarningMessage("You have entered a function and gameobject to send a message to but the message has no value!");
         }
+
+		if (messageTarget && !string.IsNullOrEmpty (messageTargetName)) 
+		{
+			ShowWarningMessage ("You cannot input a gameobject reference and a gameobject name. Please remove one or the other.");
+		}
 
         if (parameterType == ParameterType.Int && !string.IsNullOrEmpty(parameterValue))
         {
@@ -87,29 +101,41 @@ public class CallFunctionResponse : EnhancedTriggerBoxComponent
     public override bool ExecuteAction()
     {
         // This will send the messages to the selected gameobjects
-        if (messageFunctionName != "" && messageTarget)
+		if (messageFunctionName != "" && (messageTarget || !string.IsNullOrEmpty (messageTargetName)))
         {
-            if (parameterValue != "")
-            {
-                switch (parameterType)
-                {
-                    case ParameterType.Int:
-                        messageTarget.SendMessage(messageFunctionName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
-                        break;
-                    case ParameterType.Float:
-                        messageTarget.SendMessage(messageFunctionName, float.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
-                        break;
-                    case ParameterType.String:
-                        messageTarget.SendMessage(messageFunctionName, parameterValue, SendMessageOptions.DontRequireReceiver);
-                        break;
-                }
-            }
-            else
-            {
-                messageTarget.SendMessage(messageFunctionName, SendMessageOptions.DontRequireReceiver);
-            }
-        }
+			if (!string.IsNullOrEmpty (messageTargetName)) 
+			{
+				try 
+				{
+					messageTarget = GameObject.Find(messageTargetName);
+				} 
+				catch 
+				{
+					Debug.Log ("Unable to find the gameobject with the name " + messageTargetName);
+				}
+			}
 
+			if (parameterValue != "")
+			{
+				switch (parameterType)
+				{
+				case ParameterType.Int:
+					messageTarget.SendMessage(messageFunctionName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
+					break;
+				case ParameterType.Float:
+					messageTarget.SendMessage(messageFunctionName, float.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
+					break;
+				case ParameterType.String:
+					messageTarget.SendMessage(messageFunctionName, parameterValue, SendMessageOptions.DontRequireReceiver);
+					break;
+				}
+			}
+			else
+			{
+				messageTarget.SendMessage(messageFunctionName, SendMessageOptions.DontRequireReceiver);
+			}
+        }
+			
         return true;
     }
 }

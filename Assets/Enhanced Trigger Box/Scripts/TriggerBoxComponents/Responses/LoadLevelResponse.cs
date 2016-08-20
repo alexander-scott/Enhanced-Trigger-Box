@@ -3,7 +3,6 @@ using UnityEditor;
 using System;
 using System.Collections;
 
-[Serializable]
 public class LoadLevelResponse : EnhancedTriggerBoxComponent
 {
     /// <summary>

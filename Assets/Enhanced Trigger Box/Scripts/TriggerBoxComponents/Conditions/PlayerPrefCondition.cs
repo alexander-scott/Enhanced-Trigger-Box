@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[Serializable]
 public class PlayerPrefCondition : EnhancedTriggerBoxComponent
 {
     /// <summary>

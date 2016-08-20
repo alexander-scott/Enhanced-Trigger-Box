@@ -5,7 +5,7 @@ using UnityEditor;
 using System.Text;
 using System.Linq;
 
-[Serializable, HideInInspector]
+[Serializable, HideInInspector, AddComponentMenu("")]
 public class EnhancedTriggerBoxComponent : MonoBehaviour
 {
     /// <summary>
@@ -130,6 +130,16 @@ public class EnhancedTriggerBoxComponent : MonoBehaviour
             o.SetValue(this,(GameObject)EditorGUILayout.ObjectField(new GUIContent(AddSpacesToSentence(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(o.Name), true)
                 ,"No description provided"),(GameObject)o.GetValue(this), typeof(GameObject), true));
         }
+		else if (o.FieldType == typeof(Camera))
+		{
+			o.SetValue(this,(Camera)EditorGUILayout.ObjectField(new GUIContent(AddSpacesToSentence(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(o.Name), true)
+				,"No description provided"),(Camera)o.GetValue(this), typeof(Camera), true));
+		}
+		else if (o.FieldType == typeof(Material))
+		{
+			o.SetValue(this,(Material)EditorGUILayout.ObjectField(new GUIContent(AddSpacesToSentence(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(o.Name), true)
+				,"No description provided"),(Material)o.GetValue(this), typeof(Material), true));
+		}
         else if (o.FieldType == typeof(bool))
         {
             o.SetValue(this, EditorGUILayout.Toggle(new GUIContent(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(AddSpacesToSentence(o.Name, true)),

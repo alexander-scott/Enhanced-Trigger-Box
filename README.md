@@ -30,7 +30,7 @@ Trigger Tags:- Only tags listed here are able to trigger the trigger box. To hav
 
 Debug Trigger Box:- If true, the script will write to the console when certain events happen such as when the trigger box is triggered.
 
-Hide Warnings:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
+Hide Warnings:- If this is true, the script won't perform checks to notify you if you're missing any required references or if theres any errors.
 
 Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
 
@@ -54,7 +54,7 @@ Beneath the list of conditions (or if there's no conditions this is the only thi
 
 In this drop down list are all the available conditions that you can add. You can add as many conditions as you want.
 
-Selecting a condition from this list will add it to the Enhanced Trigger Box and you will see if above the Add A New Condition drop down list. 
+Selecting a condition from this list will add it to the Enhanced Trigger Box and you will see it above the Add A New Condition drop down list. 
 
 The structure of each component will be different and each will be explained in detail later down the page.
 
@@ -93,7 +93,7 @@ public GameObject exampleGameobject;
 
 #### DrawInspectorGUI()
 
-It is recommened that you override DrawInspectorGUI(). This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. You will not be able to use any custom structs or enums and you won't be able to add your own tooltips.
+It is recommened that you override DrawInspectorGUI(). This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. Those limitations being you will not be able to use any custom structs or enums and you won't be able to add your own tooltips.
 
 Here's how you would draw a gameobject to a inspector (first example in the codeblock). EditorGUILayout.ObjectField is the typical object reference field you
 always see in Unity. It returns the object which we will need to save as exampleGameObject so we do exampleGameObject = ObjectField.
@@ -102,6 +102,8 @@ explicitly convert it to a GameObject. For the first bit of object field we'll c
 (label before the field) and field tooltip (text that is displayed on hover). After that we pass in exampleGameObject again as the ObjectField 
 needs the current object there so it is displayed correctly. Then we set the type which is in this case gameobject. The final 'true' allows the 
 user to use gameobjects currently in the scene which we want so set it to true.
+
+Below the gameobject example are other examples of how you would add your variables to the inspector including, bools, ints, strings and enums. For more information about using the EditorGUILayout click [here.](https://docs.unity3d.com/ScriptReference/EditorGUILayout.html)
 
 ``` csharp
 public override void DrawInspectorGUI()
@@ -127,16 +129,27 @@ public override void DrawInspectorGUI()
 
 ExecuteAction() must be overriden. If this component is a condition this function is called when the trigger box is triggered (player enters it) and must return
 true or false depending on if the condition has been met. If this component is a response then this function is called when all conditions
-have been met and returns true or false depending on if the response has executed correctly. In the codeblock you can see a basic ExecuteAction() example
-for a condition. If something has done something return true and then the responses can start executing.
+have been met and returns true or false depending on if the response has executed correctly. In the first codeblock you can see a basic ExecuteAction() example
+for a condition. If something has done something return true and then the responses can start executing. In the second codeblock you can see a basic
+ExecuteAction() for a response.
 
 ``` csharp
 public override bool ExecuteAction()
 {
+		// Basic conditional if statement
         if (exampleInt > 5)
 			return true;
 		else
 			return false;
+}
+```
+
+``` csharp
+public override bool ExecuteAction()
+{
+		// Very basic response
+        exampleInt = 0;
+        return true;
 }
 ```
 
@@ -156,7 +169,7 @@ public override void OnAwake()
 
 #### Validation()
 
-Validation() is an optional function you can override. This function is called in edit mode after the Enhanced Trigger Box GUI gets drawn. 
+Validation() is an optional function you can override. This function is called multiple times a frame in the editor after the Enhanced Trigger Box GUI gets drawn. 
 You should use it for displaying warnings about your component such as missing references or invalid values. To display a warning use
 ShowWarningMessage("Your warning"). This will take into account if the user has disabled warnings or not in the base options.
 
@@ -426,6 +439,37 @@ Player Pref Value:- This is the value that will be stored in the player pref.
 
 ### Rigidbody Response
 
-This response allows you to modify a rigidbody component on another gameobject. 
+This response allows you to modify any part of a rigidbody component on another gameobject.
 
-TODO
+#### Component Fields
+
+Rigidbody:- The rigidbody that will be modified.
+
+Set Mass:- Set the mass of this rigidbody. If left blank the value will not be changed.
+
+Set Drag:- Set the drag of this rigidbody. If left blank the value will not be changed.
+
+Set Angular Drag:- Set the angular drag of this rigidbody. If left blank the value will not be changed.
+
+Change Gravity:- Choose to set whether this rigidbody should use gravity. Selecting remain the same will not change the value and selecting toggle will invert the value.
+
+Change Kinematic:- Choose to set whether this rigidbody is kinematic. Selecting remain the same will not change the value and selecting toggle will invert the value.
+
+Change Interpolate:- Choose to set this rigidbody to interpolate or extrapolate. Selecting remain the same will not change the value.
+
+Change Collision Detection:- Choose to set this rigidbody's collision detection between discrete or continuous. Selecting remain the same will not change the value.
+
+![Rigidbody Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/RigidbodyResponse.png)
+
+### Spawn GameObject Response
+
+This response allows you to spawn a gameobject at any given position. You can also optionally change the name of the newly spawned gameobject.
+
+#### Component Fields
+
+Prefab to Spawn:- This is a reference to the prefab which will be instanstiated (spawned).
+
+New instance name:- This field is used to set the name of the newly instantiated object. If left blank the name will remain as the prefab's saved name.
+
+Custom Position / Rotation:- This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes.
+

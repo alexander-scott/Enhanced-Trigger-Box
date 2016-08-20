@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEditor;
 
-[Serializable]
 public class SpawnGameobjectResponse : EnhancedTriggerBoxComponent
 {
     /// <summary>
@@ -16,7 +15,7 @@ public class SpawnGameobjectResponse : EnhancedTriggerBoxComponent
     public string newInstanceName;
 
     /// <summary>
-    /// This is the position which the prefab will be spawned on. If left blank it will use the prefab's saved position.
+	/// This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes.
     /// </summary>
     public Transform customPositionRotation;
 
