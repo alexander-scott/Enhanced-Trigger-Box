@@ -31,6 +31,7 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public void OnInspectorGUI()
         {
+            // This try catch is in place to fix an issue which happens when deleting a component. This essentially refreshes the draw sequence.
             try
             {
                 GUILayout.BeginHorizontal();

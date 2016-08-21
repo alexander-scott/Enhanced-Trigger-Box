@@ -3,6 +3,7 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    [AddComponentMenu("")]
     public class AudioResponse : ResponseComponent
     {
         /// <summary>

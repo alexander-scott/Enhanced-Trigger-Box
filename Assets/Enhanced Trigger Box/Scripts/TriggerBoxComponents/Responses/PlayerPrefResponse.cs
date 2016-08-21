@@ -4,6 +4,7 @@ using System;
 
 namespace EnhancedTriggerbox.Component
 {
+    [AddComponentMenu("")]
     public class PlayerPrefResponse : ResponseComponent
     {
         /// <summary>

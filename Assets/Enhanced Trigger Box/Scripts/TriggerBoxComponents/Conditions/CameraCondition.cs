@@ -4,6 +4,7 @@ using System.Collections;
 
 namespace EnhancedTriggerbox.Component
 {
+    [AddComponentMenu("")]
     public class CameraCondition : ConditionComponent
     {
         /// <summary>

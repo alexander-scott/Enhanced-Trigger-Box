@@ -3,10 +3,8 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
-    /* 
-     * Remember this won't be in the add condition or add response drop downs until you add the class name to the enum at the 
-     * top of EnhancedTriggerBox.cs. The class name in this example is NewComponentExample.
-     * Make sure you inherit EnhancedTriggerBoxComponent! This is done by adding : EnhancedTriggerBoxComponent after your class name. 
+    /* Remember this component won't be included in the drop down lists until it inherits either ConditionComponent or ResponseComponent.
+     * In this case you will need to replace EnhancedTriggerBoxComponent below with either of those two.
      */
     public class NewComponentExample : EnhancedTriggerBoxComponent
     {

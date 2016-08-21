@@ -164,26 +164,26 @@ namespace EnhancedTriggerbox
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
+            // This removes items in the list which have been deleted. This can't be done in the loop and has to be done before GUI drawing starts
+            // TODO: Fix undo component deletion
+            conditions.RemoveAll(r => r == null);
+
             if (conditions.Count > 0)
             {
                 // Display all the conditions
                 for (int i = 0; i < conditions.Count; i++)
                 {
-                    if (conditions[i] != null)
+                    if (conditions[i].deleted)
                     {
-                        if (conditions[i].deleted)
-                        {
-                            // If the condition has been deleted we will destroy it
-                            Undo.DestroyObjectImmediate(conditions[i]);
-                            conditions.RemoveAt(i);
-                        }
-                        else
-                        {
-                            conditions[i].showWarnings = !hideWarnings;
-                            conditions[i].OnInspectorGUI();
+                        // If the condition has been deleted we will destroy it
+                        Undo.DestroyObjectImmediate(conditions[i]);
+                    }
+                    else
+                    {
+                        conditions[i].showWarnings = !hideWarnings;
+                        conditions[i].OnInspectorGUI();
 
-                            GUILayout.Space(10.0f);
-                        }
+                        GUILayout.Space(10.0f);
                     }
                 }
             }
@@ -230,24 +230,22 @@ namespace EnhancedTriggerbox
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
+            responses.RemoveAll(r => r == null);
+
             if (responses.Count > 0)
             {
                 for (int i = 0; i < responses.Count; i++)
                 {
-                    if (responses[i] != null)
+                    if (responses[i].deleted)
                     {
-                        if (responses[i].deleted)
-                        {
-                            Undo.DestroyObjectImmediate(responses[i]);
-                            responses.RemoveAt(i);
-                        }
-                        else
-                        {
-                            responses[i].showWarnings = !hideWarnings;
-                            responses[i].OnInspectorGUI();
+                        Undo.DestroyObjectImmediate(responses[i]);
+                    }
+                    else
+                    {
+                        responses[i].showWarnings = !hideWarnings;
+                        responses[i].OnInspectorGUI();
 
-                            GUILayout.Space(10.0f);
-                        }
+                        GUILayout.Space(10.0f);
                     }
                 }
             }
