@@ -1,93 +1,95 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System;
 
-public class AnimationResponse : EnhancedTriggerBoxComponent
+namespace EnhancedTriggerbox.Component
 {
-    /// <summary>
-    /// The gameobject to apply the animation to
-    /// </summary>
-    public GameObject animationTarget;
-
-    /// <summary>
-    /// The name of the trigger on the gameobject animator that you want to trigger.
-    /// </summary>
-    public string setMecanimTrigger;
-
-    /// <summary>
-    /// Stops the current animation on the animation target.
-    /// </summary>
-    public bool stopAnim;
-
-    /// <summary>
-    /// The animation clip to play.
-    /// </summary>
-    public AnimationClip animationClip;
-
-    public override void DrawInspectorGUI()
+    public class AnimationResponse : ResponseComponent
     {
-        animationTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Animation Target",
-            "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
+        /// <summary>
+        /// The gameobject to apply the animation to
+        /// </summary>
+        public GameObject animationTarget;
 
-        setMecanimTrigger = EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
-            "The name of the trigger on the gameobject animator that you want to trigger."), setMecanimTrigger);
+        /// <summary>
+        /// The name of the trigger on the gameobject animator that you want to trigger.
+        /// </summary>
+        public string setMecanimTrigger;
 
-        stopAnim = EditorGUILayout.Toggle(new GUIContent("Stop Animation",
-            "Stops the current animation on the animation target."), stopAnim);
+        /// <summary>
+        /// Stops the current animation on the animation target.
+        /// </summary>
+        public bool stopAnim;
 
-        animationClip = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
-            "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."),
-            animationClip, typeof(AnimationClip), true);
-    }
+        /// <summary>
+        /// The animation clip to play.
+        /// </summary>
+        public AnimationClip animationClip;
 
-    public override void Validation()
-    {
-        // If there is a mecanim trigger check there is a target for it
-        if (!string.IsNullOrEmpty((setMecanimTrigger)))
+        public override void DrawInspectorGUI()
         {
-            if (animationTarget == null)
+            animationTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Animation Target",
+                "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
+
+            setMecanimTrigger = EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
+                "The name of the trigger on the gameobject animator that you want to trigger."), setMecanimTrigger);
+
+            stopAnim = EditorGUILayout.Toggle(new GUIContent("Stop Animation",
+                "Stops the current animation on the animation target."), stopAnim);
+
+            animationClip = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
+                "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."),
+                animationClip, typeof(AnimationClip), true);
+        }
+
+        public override void Validation()
+        {
+            // If there is a mecanim trigger check there is a target for it
+            if (!string.IsNullOrEmpty((setMecanimTrigger)))
             {
-                ShowWarningMessage("You have set a Mecanim Trigger as an Animation Response but haven't set an Animation Target to apply it to!");
+                if (animationTarget == null)
+                {
+                    ShowWarningMessage("You have set a Mecanim Trigger as an Animation Response but haven't set an Animation Target to apply it to!");
+                }
+            }
+
+            // If stop anim is set check there is a target for it
+            if (stopAnim)
+            {
+                if (animationTarget == null)
+                {
+                    ShowWarningMessage("You have set Stop Animation as an Animation Response but haven't set an Animation Target to apply it to!");
+                }
+            }
+
+            // If legacy animat is set to play check there is a target for it
+            if (animationClip != null)
+            {
+                if (animationTarget == null)
+                {
+                    ShowWarningMessage("You have chosen to play a legacy animation as an Animation Response but haven't set an Animation Target to apply it to!");
+                }
             }
         }
 
-        // If stop anim is set check there is a target for it
-        if (stopAnim)
+        public override bool ExecuteAction()
         {
-            if (animationTarget == null)
+            if (stopAnim && animationTarget)
             {
-                ShowWarningMessage("You have set Stop Animation as an Animation Response but haven't set an Animation Target to apply it to!");
+                animationTarget.GetComponent<Animation>().Stop();
             }
-        }
 
-        // If legacy animat is set to play check there is a target for it
-        if (animationClip != null)
-        {
-            if (animationTarget == null)
+            if (animationClip && animationTarget)
             {
-                ShowWarningMessage("You have chosen to play a legacy animation as an Animation Response but haven't set an Animation Target to apply it to!");
+                // Plays an animation clip on the target animation over 0.3 seconds and fades other animations out
+                animationTarget.GetComponent<Animation>().CrossFade(animationClip.name, 0.3f, PlayMode.StopAll);
             }
-        }
-    }
 
-    public override bool ExecuteAction()
-    {
-        if (stopAnim && animationTarget)
-        {
-            animationTarget.GetComponent<Animation>().Stop();
-        }
+            if (!string.IsNullOrEmpty(setMecanimTrigger) && animationTarget)
+            {
+                animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
+            }
 
-        if (animationClip && animationTarget)
-        {
-            // Plays an animation clip on the target animation over 0.3 seconds and fades other animations out
-            animationTarget.GetComponent<Animation>().CrossFade(animationClip.name, 0.3f, PlayMode.StopAll);
+            return true;
         }
-
-        if (!string.IsNullOrEmpty(setMecanimTrigger) && animationTarget)
-        {
-            animationTarget.GetComponent<Animator>().SetTrigger(setMecanimTrigger);
-        }
-
-        return true;
     }
 }

@@ -2,78 +2,81 @@
 using UnityEditor;
 using System;
 
-public class PlayerPrefResponse : EnhancedTriggerBoxComponent
+namespace EnhancedTriggerbox.Component
 {
-    /// <summary>
-    /// This is the key (ID) of the player pref which will have its value set.
-    /// </summary>
-    public string setPlayerPrefKey;
-
-    /// <summary>
-    /// This is the type of data stored within the player pref.
-    /// </summary>
-    public ParameterType setPlayerPrefType;
-
-    /// <summary>
-    /// This is the value that will be stored in the player pref.
-    /// </summary>
-    public string setPlayerPrefVal;
-
-    /// <summary>
-    /// Used to determine the datatype of a parameter.
-    /// </summary>
-    public enum ParameterType
+    public class PlayerPrefResponse : ResponseComponent
     {
-        Int,
-        Float,
-        String,
-    }
+        /// <summary>
+        /// This is the key (ID) of the player pref which will have its value set.
+        /// </summary>
+        public string setPlayerPrefKey;
 
-    public override void DrawInspectorGUI()
-    {
-        setPlayerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
-            "This is the key (ID) of the player pref which will have its value set."), setPlayerPrefKey);
+        /// <summary>
+        /// This is the type of data stored within the player pref.
+        /// </summary>
+        public ParameterType setPlayerPrefType;
 
-        setPlayerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
-               "This is the type of data stored within the player pref. Options are int, float and string."), setPlayerPrefType);
+        /// <summary>
+        /// This is the value that will be stored in the player pref.
+        /// </summary>
+        public string setPlayerPrefVal;
 
-        setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
-            "This is the value that will be stored in the player pref."), setPlayerPrefVal);
-    }
-
-    public override void Validation()
-    {
-        // Check that the correct combination of fields have been filled in
-        if (string.IsNullOrEmpty(setPlayerPrefKey) && !string.IsNullOrEmpty(setPlayerPrefVal))
+        /// <summary>
+        /// Used to determine the datatype of a parameter.
+        /// </summary>
+        public enum ParameterType
         {
-            ShowWarningMessage("You have entered a value to save to a player pref but you haven't specified which player pref to save it to!");
+            Int,
+            Float,
+            String,
         }
-        else if (!string.IsNullOrEmpty(setPlayerPrefKey) && string.IsNullOrEmpty(setPlayerPrefVal))
-        {
-            ShowWarningMessage("You have set the player pref key but the value to save in it is empty!");
-        }
-    }
 
-    public override bool ExecuteAction()
-    {
-        if (!string.IsNullOrEmpty(setPlayerPrefKey))
+        public override void DrawInspectorGUI()
         {
-            switch (setPlayerPrefType)
+            setPlayerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
+                "This is the key (ID) of the player pref which will have its value set."), setPlayerPrefKey);
+
+            setPlayerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
+                   "This is the type of data stored within the player pref. Options are int, float and string."), setPlayerPrefType);
+
+            setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
+                "This is the value that will be stored in the player pref."), setPlayerPrefVal);
+        }
+
+        public override void Validation()
+        {
+            // Check that the correct combination of fields have been filled in
+            if (string.IsNullOrEmpty(setPlayerPrefKey) && !string.IsNullOrEmpty(setPlayerPrefVal))
             {
-                case ParameterType.String:
-                    PlayerPrefs.SetString(setPlayerPrefKey, setPlayerPrefVal);
-                    break;
-
-                case ParameterType.Int:
-                    PlayerPrefs.SetInt(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
-                    break;
-
-                case ParameterType.Float:
-                    PlayerPrefs.SetFloat(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
-                    break;
+                ShowWarningMessage("You have entered a value to save to a player pref but you haven't specified which player pref to save it to!");
+            }
+            else if (!string.IsNullOrEmpty(setPlayerPrefKey) && string.IsNullOrEmpty(setPlayerPrefVal))
+            {
+                ShowWarningMessage("You have set the player pref key but the value to save in it is empty!");
             }
         }
 
-        return true;
+        public override bool ExecuteAction()
+        {
+            if (!string.IsNullOrEmpty(setPlayerPrefKey))
+            {
+                switch (setPlayerPrefType)
+                {
+                    case ParameterType.String:
+                        PlayerPrefs.SetString(setPlayerPrefKey, setPlayerPrefVal);
+                        break;
+
+                    case ParameterType.Int:
+                        PlayerPrefs.SetInt(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
+                        break;
+
+                    case ParameterType.Float:
+                        PlayerPrefs.SetFloat(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
+                        break;
+                }
+            }
+
+            return true;
+        }
     }
 }

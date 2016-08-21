@@ -2,6 +2,9 @@
 using UnityEditor;
 using System.Collections;
 
+namespace EnhancedTriggerbox
+{
+
 [CustomEditor(typeof(EnhancedTriggerBox))]
 public class EnhancedTriggerBoxInspector : Editor
 {
@@ -81,19 +84,19 @@ public class EnhancedTriggerBoxInspector : Editor
         {
             EditorUtility.SetDirty(theObject);
 
-            foreach (EnhancedTriggerBoxComponent o in theObject.listConditions)
+			for (int i = 0; i < theObject.listConditions.Count; i++)
             {
-                if (o)
+				if (theObject.listConditions[i])
                 {
-                    EditorUtility.SetDirty(o);
+					EditorUtility.SetDirty(theObject.listConditions[i]);
                 }
             }
 
-            foreach (EnhancedTriggerBoxComponent o in theObject.listResponses)
+			for (int i = 0; i < theObject.listResponses.Count; i++)
             {
-                if (o)
+				if (theObject.listResponses[i])
                 {
-                    EditorUtility.SetDirty(o);
+					EditorUtility.SetDirty(theObject.listResponses[i]);
                 }
             }
         }
@@ -160,4 +163,6 @@ public class EnhancedTriggerBoxInspector : Editor
 
         GUILayout.EndHorizontal();
     }
+}
+
 }
