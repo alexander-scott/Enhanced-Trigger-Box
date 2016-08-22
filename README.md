@@ -3,7 +3,7 @@ Enhanced Trigger Box
 
 Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when a player walks into a certain area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example the player musn't be looking at a specific object. Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. These range from spawning or destroying objects to playing animations or alterings materials. 
 
-You can easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
+It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
 *Current version: [v0.2.0]*
 
@@ -16,9 +16,9 @@ The demo scene shows various conditions and responses in action. To add a new En
 
 How it works
 ---------------
-At the top level you have the Enhanced Trigger Box script. It has some base options and a box collider that represents the boundaries of the Enhanced Trigger Box. Beneath that you have Enhanced Trigger Box Components that you are able to add to the Enhanced Trigger Box. These come in the form of either a Condition or a Response and are located in the Scripts/TriggerBoxComponents folder.
+At the top level you have the Enhanced Trigger Box script. It has some base options and uses a box collider to represents the boundaries of the Enhanced Trigger Box. Beneath that you have Enhanced Trigger Box Components that you are able to add to the Enhanced Trigger Box. These come in the form of either a Condition or a Response and are located in the Scripts/TriggerBoxComponents folder.
 
-When a Enhanced Trigger Box gets triggered (another gameobject collides with it's box collider), all the conditions get checked to see if the condition has been met. If all the conditions have been met, all the responses get executed. 
+When a Enhanced Trigger Box gets triggered (another gameobject collides with it's box collider), all the conditions get checked to see if each condition has been met. If all the conditions have been met, all the responses get executed. 
 
 If you click on one of the Enhanced Trigger Boxes in the scene or drag one in from the prefabs folder you can see the what the script looks like in the inspector.
 
@@ -46,21 +46,13 @@ Can Wander:- If this is true then the condition checks will continue taking plac
 
 ### Conditions Overview
 
-After the base options there is a divider and then all the conditions added to this Enhanced Trigger Box will be listed. 
+After the base options there is a divider and then all the conditions added to this Enhanced Trigger Box will be listed. If you have added a blank copy from the prefabs folder you will not see any conditions.
 
-If you have added a blank copy from the prefabs folder you will not see any conditions.
+Beneath the list of conditions (or if there's no conditions this is the only thing you can see) will be a drop down list called Add A New Condition. In this drop down list are all the available conditions that you can add. You can add as many conditions as you want.
 
-Beneath the list of conditions (or if there's no conditions this is the only thing you can see) will be a drop down list called Add A New Condition. 
+Selecting a condition from this list will add it to the Enhanced Trigger Box and you will see it above the Add A New Condition drop down list. The structure of each component will be different and each will be explained in detail later down the page.
 
-In this drop down list are all the available conditions that you can add. You can add as many conditions as you want.
-
-Selecting a condition from this list will add it to the Enhanced Trigger Box and you will see it above the Add A New Condition drop down list. 
-
-The structure of each component will be different and each will be explained in detail later down the page.
-
-You have now added a condition. When this Enhanced Trigger Box gets triggered this condition will be checked and will have to pass before any responses get executed. Each condition will have various options that will affect how the condition gets met. 
-
-To remove a condition click the X in the top right of the component.
+You have now added a condition. When this Enhanced Trigger Box gets triggered this condition will be checked and will have to pass before any responses get executed. Each condition will have various options that will affect how the condition gets met. To remove a condition click the X in the top right of the component.
 
 ### Responses Overview
 
@@ -73,16 +65,20 @@ Creating a new Component
 
 Creating a new Condition or Response is relatively painless. Open up NewComponentExample.cs in Scripts/TriggerBoxComponents. You can use this example as a template for new components.
 
-All you need to do in inherit the EnhancedTriggerBoxComponent, override some functions from it and then add it to a list. There are 4 functions you can override. 1 is mandatory, 1 is recommended and the other two are optional. These will be explained in detail below.
+All you need to do is inherit ConditionComponent or ResponseComponent (depending on whether the new component is a condition or response) and then override some functions. There are 4 functions you can override. 1 is mandatory, 1 is recommended and the other two are optional. These will be explained in detail below.
 
 If you want to view more advanced examples, go to Scripts/TriggerBoxComponents/Conditions or Scripts/TriggerBoxComponents/Responses and take a look at some of them.
 
 #### Inherit EnhancedTriggerBoxComponent
 
-The most important thing to do is to inherit EnhancedTriggerBoxComponent in the class definition. 
+The most important thing to do is to inherit ConditionComponent or ResponseComponent in the class definition and for the class to be within the EnhancedTriggerbox.Component namespace It's also recommended to add "[AddComponentMenu("")]" above the class name. This attribute means you won't see it in the Add Component Menu and it unfortunately can't be passed down by inheritance so it must be added manually.
 
 ``` csharp
-public class NewComponentExample : EnhancedTriggerBoxComponent { } 
+namespace EnhancedTriggerbox.Component
+{
+	[AddComponentMenu("")]
+	public class NewComponentExample : ConditionComponent { } 
+}
 ```
 
 Below that you can declare the variables you will be using for your component like normal.
@@ -183,26 +179,9 @@ public override void Validation()
 }
 ```
 
-#### Including your new component
-
-Once you are happy with your new component you can then add it to the responses or conditions drop down lists so you can add it in the editor.
-Navigate to the top of EnhancedTriggerBox.cs. You will see two enums: TriggerBoxConditions and TriggerBoxResponse. Add the name of your new class
-to either enum, depending of course on whether its a condition or response. Make sure you enter the exact class name and it's helpful to keep
-it in alphabetical order.
-
-``` csharp
-public enum TriggerBoxConditions
-{
-    SelectACondition,
-    CameraCondition,
-	NewComponentExample,
-    PlayerPrefCondition,
-}
-```
-
-Now your can add your new component as a condition or response in the editor! Because it's inherited EnhancedTriggerBoxComponent it will follow
+Now your can add your new component as a condition or response in the editor! Because it's inherited ConditionComponent or ResponseComponent it will follow
 all the same rules as the other components and functions will get called when they're supposed to. If you think your new component is useful
-send it to me or add create a pull request on GitHub and I'll add it to the asset.
+send it to me or create a pull request on GitHub and I'll add it to the asset.
 
 Individual Conditions
 ---------------
@@ -364,30 +343,6 @@ Sound Effect Position:- The position the sound effect will be played at.
 
 ![Audio Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/AudioResponse.png)
 
-### Call Function Response
-
-The call function response can be used to call a function on a select gameobject and pass in a parameter as well. Supported parameter types currently include int, float and string.
-
-#### How does it work?
-
-The call function response uses Unity's inbuilt GameObject.SendMessage() function to send a value to a function on another gameobject. If you select int or float it will parse the message value before sending it.
-
-``` csharp
-messageTarget.SendMessage(messageFunctionName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
-```
-
-#### Component Fields
-
-Message Target:- This is the gameobject on which the below function is called on.
-
-Message Function Name:- This is the function which is called on the above gameobject.
-
-Message Type:- This is the type of parameter that will be sent to the function. Options are int, float and string.
-
-Message Value:- This is the value of the parameter that will be sent to the function.
-
-![Call Function Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CallFunctionResponse.png)
-
 ### Load Level Response
 
 This response allows you to load a new scene. All you need to do is supply the scene name. Make sure it is included in the build settings.
@@ -418,7 +373,7 @@ gameObjectName:- If you cannot get a reference for a gameobject you can enter it
 
 modifyType:- This is the type of modification you want to happen to the gameobject. Options are destroy, disable and enable.
 
-![Modify GameObject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SpawnGameObjectResponse.png)
+![Modify GameObject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/ModifyGameObjectResponse.png)
 
 ### Player Pref Response
 
@@ -461,6 +416,30 @@ Change Collision Detection:- Choose to set this rigidbody's collision detection 
 
 ![Rigidbody Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/RigidbodyResponse.png)
 
+### Send Message Response
+
+The send message response can be used to call a function on a select gameobject and pass in a parameter as well. Supported parameter types currently include int, float and string.
+
+#### How does it work?
+
+The csend message response uses Unity's inbuilt GameObject.SendMessage() function to send a value to a function on another gameobject. If you select int or float it will parse the message value before sending it.
+
+``` csharp
+messageTarget.SendMessage(messageFunctionName, int.Parse(parameterValue), SendMessageOptions.DontRequireReceiver);
+```
+
+#### Component Fields
+
+Message Target:- This is the gameobject on which the below function is called on.
+
+Message Function Name:- This is the function which is called on the above gameobject.
+
+Message Type:- This is the type of parameter that will be sent to the function. Options are int, float and string.
+
+Message Value:- This is the value of the parameter that will be sent to the function.
+
+![Send Message Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SendMessageResponse.png)
+
 ### Spawn GameObject Response
 
 This response allows you to spawn a gameobject at any given position. You can also optionally change the name of the newly spawned gameobject.
@@ -473,3 +452,4 @@ New instance name:- This field is used to set the name of the newly instantiated
 
 Custom Position / Rotation:- This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes.
 
+![Spawn Gameobject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SpawnGameObjectResponse.png)

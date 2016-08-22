@@ -134,6 +134,22 @@ namespace EnhancedTriggerbox.Component
 
             //freezeRotation = (FreezeAxis)EditorGUILayout.EnumPopup(new GUIContent("Freeze Rotation",
             //    "Choose to freeze rotation along a specific set of axis. Remain the same will not change the value."), freezeRotation);
+
+            //EditorGUILayout.BeginHorizontal();
+
+            //float prevWidth = EditorGUIUtility.labelWidth;
+
+            //EditorGUILayout.LabelField(new GUIContent("Target Axis", ""));
+
+            //EditorGUIUtility.labelWidth = 30f;
+
+            //xAxis = EditorGUILayout.Toggle("X", xAxis);
+            //yAxis = EditorGUILayout.Toggle("Y", yAxis);
+            //zAxis = EditorGUILayout.Toggle("Z", zAxis);
+
+            //EditorGUIUtility.labelWidth = prevWidth;
+
+            //EditorGUILayout.EndHorizontal();
         }
 
         public override bool ExecuteAction()

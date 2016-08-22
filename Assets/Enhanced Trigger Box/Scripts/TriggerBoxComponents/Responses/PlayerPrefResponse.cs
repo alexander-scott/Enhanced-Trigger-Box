@@ -18,7 +18,7 @@ namespace EnhancedTriggerbox.Component
         public ParameterType setPlayerPrefType;
 
         /// <summary>
-        /// This is the value that will be stored in the player pref.
+        /// This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively.
         /// </summary>
         public string setPlayerPrefVal;
 
@@ -41,7 +41,7 @@ namespace EnhancedTriggerbox.Component
                    "This is the type of data stored within the player pref. Options are int, float and string."), setPlayerPrefType);
 
             setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
-                "This is the value that will be stored in the player pref."), setPlayerPrefVal);
+                "This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively."), setPlayerPrefVal);
         }
 
         public override void Validation()
@@ -55,6 +55,29 @@ namespace EnhancedTriggerbox.Component
             {
                 ShowWarningMessage("You have set the player pref key but the value to save in it is empty!");
             }
+
+            if (!string.IsNullOrEmpty(setPlayerPrefVal) && setPlayerPrefVal != "++" && setPlayerPrefVal != "--")
+            {
+                switch (setPlayerPrefType)
+                {
+                    case ParameterType.Float:
+                        float f;
+                        if (!float.TryParse(setPlayerPrefVal, out f))
+                        {
+                            ShowWarningMessage("Unable to parse player pref value to a float. Make sure you have entered a valid float.");
+                        }
+                        break;
+
+                    case ParameterType.Int:
+                        int i;
+                        if (!int.TryParse(setPlayerPrefVal, out i))
+                        {
+                            ShowWarningMessage("Unable to parse player pref value to a integer. Make sure you have entered a valid integer.");
+                        }
+                        break;
+                }
+            }
+            
         }
 
         public override bool ExecuteAction()
@@ -68,11 +91,41 @@ namespace EnhancedTriggerbox.Component
                         break;
 
                     case ParameterType.Int:
-                        PlayerPrefs.SetInt(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
+                        if (setPlayerPrefVal == "++")
+                        {
+                            int ppV = PlayerPrefs.GetInt(setPlayerPrefKey);
+                            ppV = ppV + 1;
+                            PlayerPrefs.SetInt(setPlayerPrefKey, ppV);
+                        }
+                        else if (setPlayerPrefVal == "--")
+                        {
+                            int ppV = PlayerPrefs.GetInt(setPlayerPrefKey);
+                            ppV = ppV - 1;
+                            PlayerPrefs.SetInt(setPlayerPrefKey, ppV);
+                        }
+                        else
+                        {
+                            PlayerPrefs.SetInt(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
+                        }
                         break;
 
                     case ParameterType.Float:
-                        PlayerPrefs.SetFloat(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
+                        if (setPlayerPrefVal == "++")
+                        {
+                            float ppV = PlayerPrefs.GetFloat(setPlayerPrefKey);
+                            ppV = ppV + 1;
+                            PlayerPrefs.SetFloat(setPlayerPrefKey, ppV);
+                        }
+                        else if (setPlayerPrefVal == "--")
+                        {
+                            float ppV = PlayerPrefs.GetFloat(setPlayerPrefKey);
+                            ppV = ppV - 1;
+                            PlayerPrefs.SetFloat(setPlayerPrefKey, ppV);
+                        }
+                        else
+                        {
+                            PlayerPrefs.SetFloat(setPlayerPrefKey, Convert.ToInt32(setPlayerPrefVal));
+                        }
                         break;
                 }
             }

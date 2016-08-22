@@ -177,15 +177,20 @@ namespace EnhancedTriggerbox.Component
                     viewConditionObjectMeshRenderer = conditionObject.GetComponent<MeshRenderer>();
                 }
             }
+
+            if (!cam)
+            {
+                cam = Camera.main;
+            }
         }
 
         public override bool ExecuteAction()
         {
             // This fixes a bug that occured when the player was very close to an object. Is this necessary? TODO: Find out if this is necessary
-            if (Vector3.Distance(cam.transform.position, conditionObject.transform.position) < 2f)
-            {
-                return false;
-            }
+            //if (Vector3.Distance(cam.transform.position, conditionObject.transform.position) < 2f)
+            //{
+            //    return false;
+            //}
 
             switch (cameraConditionType)
             {
@@ -428,7 +433,8 @@ namespace EnhancedTriggerbox.Component
         {
             if (cameraConditionType == LookType.LookingAt)
             {
-                if (IsInCameraFrustum(bounds.min) &&
+                if (IsInCameraFrustum(bounds.center) &&
+                    IsInCameraFrustum(bounds.min) &&
                     IsInCameraFrustum(bounds.max) &&
                     IsInCameraFrustum(new Vector3(bounds.min.x, bounds.min.y, bounds.max.z)) &&
                     IsInCameraFrustum(new Vector3(bounds.min.x, bounds.max.y, bounds.min.z)) &&
@@ -446,7 +452,8 @@ namespace EnhancedTriggerbox.Component
             }
             else
             {
-                if (!IsInCameraFrustum(bounds.min) &&
+                if (!IsInCameraFrustum(bounds.center) &&
+                    !IsInCameraFrustum(bounds.min) &&
                     !IsInCameraFrustum(bounds.max) &&
                     !IsInCameraFrustum(new Vector3(bounds.min.x, bounds.min.y, bounds.max.z)) &&
                     !IsInCameraFrustum(new Vector3(bounds.min.x, bounds.max.y, bounds.min.z)) &&
@@ -522,6 +529,11 @@ namespace EnhancedTriggerbox.Component
         /// <returns>True or false depending on if any points in the bounding box are in view of the camera</returns>
         private bool CheckRaycastMinimumCollider(Bounds bounds)
         {
+            if (CheckRaycastTransform(bounds.center - cam.transform.position))
+            {
+                return true;
+            }
+
             if (CheckRaycastTransform(bounds.min - cam.transform.position))
             {
                 return true;
@@ -572,7 +584,8 @@ namespace EnhancedTriggerbox.Component
         /// <returns></returns>
         private bool CheckRaycastFullCollider(Bounds bounds)
         {
-            if (CheckRaycastTransform(bounds.min - cam.transform.position) &&
+            if (CheckRaycastTransform(bounds.center - cam.transform.position) &&
+                CheckRaycastTransform(bounds.min - cam.transform.position) &&
                 CheckRaycastTransform(bounds.max - cam.transform.position) &&
                 CheckRaycastTransform(new Vector3(bounds.min.x, bounds.min.y, bounds.max.z) - cam.transform.position) &&
                 CheckRaycastTransform(new Vector3(bounds.min.x, bounds.max.y, bounds.min.z) - cam.transform.position) &&

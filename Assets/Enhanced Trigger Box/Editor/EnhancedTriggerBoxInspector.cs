@@ -65,14 +65,14 @@ namespace EnhancedTriggerbox
                     {
                         EditorGUILayout.HelpBox("You have selected Follow Transform but you have not specified either a transform reference or a gameobject name!", MessageType.Warning);
                     }
-                    else
-                    {
-                        // If the user has entered both a gameobject name and transform reference
-                        if (so.FindProperty("followTransform").objectReferenceValue != null && !string.IsNullOrEmpty(so.FindProperty("followTransformName").stringValue))
-                        {
-                            EditorGUILayout.HelpBox("You have selected Follow Transform and have entered both a transform reference and a gameobject name! The transform reference will be ignored and the gameobject name will take preference and you should remove one of them.", MessageType.Warning);
-                        }
-                    }
+                    //else
+                    //{
+                    //    // If the user has entered both a gameobject name and transform reference
+                    //    if (so.FindProperty("followTransform").objectReferenceValue != null && !string.IsNullOrEmpty(so.FindProperty("followTransformName").stringValue))
+                    //    {
+                    //        EditorGUILayout.HelpBox("You have selected Follow Transform and have entered both a transform reference and a gameobject name! The transform reference will be ignored and the gameobject name will take preference and you should remove one of them.", MessageType.Warning);
+                    //    }
+                    //}
                 }
             }
 
