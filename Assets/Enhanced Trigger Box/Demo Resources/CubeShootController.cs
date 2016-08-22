@@ -1,13 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CubeShootController : MonoBehaviour {
-
-    public void ShootCubes(float velocity)
+namespace EnhancedTriggerbox.Demo
+{
+    public class CubeShootController : MonoBehaviour
     {
-        foreach(var c in GetComponentsInChildren<CubeShoot>())
+
+        public void ShootCubes(float velocity)
         {
-            c.ShootCube(velocity);
+            foreach (var c in GetComponentsInChildren<CubeShoot>())
+            {
+                c.ShootCube(velocity);
+            }
         }
     }
 }
+
+
