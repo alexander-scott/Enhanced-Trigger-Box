@@ -256,6 +256,24 @@ Refresh Every Frame:- If true, the value in the player pref will be retrieved ev
 
 ![Player Pref Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/PlayerPrefCondition.png)
 
+### Transform Condition
+
+The transform condition can be used to compare position or rotation from a transform against a value. For example if a object's Y position is lower than a certain value.
+
+#### Component fields
+
+Target Transform:- The transform to apply the condition to.
+
+Transform Component:- The transform component that will be used for the condition. Either position or rotation.
+
+Target Axis:- The axis that the condition will be based on.
+
+Condition Type:- The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than.
+
+Value:- The value that will be compared against the value in the axis selected above.
+
+![Transform Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/TransformCondition.png)
+
 Individual Responses
 ---------------
 
@@ -377,7 +395,7 @@ modifyType:- This is the type of modification you want to happen to the gameobje
 
 ### Player Pref Response
 
-This response allows you to save a value to a player pref. The supported data types are int, float and string.
+This response allows you to save a value to a player pref. The supported data types are int, float and string. If you're dealing with ints or floats you can choose to increment or decrement the value by 1 by entering '++' or '--' in the value field.
 
 ``` csharp
 PlayerPrefs.SetString(setPlayerPrefKey, setPlayerPrefVal);
@@ -388,7 +406,7 @@ Player Pref Key:- This is the key (ID) of the player pref which will have its va
 
 Player Pref Type:- This is the type of data stored within the player pref.
 
-Player Pref Value:- This is the value that will be stored in the player pref.
+Player Pref Value:- This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively.
 
 ![Player Pref Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/PlayerPrefResponse.png)
 

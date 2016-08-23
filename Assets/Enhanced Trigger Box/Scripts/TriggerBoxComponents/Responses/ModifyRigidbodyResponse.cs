@@ -47,14 +47,39 @@ namespace EnhancedTriggerbox.Component
         public ChangeCollisionDetection changeCollisionDetection;
 
         /// <summary>
-        /// Choose to freeze position along a specific set of axis
+        /// Allows you to freeze position or rotation. If you want these to be unaffected uncheck this box.
         /// </summary>
-        //public FreezeAxis freezePosition;
+        public bool editConstraints;
 
         /// <summary>
-        /// Choose to freeze position along a specific set of axis
+        /// Freeze movement in x axis
         /// </summary>
-        //public FreezeAxis freezeRotation;
+        public bool xPos;
+
+        /// <summary>
+        /// Freeze movement in y axis
+        /// </summary>
+        public bool yPos;
+
+        /// <summary>
+        /// Freeze movement in z axis
+        /// </summary>
+        public bool zPos;
+
+        /// <summary>
+        /// Freeze rotation in x axis
+        /// </summary>
+        public bool xRot;
+
+        /// <summary>
+        /// Freeze rotation in y axis
+        /// </summary>
+        public bool yRot;
+
+        /// <summary>
+        /// Freeze rotation in z axis
+        /// </summary>
+        public bool zRot;
 
         /// <summary>
         /// Enum containing available options for changing bools such as set true and set false or toggle.
@@ -88,21 +113,6 @@ namespace EnhancedTriggerbox.Component
             SetDiscrete,
         }
 
-        /// <summary>
-        /// Enum containg options for freezing position/rotation along axis. Is this the best way to do it?
-        /// </summary>
-        //public enum FreezeAxis
-        //{
-        //    RemainTheSame,
-        //    X,
-        //    XY,
-        //    XZ,
-        //    XYZ,
-        //    Y,
-        //    YZ,
-        //    Z,
-        //}
-
         public override void DrawInspectorGUI()
         {
             rigbody = (Rigidbody)EditorGUILayout.ObjectField(new GUIContent("Rigidbody",
@@ -129,27 +139,40 @@ namespace EnhancedTriggerbox.Component
             changeCollisionDetection = (ChangeCollisionDetection)EditorGUILayout.EnumPopup(new GUIContent("Change Collision Detection",
                 "Choose to set this rigidbody's collision detection between discrete or continuous. Remain the same will not change the value."), changeCollisionDetection);
 
-            //freezePosition = (FreezeAxis)EditorGUILayout.EnumPopup(new GUIContent("Freeze Position",
-            //    "Choose to freeze position along a specific set of axis. Remain the same will not change the value."), freezePosition);
+            editConstraints = EditorGUILayout.Toggle(new GUIContent("Edit Constraints", "Allows you to freeze position or rotation. If you want these to be unaffected uncheck this box."), editConstraints);
 
-            //freezeRotation = (FreezeAxis)EditorGUILayout.EnumPopup(new GUIContent("Freeze Rotation",
-            //    "Choose to freeze rotation along a specific set of axis. Remain the same will not change the value."), freezeRotation);
+            if (editConstraints)
+            {
+                EditorGUILayout.BeginHorizontal();
 
-            //EditorGUILayout.BeginHorizontal();
+                float prevWidth = EditorGUIUtility.labelWidth;
 
-            //float prevWidth = EditorGUIUtility.labelWidth;
+                EditorGUILayout.LabelField(new GUIContent("Freeze Position", "Allows you to freeze movement in a specific axis."));
 
-            //EditorGUILayout.LabelField(new GUIContent("Target Axis", ""));
+                EditorGUIUtility.labelWidth = 30f;
 
-            //EditorGUIUtility.labelWidth = 30f;
+                xPos = EditorGUILayout.Toggle("X", xPos);
+                yPos = EditorGUILayout.Toggle("Y", yPos);
+                zPos = EditorGUILayout.Toggle("Z", zPos);
 
-            //xAxis = EditorGUILayout.Toggle("X", xAxis);
-            //yAxis = EditorGUILayout.Toggle("Y", yAxis);
-            //zAxis = EditorGUILayout.Toggle("Z", zAxis);
+                EditorGUIUtility.labelWidth = prevWidth;
 
-            //EditorGUIUtility.labelWidth = prevWidth;
+                EditorGUILayout.EndHorizontal();
 
-            //EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.LabelField(new GUIContent("Freeze Rotation", "Allows you to freeze rotation in a specific axis."));
+
+                EditorGUIUtility.labelWidth = 30f;
+
+                xRot = EditorGUILayout.Toggle("X", xRot);
+                yRot = EditorGUILayout.Toggle("Y", yRot);
+                zRot = EditorGUILayout.Toggle("Z", zRot);
+
+                EditorGUIUtility.labelWidth = prevWidth;
+
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
         public override bool ExecuteAction()
@@ -250,6 +273,36 @@ namespace EnhancedTriggerbox.Component
                     break;
             }
 
+            if (editConstraints)
+            {
+                rigbody.constraints = RigidbodyConstraints.FreezeAll;
+
+                if (!xPos)
+                {
+                    rigbody.constraints &= ~RigidbodyConstraints.FreezePositionX;
+                }
+                if (!yPos)
+                {
+                    rigbody.constraints &= ~RigidbodyConstraints.FreezePositionY;
+                }
+                if (!zPos)
+                {
+                    rigbody.constraints &= ~RigidbodyConstraints.FreezePositionZ;
+                }
+                if (!xRot)
+                {
+                    rigbody.constraints &= ~RigidbodyConstraints.FreezeRotationX;
+                }
+                if (!yRot)
+                {
+                    rigbody.constraints &= ~RigidbodyConstraints.FreezeRotationY;
+                }
+                if (!zRot)
+                {
+                    rigbody.constraints &= ~RigidbodyConstraints.FreezeRotationZ;
+                }
+            }
+            
             return true;
         }
 

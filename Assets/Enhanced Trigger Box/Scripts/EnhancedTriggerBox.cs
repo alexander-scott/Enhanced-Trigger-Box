@@ -452,27 +452,32 @@ namespace EnhancedTriggerbox
             return false;
         }
 
+        /// <summary>
+        /// Uses reflection to find all instances of condition/response components and returns them as an array of strings.
+        /// </summary>
+        /// <param name="conditions">If true find components, false find responses.</param>
+        /// <returns>Array of component names</returns>
         private string[] GetComponents(bool conditions)
         {
-            string[] listOfBs;
+            string[] listOfComponents;
 
             if (conditions)
             {
-                listOfBs = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
                             from assemblyType in domainAssembly.GetTypes()
                             where typeof(ConditionComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ConditionComponent"
                             select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
             }
             else
             {
-                listOfBs = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
                             from assemblyType in domainAssembly.GetTypes()
                             where typeof(ResponseComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ResponseComponent"
                             select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
             }
 
-            string[] newArray = new string[listOfBs.Length + 1];
-            listOfBs.CopyTo(newArray, 1);
+            string[] newArray = new string[listOfComponents.Length + 1];
+            listOfComponents.CopyTo(newArray, 1);
             newArray[0] = (conditions) ? "Select A Condition" : "Select A Response";
 
             return newArray;

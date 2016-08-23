@@ -2173,6 +2173,13 @@ MonoBehaviour:
   changeKinematic: 0
   changeInterpolate: 0
   changeCollisionDetection: 0
+  editConstraints: 0
+  xPos: 0
+  yPos: 0
+  zPos: 0
+  xRot: 0
+  yRot: 0
+  zRot: 0
 --- !u!1 &1590086731
 GameObject:
   m_ObjectHideFlags: 0
