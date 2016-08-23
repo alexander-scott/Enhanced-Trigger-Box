@@ -48,12 +48,6 @@ namespace EnhancedTriggerbox
         public bool showBaseOptions = true;
 
         /// <summary>
-        /// A list of tags belonging to gameobjects which are able to trigger the trigger box
-        /// </summary>
-        [Tooltip("Only tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. By default the Player tag is used here.")]
-        public string triggerTags = "Player";
-
-        /// <summary>
         /// If true the application will write to the console a message with the name of the trigger that was triggered
         /// </summary>
         [Tooltip("If true, the script will write to the console when certain events happen such as when the trigger box is triggered.")]
@@ -66,10 +60,16 @@ namespace EnhancedTriggerbox
         public bool hideWarnings;
 
         /// <summary>
-        /// If true then only a wireframe will be displayed instead of a coloured box
+        /// If true, the entry check on the trigger box will be disabled, meaning it will go straight to the condition checking instead of waiting for something to enter the trigger box.
         /// </summary>
-        [Tooltip("If true, the trigger box will no longer have a fill colour in the editor and only the edges will be visible.")]
-        public bool drawWire;
+        [Tooltip("If true, the entry check on the trigger box will be disabled, meaning it will go straight to the condition checking instead of waiting for something to enter the trigger box.")]
+        public bool disableEntryCheck;
+
+        /// <summary>
+        /// Only gameobjects with tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. If you leave this field blank any object will be able to trigger it.
+        /// </summary>
+        [Tooltip("Only gameobjects with tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. If you leave this field blank any object will be able to trigger it.")]
+        public string triggerTags;
 
         /// <summary>
         /// The colour of the trigger box
@@ -287,7 +287,7 @@ namespace EnhancedTriggerbox
         void Start()
         {
             // If a name of an object is entered then we will find that object and map it to followTransform
-            if (!string.IsNullOrEmpty(followTransformName))
+            if (!string.IsNullOrEmpty(followTransformName) && !disableEntryCheck)
             {
                 try
                 {
@@ -298,6 +298,11 @@ namespace EnhancedTriggerbox
                     Debug.Log("Unable to find game object" + followTransformName + " for Trigger Follow. Reverting to follow main camera.");
                     triggerFollow = TriggerFollow.FollowMainCamera;
                 }
+            }
+
+            if (disableEntryCheck)
+            {
+                triggered = true;
             }
 
             // Do all the OnAwake functions for conditions/responses
@@ -317,14 +322,17 @@ namespace EnhancedTriggerbox
         /// </summary>
         void FixedUpdate()
         {
-            // This if statement updates the trigger boxes position to either stay on a transform or on the main camera
-            if (triggerFollow == TriggerFollow.FollowTransform)
+            if (!disableEntryCheck)
             {
-                transform.position = followTransform.position;
-            }
-            else if (triggerFollow == TriggerFollow.FollowMainCamera)
-            {
-                transform.position = Camera.main.transform.position;
+                // This if statement updates the trigger boxes position to either stay on a transform or on the main camera
+                if (triggerFollow == TriggerFollow.FollowTransform)
+                {
+                    transform.position = followTransform.position;
+                }
+                else if (triggerFollow == TriggerFollow.FollowMainCamera)
+                {
+                    transform.position = Camera.main.transform.position;
+                }
             }
 
             // If the player has entered the trigger box
@@ -351,8 +359,6 @@ namespace EnhancedTriggerbox
                 }
             }
         }
-
-
 
         /// <summary>
         /// This function executes all the responses and only happens after all the conditions have been met
@@ -394,9 +400,12 @@ namespace EnhancedTriggerbox
         /// <param name="other">The collider that this object has collided with</param>
         private void OnTriggerEnter(Collider other)
         {
-            if ((triggerTags.Split(',').Contains(other.gameObject.tag)))
+            if (!disableEntryCheck)
             {
-                triggered = true;
+                if ((triggerTags.Split(',').Contains(other.gameObject.tag)) || string.IsNullOrEmpty(triggerTags))
+                {
+                    triggered = true;
+                }
             }
         }
 
@@ -406,9 +415,9 @@ namespace EnhancedTriggerbox
         /// <param name="other">The collider leaving this collider</param>
         private void OnTriggerExit(Collider other)
         {
-            if (!canWander)
+            if (!canWander && !disableEntryCheck)
             {
-                if ((triggerTags.Split(',').Contains(other.gameObject.tag)))
+                if ((triggerTags.Split(',').Contains(other.gameObject.tag)) || string.IsNullOrEmpty(triggerTags))
                 {
                     triggered = false;
                 }
@@ -422,15 +431,10 @@ namespace EnhancedTriggerbox
         {
             Gizmos.color = triggerboxColour;
 
-            if (!drawWire)
+            if (!disableEntryCheck)
             {
                 Gizmos.DrawCube(new Vector3(GetComponent<Collider>().bounds.center.x, GetComponent<Collider>().bounds.center.y, GetComponent<Collider>().bounds.center.z),
                                 new Vector3(GetComponent<Collider>().bounds.size.x, GetComponent<Collider>().bounds.size.y, GetComponent<Collider>().bounds.size.z));
-            }
-            else
-            {
-                Gizmos.DrawWireCube(new Vector3(GetComponent<Collider>().bounds.center.x, GetComponent<Collider>().bounds.center.y, GetComponent<Collider>().bounds.center.z),
-                               new Vector3(GetComponent<Collider>().bounds.size.x, GetComponent<Collider>().bounds.size.y, GetComponent<Collider>().bounds.size.z));
             }
         }
 
@@ -463,17 +467,17 @@ namespace EnhancedTriggerbox
 
             if (conditions)
             {
-                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
-                            from assemblyType in domainAssembly.GetTypes()
-                            where typeof(ConditionComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ConditionComponent"
-                            select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
+                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.GlobalAssemblyCache)
+                                    from assemblyType in domainAssembly.GetTypes()
+                                    where typeof(ConditionComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ConditionComponent"
+                                    select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
             }
             else
             {
-                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
-                            from assemblyType in domainAssembly.GetTypes()
-                            where typeof(ResponseComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ResponseComponent"
-                            select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
+                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.GlobalAssemblyCache)
+                                    from assemblyType in domainAssembly.GetTypes()
+                                    where typeof(ResponseComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ResponseComponent"
+                                    select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
             }
 
             string[] newArray = new string[listOfComponents.Length + 1];
@@ -493,17 +497,25 @@ namespace EnhancedTriggerbox
         {
             if (string.IsNullOrEmpty(text))
                 return string.Empty;
+
             StringBuilder newText = new StringBuilder(text.Length * 2);
             newText.Append(text[0]);
+
             for (int i = 1; i < text.Length; i++)
             {
                 if (char.IsUpper(text[i]))
+                {
                     if ((text[i - 1] != ' ' && !char.IsUpper(text[i - 1])) ||
                         (preserveAcronyms && char.IsUpper(text[i - 1]) &&
                          i < text.Length - 1 && !char.IsUpper(text[i + 1])))
+                    {
                         newText.Append(' ');
+                    } 
+                }
+
                 newText.Append(text[i]);
             }
+
             return newText.ToString();
         }
     }

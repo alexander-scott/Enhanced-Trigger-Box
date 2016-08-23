@@ -36,21 +36,25 @@ namespace EnhancedTriggerbox
 
             if (so.FindProperty("showBaseOptions").boolValue)
             {
-                RenderPropertyField(so.FindProperty("triggerTags"));
                 RenderPropertyField(so.FindProperty("debugTriggerBox"));
                 RenderPropertyField(so.FindProperty("hideWarnings"));
-                RenderPropertyField(so.FindProperty("drawWire"));
-                RenderPropertyField(so.FindProperty("triggerboxColour"));
-                RenderPropertyField(so.FindProperty("afterTrigger"));
+                RenderPropertyField(so.FindProperty("disableEntryCheck"));
 
-                var triggerFollowProp = so.FindProperty("triggerFollow");
-                RenderPropertyField(triggerFollowProp);
-
-                if (triggerFollowProp.enumValueIndex == 2)
+                if (!so.FindProperty("disableEntryCheck").boolValue)
                 {
-                    RenderPropertyField(so.FindProperty("followTransform"));
-                    RenderPropertyField(so.FindProperty("followTransformName"));
+                    RenderPropertyField(so.FindProperty("triggerTags"));
+                    RenderPropertyField(so.FindProperty("triggerboxColour"));
+
+                    RenderPropertyField(so.FindProperty("triggerFollow"));
+
+                    if (so.FindProperty("triggerFollow").enumValueIndex == 2)
+                    {
+                        RenderPropertyField(so.FindProperty("followTransform"));
+                        RenderPropertyField(so.FindProperty("followTransformName"));
+                    }
                 }
+                
+                RenderPropertyField(so.FindProperty("afterTrigger"));
 
                 RenderPropertyField(so.FindProperty("conditionTime"));
                 RenderPropertyField(so.FindProperty("canWander"));
@@ -65,14 +69,15 @@ namespace EnhancedTriggerbox
                     {
                         EditorGUILayout.HelpBox("You have selected Follow Transform but you have not specified either a transform reference or a gameobject name!", MessageType.Warning);
                     }
-                    //else
-                    //{
-                    //    // If the user has entered both a gameobject name and transform reference
-                    //    if (so.FindProperty("followTransform").objectReferenceValue != null && !string.IsNullOrEmpty(so.FindProperty("followTransformName").stringValue))
-                    //    {
-                    //        EditorGUILayout.HelpBox("You have selected Follow Transform and have entered both a transform reference and a gameobject name! The transform reference will be ignored and the gameobject name will take preference and you should remove one of them.", MessageType.Warning);
-                    //    }
-                    //}
+                }
+
+                // Check that this gameobject has a box collider
+                if (!so.FindProperty("disableEntryCheck").boolValue)
+                {
+                    if (theObject.gameObject.GetComponent<BoxCollider>() == null)
+                    {
+                        EditorGUILayout.HelpBox("You need to add a box collider to this gameobject. Or alternatively you can check Disable Entry Check to remove the need for one.", MessageType.Warning);
+                    }
                 }
             }
 

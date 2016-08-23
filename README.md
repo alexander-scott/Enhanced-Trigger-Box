@@ -206,7 +206,11 @@ For Transform it first transforms the condition object's position from world spa
 
 If this statement is true then it means the object is in the cameras view. It will then fire a raycast from the camera in the direction of the object to make sure no objects are blocking it's view (unless ignore obstacles is ticked). If that succeeds it means there was either nothing in the way or it hit our object and the condition has passed.
 
-If the component parameter is set to Full Box Collider, the entire box collider must be within the cameras view. So instead of doing the above if statement on just the transform it does it on all of the box colliders points to ensure it is all in view. Minimum Box Collider is similar but only one point on the box collider needs to be visible for it to pass. Mesh Renderer uses the in-built isVisible function to work out if it is visible in a camera.
+If the component parameter is set to Full Box Collider, all important points on a box collider must be within the cameras view. So instead of doing the above if statement on just the transform it does it on all of the box colliders points to ensure it is all in view. Minimum Box Collider is similar but only one point on the box collider needs to be visible for it to pass. 
+
+One thing to note for the Full Box Collider is that if you're up close to large objects the condition could get met unintentionally. Because only important points on the box collider (such as corners and centers) are checked, if you're really close to a big objects so that none of those points are in your camera the condition will get met. A solution to this is to use the min distance field so that they have to be a certain distance away from the object.
+
+Mesh Renderer uses the in-built isVisible function to work out if it is visible in a camera. Note that the object is considered visible when it needs to be rendered in the scene. For example, it might not actually be visible by any camera but still need to be rendered for shadows. When running in the editor, the scene view cameras will also cause this value to be true.
 
 Raycast intensity allows you to customise the raycasts that get fired when checking if there's anything blocking the cameras view to the object. Ignore obstacles won't do any raycast check at all, meaning you just have to look in the direction of the object and the condition will pass, even if there's something in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
 
@@ -227,6 +231,8 @@ Condition Object:- This is the object that the condition is based upon.
 Component Parameter:- This is the type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider), full box collider (the entire box collider) or mesh renderer (any part of a mesh). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met.
 
 Raycast Intesity:- When using the Looking At condition type raycasts are fired to make sure nothing is blocking the cameras line of sight to the object. Here you can customise how those raycasts should be fired. Ignore obstacles fires no raycasts and mean the condition will pass even if there is an object in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
+
+Min Distance:- This field allows you to set a minimum distance between the selected camera and target object before the condition gets checked.
 
 ![Camera Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CameraCondition.png)
 
@@ -471,3 +477,10 @@ New instance name:- This field is used to set the name of the newly instantiated
 Custom Position / Rotation:- This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes.
 
 ![Spawn Gameobject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SpawnGameObjectResponse.png)
+
+Troubleshooting
+---------------
+
+#### System.Reflection.ReflectionTypeLoadException: The classes in the module cannot be loaded.
+
+Enhanced Trigger Box uses .NET Reflection to obtain information about loaded assemblies and the types defined within, in this being the enhanced trigger box components. If you are seeing this error it means your Unity API is set to a .NET version which doesn't support Reflection. To fix this go to "Edit->Project Settings->Player-> Other settings" and set "Api Compatibility Level" to ".NET 2.0" instead of ".NET 2.0 Subset" and then reload your project.

@@ -3494,6 +3494,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000011620319406}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000010076613764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3515,10 +3516,10 @@ MonoBehaviour:
   - {fileID: 114000012234522332}
   - {fileID: 114000012159564550}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 2
   triggerFollow: 2
@@ -3598,6 +3599,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012800600610}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000010749950494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3636,6 +3638,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012766473370}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000011027782370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3655,6 +3658,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012534973794}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000011060903636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3710,10 +3714,10 @@ MonoBehaviour:
   - {fileID: 114000013167020392}
   - {fileID: 114000011112614640}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 2
   triggerFollow: 2
@@ -3740,6 +3744,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012380645482}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000011219595262
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3759,6 +3764,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012618672728}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000011232331068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3814,6 +3820,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010187384714}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000011343740582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3831,10 +3838,10 @@ MonoBehaviour:
   responses:
   - {fileID: 114000011571908330}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 2
@@ -3859,10 +3866,10 @@ MonoBehaviour:
   responses:
   - {fileID: 114000010440091050}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 2
@@ -3942,6 +3949,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000011803961696}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000011832879228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3997,6 +4005,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013985095918}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012114684346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4016,6 +4025,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010139405568}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012159564550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4052,6 +4062,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013845311510}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012234522332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4088,6 +4099,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013697543168}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012273285436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4107,6 +4119,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010290730638}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012567680610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4128,10 +4141,10 @@ MonoBehaviour:
   - {fileID: 114000011465457232}
   - {fileID: 114000011832879228}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 2
   triggerFollow: 2
@@ -4158,6 +4171,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010631972218}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012803609916
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4194,6 +4208,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010475073428}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000012992313506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4230,10 +4245,10 @@ MonoBehaviour:
   responses:
   - {fileID: 114000010264297010}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 2
@@ -4260,6 +4275,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010951586150}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000013158658112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4279,6 +4295,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010286353894}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000013167020392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4315,6 +4332,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012681545566}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000013217319750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4332,10 +4350,10 @@ MonoBehaviour:
   responses:
   - {fileID: 114000011232331068}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 2
@@ -4364,10 +4382,10 @@ MonoBehaviour:
   - {fileID: 114000012803609916}
   - {fileID: 114000011060903636}
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 1
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 2
   triggerFollow: 2
@@ -4413,6 +4431,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000011428327136}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000014113377452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4432,6 +4451,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012833810200}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 2
 --- !u!114 &114000014131212916
 MonoBehaviour:
   m_ObjectHideFlags: 1

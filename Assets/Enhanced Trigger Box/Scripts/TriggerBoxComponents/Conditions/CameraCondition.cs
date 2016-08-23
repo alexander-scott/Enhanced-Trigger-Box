@@ -37,6 +37,11 @@ namespace EnhancedTriggerbox.Component
         public RaycastIntensity raycastIntensity = RaycastIntensity.Med;
 
         /// <summary>
+        /// This field allows you to set a minimum distance between the selected camera and target object before the condition gets checked.
+        /// </summary>
+        public float minDistance;
+
+        /// <summary>
         /// The world to viewport point of the object the viewObject
         /// </summary>
         private Vector3 viewConditionScreenPoint = new Vector3();
@@ -117,6 +122,9 @@ namespace EnhancedTriggerbox.Component
                 raycastIntensity = (RaycastIntensity)EditorGUILayout.EnumPopup(new GUIContent("Raycast Intesity",
                     "When using the Looking At condition type raycasts are fired to make sure nothing is blocking the cameras line of sight to the object. Here you can customise how those raycasts should be fired. Ignore obstacles fires no raycasts and mean the condition will pass even if there is an object in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider."), raycastIntensity);
             }
+
+            minDistance = EditorGUILayout.FloatField(new GUIContent("Min Distance", 
+                "This field allows you to set a minimum distance between the selected camera and target object before the condition gets checked."), minDistance);
         }
 
         public override void Validation()
@@ -186,11 +194,11 @@ namespace EnhancedTriggerbox.Component
 
         public override bool ExecuteAction()
         {
-            // This fixes a bug that occured when the player was very close to an object. Is this necessary? TODO: Find out if this is necessary
-            //if (Vector3.Distance(cam.transform.position, conditionObject.transform.position) < 2f)
-            //{
-            //    return false;
-            //}
+            //If we're closer to the object than the min distance return false
+            if (Vector3.Distance(cam.transform.position, conditionObject.transform.position) < minDistance)
+            {
+                return false;
+            }
 
             switch (cameraConditionType)
             {
@@ -314,7 +322,7 @@ namespace EnhancedTriggerbox.Component
                             break;
 
                         case CameraConditionComponentParameters.MeshRenderer:
-                            if (!viewConditionObjectMeshRenderer.isVisible)
+                            if (!conditionObject.GetComponent<MeshRenderer>().isVisible)
                             {
                                 return true;
                             }
