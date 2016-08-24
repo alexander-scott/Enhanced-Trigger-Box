@@ -5,20 +5,26 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.2.0]*
+*Current version: [v0.1.0]*
 
 Getting started
 ---------------
 
-Download the asset from the asset store and import it into your project. Or download the zip file from GitHub and place it in your project. From there you can open up the demo scene and explore that (the demo scene uses the RigidBodyFPSController from the standard assets which will also need importing).
+Download the asset from the asset store and import it into your project. Or download the zip file from GitHub and place it in your project. From there you can open up the demo or examples scene and explore that (they both use the FPSController from the standard assets which will also need importing). To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder. From there you can add any conditions or responses using the drop down lists.
 
-The demo scene shows various conditions and responses in action. To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder. From there you can add any conditions or responses using the drop down lists.
+### Demo Scene Overview
 
-How it works
+This scene contains a mashup of a few conditions and responses. All you have to do is explore. The Enhanced Trigger Box is used a bit excessively here and you wouldn't normally use it this way as a lot of instantiating and destroying is happening but it gives you an idea of what you can do.
+
+### Examples Scene Overview
+
+This scene contains a showcase of most of the conditions and responses one at a time giving you an idea of what they do. To activate a response just walk into the box. To test a condition walk into the box and meet the condition, for example the Looking Away condition don't look at the cube in front of you. The cube will turn green when the box gets successfully triggered and it will also send a message to the console.
+
+How does it all work 
 ---------------
-At the top level you have the Enhanced Trigger Box script. It has some base options and uses a box collider to represents the boundaries of the Enhanced Trigger Box. Beneath that you have Enhanced Trigger Box Components that you are able to add to the Enhanced Trigger Box. These come in the form of either a Condition or a Response and are located in the Scripts/TriggerBoxComponents folder.
+At the top level you have the Enhanced Trigger Box script. It has some base options and uses a box collider to represents the boundaries of the Enhanced Trigger Box. Beneath that you have Enhanced Trigger Box Components which are MonoBehaviours that you are able to add to the Enhanced Trigger Box. These come in the form of either a Condition or a Response and are located in the Scripts/TriggerBoxComponents folder.
 
-When a Enhanced Trigger Box gets triggered (another gameobject collides with it's box collider), all the conditions get checked to see if each condition has been met. If all the conditions have been met, all the responses get executed. 
+When a Enhanced Trigger Box gets entered (another gameobject collides with it's box collider), all the conditions get checked to see if each condition has been met. If all the conditions have been met, all the responses get executed. 
 
 If you click on one of the Enhanced Trigger Boxes in the scene or drag one in from the prefabs folder you can see the what the script looks like in the inspector.
 
@@ -26,11 +32,13 @@ If you click on one of the Enhanced Trigger Boxes in the scene or drag one in fr
 
 ![Test Image](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/BaseOptions.png)
 
-Trigger Tags:- Only tags listed here are able to trigger the trigger box. To have more than one string, put a comma between them. By default the Player tag is used here.
+Trigger Tags:- Only gameobjects with tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. If you leave this field blank any object will be able to trigger it.
 
 Debug Trigger Box:- If true, the script will write to the console when certain events happen such as when the trigger box is triggered.
 
 Hide Warnings:- If this is true, the script won't perform checks to notify you if you're missing any required references or if theres any errors.
+
+Disable Entry Check:- If true, the entry check on the trigger box will be disabled, meaning it will go straight to the condition checking instead of waiting for something to enter the trigger box.
 
 Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
 
@@ -52,7 +60,7 @@ Beneath the list of conditions (or if there's no conditions this is the only thi
 
 Selecting a condition from this list will add it to the Enhanced Trigger Box and you will see it above the Add A New Condition drop down list. The structure of each component will be different and each will be explained in detail later down the page.
 
-You have now added a condition. When this Enhanced Trigger Box gets triggered this condition will be checked and will have to pass before any responses get executed. Each condition will have various options that will affect how the condition gets met. To remove a condition click the X in the top right of the component.
+You have now added a condition. When this Enhanced Trigger Box gets entered this condition will be checked and will have to pass before any responses get executed. Each condition will have various options that will affect how the condition gets met. To remove a condition click the X in the top right of the component.
 
 ### Responses Overview
 
@@ -123,7 +131,7 @@ public override void DrawInspectorGUI()
 
 #### ExecuteAction()
 
-ExecuteAction() must be overriden. If this component is a condition this function is called when the trigger box is triggered (player enters it) and must return
+ExecuteAction() must be overriden. If this component is a condition this function is called when the trigger box is entered (gameobject enters it) and must return
 true or false depending on if the condition has been met. If this component is a response then this function is called when all conditions
 have been met and returns true or false depending on if the response has executed correctly. In the first codeblock you can see a basic ExecuteAction() example
 for a condition. If something has done something return true and then the responses can start executing. In the second codeblock you can see a basic
@@ -353,9 +361,11 @@ if (playSoundEffect)
 
 #### Component Fields
 
-Mute All Audio:- Stops the current audio clip being played on the main camera.
+Audio Source:- The audio source for the music
 
-Play Music:- This is the audio clip that will be played on the main camera.
+Mute All Audio:- Stops the current audio clip being played on the audio source.
+
+Play Music:- This is the audio clip that will be played on the audio source.
 
 Loop Music:- If this is true, the above audio clip will loop when played.
 
@@ -477,6 +487,18 @@ New instance name:- This field is used to set the name of the newly instantiated
 Custom Position / Rotation:- This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes.
 
 ![Spawn Gameobject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SpawnGameObjectResponse.png)
+
+### Teleport Response
+
+The response simply allows you to move gameobjects from one point to another.
+
+#### Component fields
+
+Target Gameobject:- This is the gameobject that you want to be moved
+
+Destination:- This is the position you want to move the gameobject to.
+
+![Teleport Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/TeleportResponse.png)
 
 Troubleshooting
 ---------------

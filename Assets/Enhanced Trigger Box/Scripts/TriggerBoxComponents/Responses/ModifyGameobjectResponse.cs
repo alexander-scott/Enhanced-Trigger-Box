@@ -46,14 +46,6 @@ namespace EnhancedTriggerbox.Component
                    "This is the type of modification. "), modifyType);
         }
 
-        public override void Validation()
-        {
-            if (obj && !string.IsNullOrEmpty(gameObjectName))
-            {
-                ShowWarningMessage("You cannot have both a gameobject reference and gameobject name. Remove one or the other.");
-            }
-        }
-
         public override bool ExecuteAction()
         {
             switch (modifyType)

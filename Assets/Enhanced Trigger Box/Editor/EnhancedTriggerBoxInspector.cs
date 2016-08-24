@@ -62,18 +62,18 @@ namespace EnhancedTriggerbox
 
             if (!so.FindProperty("hideWarnings").boolValue)
             {
-                // If follow transform is enabled, check if the user specified a transform
-                if (so.FindProperty("triggerFollow").enumValueIndex == 2)
-                {
-                    if (so.FindProperty("followTransform").objectReferenceValue == null && string.IsNullOrEmpty(so.FindProperty("followTransformName").stringValue))
-                    {
-                        EditorGUILayout.HelpBox("You have selected Follow Transform but you have not specified either a transform reference or a gameobject name!", MessageType.Warning);
-                    }
-                }
-
-                // Check that this gameobject has a box collider
                 if (!so.FindProperty("disableEntryCheck").boolValue)
                 {
+                    // If follow transform is enabled, check if the user specified a transform
+                    if (so.FindProperty("triggerFollow").enumValueIndex == 2)
+                    {
+                        if (so.FindProperty("followTransform").objectReferenceValue == null && string.IsNullOrEmpty(so.FindProperty("followTransformName").stringValue))
+                        {
+                            EditorGUILayout.HelpBox("You have selected Follow Transform but you have not specified either a transform reference or a gameobject name!", MessageType.Warning);
+                        }
+                    }
+
+                    // Check that this gameobject has a box collider
                     if (theObject.gameObject.GetComponent<BoxCollider>() == null)
                     {
                         EditorGUILayout.HelpBox("You need to add a box collider to this gameobject. Or alternatively you can check Disable Entry Check to remove the need for one.", MessageType.Warning);

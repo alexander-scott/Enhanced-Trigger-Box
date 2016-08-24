@@ -7,6 +7,11 @@ namespace EnhancedTriggerbox.Component
     public class AudioResponse : ResponseComponent
     {
         /// <summary>
+        /// The audio source for the music
+        /// </summary>
+        public AudioSource audioSource;
+
+        /// <summary>
         /// Stops the current audio clip being played on the main camera.
         /// </summary>
         public bool muteAllAudio;
@@ -38,11 +43,14 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+            audioSource = (AudioSource)EditorGUILayout.ObjectField(new GUIContent("Audio Source",
+                "The audio source for the music."), audioSource, typeof(AudioSource), true);
+
             muteAllAudio = EditorGUILayout.Toggle(new GUIContent("Mute all audio",
-                "Stops the current audio clip being played on the main camera."), muteAllAudio);
+                "Stops the current audio clip being played on the audio source."), muteAllAudio);
 
             playMusic = (AudioClip)EditorGUILayout.ObjectField(new GUIContent("Play Music",
-                "This is the audio clip that will be played on the main camera."), playMusic, typeof(AudioClip), true);
+                "This is the audio clip that will be played on the audio source."), playMusic, typeof(AudioClip), true);
 
             loopMusic = EditorGUILayout.Toggle(new GUIContent("Loop Music",
                 "If this is true, the above audio clip will loop when played."), loopMusic);
@@ -73,15 +81,15 @@ namespace EnhancedTriggerbox.Component
         {
             if (muteAllAudio)
             {
-                Camera.main.GetComponent<AudioSource>().Stop();
+                audioSource.Stop();
             }
 
             if (playMusic)
             {
-                Camera.main.GetComponent<AudioSource>().loop = loopMusic;
-                Camera.main.GetComponent<AudioSource>().clip = playMusic;
-                Camera.main.GetComponent<AudioSource>().volume = musicVolume;
-                Camera.main.GetComponent<AudioSource>().Play();
+                audioSource.loop = loopMusic;
+                audioSource.clip = playMusic;
+                audioSource.volume = musicVolume;
+                audioSource.Play();
             }
 
             if (playSoundEffect)

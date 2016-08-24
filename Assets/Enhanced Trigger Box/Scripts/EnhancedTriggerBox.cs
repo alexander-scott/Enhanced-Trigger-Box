@@ -308,12 +308,26 @@ namespace EnhancedTriggerbox
             // Do all the OnAwake functions for conditions/responses
             for (int i = 0; i < conditions.Count; i++)
             {
-                conditions[i].OnAwake();
+                if (conditions[i])
+                {
+                    conditions[i].OnAwake();
+                }
+                else
+                {
+                    conditions.RemoveAt(i);
+                }
             }
 
             for (int i = 0; i < responses.Count; i++)
             {
-                responses[i].OnAwake();
+                if (responses[i])
+                {
+                    responses[i].OnAwake();
+                }
+                else
+                {
+                    responses.RemoveAt(i);
+                }
             }
         }
 

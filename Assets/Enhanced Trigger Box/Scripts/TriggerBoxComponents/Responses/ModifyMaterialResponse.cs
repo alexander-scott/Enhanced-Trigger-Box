@@ -91,12 +91,12 @@ namespace EnhancedTriggerbox.Component
 
         public override void Validation()
         {
-            if (!targetGameObject)
+            if (!targetGameObject && material)
             {
                 ShowWarningMessage("You need to add a reference to a target gameobject for the modify material response to work.");
             }
 
-            if (!material)
+            if (!material && targetGameObject)
             {
                 ShowWarningMessage("You need to add a reference to a material for the modify material response to work.");
             }
