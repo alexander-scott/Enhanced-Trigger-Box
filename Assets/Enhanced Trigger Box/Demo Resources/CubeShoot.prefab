@@ -31,6 +31,8 @@ GameObject:
   - 114: {fileID: 114000011651528414}
   - 114: {fileID: 114000013254465282}
   - 114: {fileID: 114000013556076378}
+  - 114: {fileID: 114000010041028506}
+  - 114: {fileID: 114000011611171132}
   m_Layer: 0
   m_Name: ETB_CubeShoot
   m_TagString: Untagged
@@ -2595,6 +2597,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114000010041028506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  obj: {fileID: 0}
+  gameObjectName: OpenAreaWithDoor
+  modifyType: 0
 --- !u!114 &114000010147783800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2614,6 +2633,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000014208080216}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000010196271654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2663,6 +2683,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013278240046}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000010300060112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2712,6 +2733,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000014274097850}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000010451975550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2758,6 +2780,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000011873011934}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000010976086528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2834,6 +2857,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013257696870}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000011351071072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2899,6 +2923,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000011525345668}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000011511865294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2956,6 +2981,23 @@ MonoBehaviour:
   playerPrefType: 0
   playerPrefVal: 6
   refreshEveryFrame: 1
+--- !u!114 &114000011611171132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hideShowSection: 1
+  deleted: 0
+  showWarnings: 1
+  obj: {fileID: 0}
+  gameObjectName: Door(Clone)
+  modifyType: 0
 --- !u!114 &114000011651528414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3003,6 +3045,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012095821036}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000011994936218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3068,6 +3111,7 @@ MonoBehaviour:
   conditionObject: {fileID: 118168}
   componentParameter: 0
   raycastIntensity: 0
+  minDistance: 0
 --- !u!114 &114000012123700746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3217,6 +3261,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010889810820}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000012733081934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3236,6 +3281,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013290323560}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000012804438218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3254,6 +3300,8 @@ MonoBehaviour:
   - {fileID: 114000011651528414}
   - {fileID: 114000013254465282}
   - {fileID: 114000013556076378}
+  - {fileID: 114000010041028506}
+  - {fileID: 114000011611171132}
   showBaseOptions: 1
   debugTriggerBox: 1
   hideWarnings: 0
@@ -3411,6 +3459,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010746741866}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000013465197744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3520,6 +3569,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013513009502}
   componentParameter: 1
   raycastIntensity: 3
+  minDistance: 0
 --- !u!114 &114000014096522152
 MonoBehaviour:
   m_ObjectHideFlags: 1

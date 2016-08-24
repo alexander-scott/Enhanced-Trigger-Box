@@ -149,31 +149,31 @@ namespace EnhancedTriggerbox.Component
                         switch (playerPrefCondition)
                         {
                             case PrefCondition.EqualTo:
-                                if (playerPrefValFloat == playerPrefFloat)
+                                if (playerPrefFloat == playerPrefValFloat)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.GreaterThan:
-                                if (playerPrefValFloat > playerPrefFloat)
+                                if (playerPrefFloat > playerPrefValFloat)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.GreaterThanOrEqualTo:
-                                if (playerPrefValFloat >= playerPrefFloat)
+                                if (playerPrefFloat >= playerPrefValFloat)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.LessThan:
-                                if (playerPrefValFloat < playerPrefFloat)
+                                if (playerPrefFloat < playerPrefValFloat)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.LessThanOrEqualTo:
-                                if (playerPrefValFloat <= playerPrefFloat)
+                                if (playerPrefFloat <= playerPrefValFloat)
                                     return true;
                                 else
                                     return false;
@@ -184,31 +184,31 @@ namespace EnhancedTriggerbox.Component
                         switch (playerPrefCondition)
                         {
                             case PrefCondition.EqualTo:
-                                if (playerPrefValInt == playerPrefInt)
+                                if (playerPrefInt == playerPrefValInt)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.GreaterThan:
-                                if (playerPrefValInt > playerPrefInt)
+                                if (playerPrefInt > playerPrefValInt)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.GreaterThanOrEqualTo:
-                                if (playerPrefValInt >= playerPrefInt)
+                                if (playerPrefInt >= playerPrefValInt)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.LessThan:
-                                if (playerPrefValInt < playerPrefInt)
+                                if (playerPrefInt < playerPrefValInt)
                                     return true;
                                 else
                                     return false;
 
                             case PrefCondition.LessThanOrEqualTo:
-                                if (playerPrefValInt <= playerPrefInt)
+                                if (playerPrefInt <= playerPrefValInt)
                                     return true;
                                 else
                                     return false;

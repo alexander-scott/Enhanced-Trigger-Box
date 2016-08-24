@@ -5,27 +5,29 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/2dCharacter.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/AircraftJet2Axis.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/AircraftJetAI.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/AircraftPropeller4Axis.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/AircraftPropellerAI.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/Car.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/CarAIWaypointBased.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/CharacterFirstPerson.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/CharacterThirdPerson.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/CharacterThirdPersonAI.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/Particles.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Scenes/RollerBall.unity
+  - enabled: 1
+    path: Assets/Enhanced Trigger Box/Demo.unity

@@ -36,9 +36,12 @@ namespace EnhancedTriggerbox.Component
             obj = (GameObject)EditorGUILayout.ObjectField(new GUIContent("GameObject",
                  "The gameobject that will modified."), obj, typeof(GameObject), true);
 
-            gameObjectName = EditorGUILayout.TextField(new GUIContent("GameObject Name",
-               "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified."), gameObjectName);
-
+            if (modifyType != ModifyType.Enable)
+            {
+                gameObjectName = EditorGUILayout.TextField(new GUIContent("GameObject Name",
+                    "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified."), gameObjectName);
+            }
+         
             modifyType = (ModifyType)EditorGUILayout.EnumPopup(new GUIContent("Modify Type",
                    "This is the type of modification. "), modifyType);
         }
@@ -48,11 +51,6 @@ namespace EnhancedTriggerbox.Component
             if (obj && !string.IsNullOrEmpty(gameObjectName))
             {
                 ShowWarningMessage("You cannot have both a gameobject reference and gameobject name. Remove one or the other.");
-            }
-
-            if (modifyType == ModifyType.Enable && !string.IsNullOrEmpty(gameObjectName))
-            {
-                ShowWarningMessage("You cannot enable a gameobject by name. Please pass in a reference instead.");
             }
         }
 

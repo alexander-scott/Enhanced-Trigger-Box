@@ -3599,7 +3599,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012800600610}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000010749950494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3638,7 +3638,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012766473370}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000011027782370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3658,7 +3658,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012534973794}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000011060903636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4005,7 +4005,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013985095918}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000012114684346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4099,7 +4099,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000013697543168}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000012273285436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4208,7 +4208,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010475073428}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000012992313506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4275,7 +4275,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000010951586150}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000013158658112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4332,7 +4332,7 @@ MonoBehaviour:
   conditionObject: {fileID: 1000012681545566}
   componentParameter: 1
   raycastIntensity: 3
-  minDistance: 2
+  minDistance: 5
 --- !u!114 &114000013217319750
 MonoBehaviour:
   m_ObjectHideFlags: 1

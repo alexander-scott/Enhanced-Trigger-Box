@@ -6,6 +6,7 @@ namespace EnhancedTriggerbox.Component
     /* Remember this component won't be included in the drop down lists until it inherits either ConditionComponent or ResponseComponent.
      * In this case you will need to replace EnhancedTriggerBoxComponent below with either of those two.
      */
+    [AddComponentMenu("")]
     public class NewComponentExample : EnhancedTriggerBoxComponent
     {
         /* 
