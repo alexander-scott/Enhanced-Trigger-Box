@@ -2740,6 +2740,7 @@ MonoBehaviour:
   deleted: 0
   showWarnings: 1
   loadLevelName: Demo
+  loadLevelNum: 0
 --- !u!114 &1719970431
 MonoBehaviour:
   m_ObjectHideFlags: 2

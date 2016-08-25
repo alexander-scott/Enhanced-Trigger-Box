@@ -1370,7 +1370,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
-  conditionTime: 2
+  conditionTime: 1
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -1427,7 +1427,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
-  conditionTime: 2
+  conditionTime: 1
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -1483,6 +1483,7 @@ MonoBehaviour:
   deleted: 0
   showWarnings: 1
   loadLevelName: Demo
+  loadLevelNum: 0
 --- !u!114 &114000012056947424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1543,7 +1544,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
-  conditionTime: 2
+  conditionTime: 1
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
@@ -1820,7 +1821,7 @@ MonoBehaviour:
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
-  conditionTime: 2
+  conditionTime: 1
   followTransform: {fileID: 0}
   followTransformName: 
   canWander: 0
