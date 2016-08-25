@@ -180,22 +180,13 @@ PlayerSettings:
     m_Icons:
     - serializedVersion: 2
       m_Icon: {fileID: 0}
-      m_Width: 128
-      m_Height: 128
+      m_Width: 1
+      m_Height: 1
   m_BuildTargetBatching:
   - m_BuildTarget: Web
     m_StaticBatching: 1
     m_DynamicBatching: 1
-  m_BuildTargetGraphicsAPIs:
-  - m_BuildTarget: AndroidPlayer
-    m_APIs: 08000000
-    m_Automatic: 0
-  - m_BuildTarget: LinuxStandaloneSupport
-    m_APIs: 0000000011000000
-    m_Automatic: 0
-  - m_BuildTarget: WindowsStandaloneSupport
-    m_APIs: 0200000001000000
-    m_Automatic: 0
+  m_BuildTargetGraphicsAPIs: []
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
   wiiUTitleID: 0005000011000000

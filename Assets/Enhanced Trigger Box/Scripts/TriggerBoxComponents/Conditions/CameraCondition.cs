@@ -165,7 +165,7 @@ namespace EnhancedTriggerbox.Component
 
             if (componentParameter == CameraConditionComponentParameters.MeshRenderer && raycastIntensity == RaycastIntensity.High)
             {
-                ShowWarningMessage("High raycast intensity will have no extra effect than med when using mesh renderer. This is because high intensity uses all the points from the a box colliders bounds but mesh renderers do not have bounds.");
+                ShowWarningMessage("High raycast intensity will have no extra effect than med when using mesh renderer. This is because high intensity uses all the points from the a box colliders bounds but mesh renderers do not have bounds so only the position is checked.");
             }
         }
 

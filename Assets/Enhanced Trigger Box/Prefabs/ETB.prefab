@@ -67,10 +67,10 @@ MonoBehaviour:
   conditions: []
   responses: []
   showBaseOptions: 1
-  triggerTags: Player
   debugTriggerBox: 1
   hideWarnings: 0
-  drawWire: 0
+  disableEntryCheck: 0
+  triggerTags: Player
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0

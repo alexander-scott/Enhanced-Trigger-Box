@@ -9,7 +9,9 @@ using System.Text;
 namespace EnhancedTriggerbox
 {
     [Serializable, ExecuteInEditMode]
+#if UNITY_5_4_OR_NEWER
     [HelpURL("https://alex-scott.co.uk/portfolio/enhanced-trigger-box.html")]
+#endif
     public class EnhancedTriggerBox : MonoBehaviour
     {
         #region Variables
@@ -29,7 +31,7 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// The getter that will return all the conditions. Used when iterating through all the conditions.
         /// </summary>
-        public List<EnhancedTriggerBoxComponent> listConditions
+        public List<EnhancedTriggerBoxComponent> Conditions
         {
             get { return conditions; }
         }
@@ -37,10 +39,20 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// The getter that will return all the responses. Used when iterating through all the responses.
         /// </summary>
-        public List<EnhancedTriggerBoxComponent> listResponses
+        public List<EnhancedTriggerBoxComponent> Responses
         {
             get { return responses; }
         }
+
+        /// <summary>
+        /// Cached names of all the conditions. Used in the add condition drop down list.
+        /// </summary>
+        public string[] conditionNames;
+
+        /// <summary>
+        /// Cached names of all the respones. Used in the add response drop down list.
+        /// </summary>
+        public string[] responseNames;
 
         /// <summary>
         /// This bool is used to store whether the base options tab is open in the inspector so it can persist across sessions
@@ -193,10 +205,13 @@ namespace EnhancedTriggerbox
             EditorGUI.indentLevel = 0;
 
             // Retrieve all the components that have inherited condition component
-            string[] allConditions = GetComponents(true);
+            if (conditionNames == null || conditionNames.Length == 0)
+            {
+                conditionNames = GetComponents(true);
+            }
 
             // Draw the drop down list GUI item that displays all of the conditions
-            int conditionIndex = EditorGUILayout.Popup("Add a new condition: ", 0, allConditions);
+            int conditionIndex = EditorGUILayout.Popup("Add a new condition: ", 0, conditionNames);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -204,12 +219,12 @@ namespace EnhancedTriggerbox
                 if (conditionIndex != 0)
                 {
                     // Determine the type of the component that needs to be added
-                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + allConditions[conditionIndex].Replace(" ", "").ToString());
+                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + conditionNames[conditionIndex].Replace(" ", "").ToString());
 
                     // If we couldn't find the component, write to the console saying it wasn't found
                     if (conType == null)
                     {
-                        Debug.Log("Unable to find the condition " + allConditions[conditionIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
+                        Debug.Log("Unable to find the condition " + conditionNames[conditionIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
                     }
                     else
                     {
@@ -225,7 +240,7 @@ namespace EnhancedTriggerbox
                 }
             }
 
-            // The below code is identical to the above, just conditions has changed to responses
+            // The below code is identical to the above, just conditions has been changed to responses
 
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
@@ -254,19 +269,22 @@ namespace EnhancedTriggerbox
 
             EditorGUI.indentLevel = 0;
 
-            string[] allResponses = GetComponents(false);
+            if (responseNames == null || responseNames.Length == 0)
+            {
+                responseNames = GetComponents(false);
+            }
 
-            int responseIndex = EditorGUILayout.Popup("Add a new response: ", 0, allResponses);
+            int responseIndex = EditorGUILayout.Popup("Add a new response: ", 0, responseNames);
 
             if (EditorGUI.EndChangeCheck())
             {
                 if (responseIndex != 0)
                 {
-                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + allResponses[responseIndex].Replace(" ", "").ToString());
+                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + responseNames[responseIndex].Replace(" ", "").ToString());
 
                     if (conType == null)
                     {
-                        Debug.Log("Unable to find the response " + allResponses[responseIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
+                        Debug.Log("Unable to find the response " + responseNames[responseIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
                     }
                     else
                     {
@@ -278,6 +296,18 @@ namespace EnhancedTriggerbox
 
                     responseIndex = 0;
                 }
+            }
+
+            EditorGUI.indentLevel = 0;
+            EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+
+            // Draw the button that will refresh the array of component names
+            if (GUILayout.Button(new GUIContent("Refresh Components", 
+                "If you have created a new condition or response click this to add it to the drop down lists.")))
+            {
+                conditionNames = GetComponents(true);
+                responseNames = GetComponents(false);
+
             }
         }
 
@@ -295,8 +325,8 @@ namespace EnhancedTriggerbox
                 }
                 catch
                 {
-                    Debug.Log("Unable to find game object" + followTransformName + " for Trigger Follow. Reverting to follow main camera.");
-                    triggerFollow = TriggerFollow.FollowMainCamera;
+                    Debug.Log("Unable to find game object" + followTransformName + " for Trigger Follow. Reverting to static.");
+                    triggerFollow = TriggerFollow.Static;
                 }
             }
 
@@ -494,6 +524,7 @@ namespace EnhancedTriggerbox
                                     select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
             }
 
+            // Add the Select A Condition/Response items to the list so they're displayed at the top. Is this the best way to do this?
             string[] newArray = new string[listOfComponents.Length + 1];
             listOfComponents.CopyTo(newArray, 1);
             newArray[0] = (conditions) ? "Select A Condition" : "Select A Response";

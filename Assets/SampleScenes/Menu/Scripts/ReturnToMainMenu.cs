@@ -13,10 +13,10 @@ public class ReturnToMainMenu : MonoBehaviour
     }
 
 
-    private void OnLevelWasLoaded(int level)
-    {
-        m_Levelloaded = true;
-    }
+    //private void OnLevelWasLoaded(int level)
+    //{
+    //    m_Levelloaded = true;
+    //}
 
 
     private void Update()
