@@ -204,14 +204,14 @@ namespace EnhancedTriggerbox
 
             EditorGUI.indentLevel = 0;
 
-            // Retrieve all the components that have inherited condition component
-            if (conditionNames == null || conditionNames.Length == 0)
+            // If we haven't got any conditions we need to fetch them
+            if (ComponentList.Instance.conditionNames == null || ComponentList.Instance.conditionNames.Length == 0)
             {
-                conditionNames = GetComponents(true);
+                ComponentList.Instance.GetComponents();
             }
 
             // Draw the drop down list GUI item that displays all of the conditions
-            int conditionIndex = EditorGUILayout.Popup("Add a new condition: ", 0, conditionNames);
+            int conditionIndex = EditorGUILayout.Popup("Add a new condition: ", 0, ComponentList.Instance.conditionNames);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -219,12 +219,12 @@ namespace EnhancedTriggerbox
                 if (conditionIndex != 0)
                 {
                     // Determine the type of the component that needs to be added
-                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + conditionNames[conditionIndex].Replace(" ", "").ToString());
+                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + ComponentList.Instance.conditionNames[conditionIndex].Replace(" ", "").ToString());
 
                     // If we couldn't find the component, write to the console saying it wasn't found
                     if (conType == null)
                     {
-                        Debug.Log("Unable to find the condition " + conditionNames[conditionIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
+                        Debug.Log("Unable to find the condition " + ComponentList.Instance.conditionNames[conditionIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
                     }
                     else
                     {
@@ -269,22 +269,17 @@ namespace EnhancedTriggerbox
 
             EditorGUI.indentLevel = 0;
 
-            if (responseNames == null || responseNames.Length == 0)
-            {
-                responseNames = GetComponents(false);
-            }
-
-            int responseIndex = EditorGUILayout.Popup("Add a new response: ", 0, responseNames);
+            int responseIndex = EditorGUILayout.Popup("Add a new response: ", 0, ComponentList.Instance.responseNames);
 
             if (EditorGUI.EndChangeCheck())
             {
                 if (responseIndex != 0)
                 {
-                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + responseNames[responseIndex].Replace(" ", "").ToString());
+                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + ComponentList.Instance.responseNames[responseIndex].Replace(" ", "").ToString());
 
                     if (conType == null)
                     {
-                        Debug.Log("Unable to find the response " + responseNames[responseIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
+                        Debug.Log("Unable to find the response " + ComponentList.Instance.responseNames[responseIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
                     }
                     else
                     {
@@ -296,18 +291,6 @@ namespace EnhancedTriggerbox
 
                     responseIndex = 0;
                 }
-            }
-
-            EditorGUI.indentLevel = 0;
-            EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
-
-            // Draw the button that will refresh the array of component names
-            if (GUILayout.Button(new GUIContent("Refresh Components", 
-                "If you have created a new condition or response click this to add it to the drop down lists.")))
-            {
-                conditionNames = GetComponents(true);
-                responseNames = GetComponents(false);
-
             }
         }
 
@@ -498,38 +481,6 @@ namespace EnhancedTriggerbox
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Uses reflection to find all instances of condition/response components and returns them as an array of strings.
-        /// </summary>
-        /// <param name="conditions">If true find components, false find responses.</param>
-        /// <returns>Array of component names</returns>
-        private string[] GetComponents(bool conditions)
-        {
-            string[] listOfComponents;
-
-            if (conditions)
-            {
-                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.GlobalAssemblyCache)
-                                    from assemblyType in domainAssembly.GetTypes()
-                                    where typeof(ConditionComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ConditionComponent"
-                                    select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
-            }
-            else
-            {
-                listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.GlobalAssemblyCache)
-                                    from assemblyType in domainAssembly.GetTypes()
-                                    where typeof(ResponseComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ResponseComponent"
-                                    select AddSpacesToSentence(assemblyType.Name, true)).ToArray();
-            }
-
-            // Add the Select A Condition/Response items to the list so they're displayed at the top. Is this the best way to do this?
-            string[] newArray = new string[listOfComponents.Length + 1];
-            listOfComponents.CopyTo(newArray, 1);
-            newArray[0] = (conditions) ? "Select A Condition" : "Select A Response";
-
-            return newArray;
         }
 
         /// <summary>

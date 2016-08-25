@@ -12,9 +12,13 @@ Getting started
 
 Download the asset from the asset store and import it into your project. Or download the zip file from GitHub and place it in your project. From there you can open up the demo or examples scene and explore that (they both use the FPSController from the standard assets which will also need importing). To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder. From there you can add any conditions or responses using the drop down lists.
 
+Note: If you don't want the demo files or don't want to import the standard assets, don't import the demo folder, just the prefabs and scripts folder.
+
 ### Demo Scene Overview
 
 This scene contains a mashup of a few conditions and responses. All you have to do is explore. The Enhanced Trigger Box is used a bit excessively here and you wouldn't normally use it this way as a lot of instantiating and destroying is happening but it gives you an idea of what you can do.
+
+[Here's a video of the demo scene as of v0.1.0. >](https://youtu.be/MIJ6kTY1X4c)
 
 ### Examples Scene Overview
 
@@ -24,9 +28,9 @@ How does it all work
 ---------------
 At the top level you have the Enhanced Trigger Box script. It has some base options and uses a box collider to represents the boundaries of the Enhanced Trigger Box. Beneath that you have Enhanced Trigger Box Components which are MonoBehaviours that you are able to add to the Enhanced Trigger Box. These come in the form of either a Condition or a Response and are located in the Scripts/TriggerBoxComponents folder.
 
-When a Enhanced Trigger Box gets entered (another gameobject collides with it's box collider), all the conditions get checked to see if each condition has been met. If all the conditions have been met, all the responses get executed. 
+When a Enhanced Trigger Box gets entered by another object with a collider (you can disable this entry check if you want and it will be treated as 'entered' on init), all the conditions get checked to see if each condition has been met. If all the conditions have been met, all the responses get executed. 
 
-If you click on one of the Enhanced Trigger Boxes in the scene or drag one in from the prefabs folder you can see the what the script looks like in the inspector.
+If you click on one of the Enhanced Trigger Boxes in the scene or drag the ETB prefab in from the prefabs folder you can see the what the script looks like in the inspector.
 
 ### Base Options Overview
 
@@ -73,7 +77,7 @@ Creating a new Component
 
 Creating a new Condition or Response is relatively painless. Open up NewComponentExample.cs in Scripts/TriggerBoxComponents. You can use this example as a template for new components.
 
-All you need to do is inherit ConditionComponent or ResponseComponent (depending on whether the new component is a condition or response) and then override some functions. There are 4 functions you can override. 1 is mandatory, 1 is recommended and the other two are optional. These will be explained in detail below.
+All you need to do is inherit ConditionComponent or ResponseComponent (depending on whether the new component is a condition or response), make sure it's in the Enhanced Trigger Box namespace and then override some functions. There are 4 functions you can override. 1 is mandatory, 1 is recommended and the other two are optional. These will be explained in detail below.
 
 If you want to view more advanced examples, go to Scripts/TriggerBoxComponents/Conditions or Scripts/TriggerBoxComponents/Responses and take a look at some of them.
 
@@ -131,7 +135,7 @@ public override void DrawInspectorGUI()
 
 #### ExecuteAction()
 
-ExecuteAction() must be overriden. If this component is a condition this function is called when the trigger box is entered (gameobject enters it) and must return
+ExecuteAction() MUST be overriden. If this component is a condition this function is called when the trigger box is entered (gameobject enters it) and must return
 true or false depending on if the condition has been met. If this component is a response then this function is called when all conditions
 have been met and returns true or false depending on if the response has executed correctly. In the first codeblock you can see a basic ExecuteAction() example
 for a condition. If something has done something return true and then the responses can start executing. In the second codeblock you can see a basic
@@ -159,7 +163,7 @@ public override bool ExecuteAction()
 
 #### OnAwake()
 
-OnAwake() is an optional function that you can override. This function is called either when the game first starts or when the Enhanced Trigger Box gets
+OnAwake() is an optional function that you can override. This function is called when the game first starts or when the Enhanced Trigger Box gets
 initalised. You can place whatever you want in here and it will be executed when the game starts or when the Enhanced Trigger Box gets 
 initalised. The most common uses will be for caching components or objects or getting updated values.
 
@@ -188,7 +192,7 @@ public override void Validation()
 ```
 
 Now your can add your new component as a condition or response in the editor! Because it's inherited ConditionComponent or ResponseComponent it will follow
-all the same rules as the other components and functions will get called when they're supposed to. If you think your new component is useful
+all the same rules as the other components and functions will get called when they're supposed to. If you think your new component could be useful to others,
 send it to me or create a pull request on GitHub and I'll add it to the asset.
 
 Individual Conditions
