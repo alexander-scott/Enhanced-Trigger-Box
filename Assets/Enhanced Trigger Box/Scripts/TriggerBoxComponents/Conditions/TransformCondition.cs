@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// Condition that requires either a position or rotation value of a transform to be greater/equal/less than a value
+    /// </summary>
     [AddComponentMenu("")]
     public class TransformCondition : ConditionComponent
     {

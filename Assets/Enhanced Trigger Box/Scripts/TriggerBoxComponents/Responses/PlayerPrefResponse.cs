@@ -4,6 +4,9 @@ using System;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to set a player pref value
+    /// </summary>
     [AddComponentMenu("")]
     public class PlayerPrefResponse : ResponseComponent
     {

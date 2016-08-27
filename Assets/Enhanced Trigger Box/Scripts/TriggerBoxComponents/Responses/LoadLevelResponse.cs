@@ -3,11 +3,20 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to load a scene
+    /// </summary>
     [AddComponentMenu("")]
     public class LoadLevelResponse : ResponseComponent
     {
+        /// <summary>
+        /// This is the name of the scene you want to be loaded. Only used in Unity 5.3 and above.
+        /// </summary>
         public string loadLevelName;
 
+        /// <summary>
+        /// This is the number of the scene you want to be loaded. Only used in Unity 5.2 and below.
+        /// </summary>
         public int loadLevelNum;
 
         public override void DrawInspectorGUI()

@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to move a gameobject to another position
+    /// </summary>
     [AddComponentMenu("")]
     public class TeleportResponse : ResponseComponent
     {

@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// All conditions and responses inherit this class allowing them to share the same functionality and work nicely together
+    /// </summary>
     [Serializable, HideInInspector, AddComponentMenu("")]
     public class EnhancedTriggerBoxComponent : MonoBehaviour
     {
@@ -53,7 +56,6 @@ namespace EnhancedTriggerbox.Component
             }
 
             GUILayout.EndHorizontal();
-
             EditorGUI.indentLevel = 1;
 
             // Draw the specific components fields (only if the section is folded out). This function should be overriden by each inheirited component.

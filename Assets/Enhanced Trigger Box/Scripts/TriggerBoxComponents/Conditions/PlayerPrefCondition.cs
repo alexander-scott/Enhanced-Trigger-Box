@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// Condition that requires a certain player pref to be greater/equal/less than a value
+    /// </summary>
     [AddComponentMenu("")]
     public class PlayerPrefCondition : ConditionComponent
     {

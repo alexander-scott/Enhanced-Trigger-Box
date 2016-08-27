@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to play music on an audio source, stop music or play a audio clip at a specified position
+    /// </summary>
     [AddComponentMenu("")]
     public class AudioResponse : ResponseComponent
     {

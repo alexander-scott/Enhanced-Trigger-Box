@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to trigger an animation, stop animations or play an animation clip
+    /// </summary>
     [AddComponentMenu("")]
     public class AnimationResponse : ResponseComponent
     {

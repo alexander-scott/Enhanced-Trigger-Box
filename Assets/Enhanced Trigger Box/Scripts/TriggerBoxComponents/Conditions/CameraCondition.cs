@@ -4,6 +4,9 @@ using System.Collections;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// Condition that requires a camera to either be looking at or looking away from a gameobject
+    /// </summary>
     [AddComponentMenu("")]
     public class CameraCondition : ConditionComponent
     {
@@ -111,7 +114,7 @@ namespace EnhancedTriggerbox.Component
             cameraConditionType = (LookType)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
                 "The type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum."), cameraConditionType);
 
-            conditionObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Condition Object",
+            conditionObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target Object",
                 "This is the object that the condition is based upon."), conditionObject, typeof(GameObject), true);
 
             componentParameter = (CameraConditionComponentParameters)EditorGUILayout.EnumPopup(new GUIContent("Component Parameter",

@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to set a new material on a gameobject
+    /// </summary>
     [AddComponentMenu("")]
     public class ModifyMaterialResponse : ResponseComponent
     {

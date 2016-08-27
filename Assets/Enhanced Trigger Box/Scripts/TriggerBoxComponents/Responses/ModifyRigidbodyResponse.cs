@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to alter that properties of a rigidbody on a gameobject
+    /// </summary>
     [AddComponentMenu("")]
     public class ModifyRigidbodyResponse : ResponseComponent
     {

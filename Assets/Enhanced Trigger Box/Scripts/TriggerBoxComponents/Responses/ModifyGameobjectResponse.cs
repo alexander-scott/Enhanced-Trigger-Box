@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to enable, disable or destroy a gameobject
+    /// </summary>
     [AddComponentMenu("")]
     public class ModifyGameobjectResponse : ResponseComponent
     {
@@ -44,6 +47,15 @@ namespace EnhancedTriggerbox.Component
          
             modifyType = (ModifyType)EditorGUILayout.EnumPopup(new GUIContent("Modify Type",
                    "This is the type of modification. "), modifyType);
+        }
+
+        public override void Validation()
+        {
+            // If the user has supplied both a gameobject reference and a gameobject name
+            if (obj && !string.IsNullOrEmpty(gameObjectName) && modifyType != ModifyType.Enable)
+            {
+                ShowWarningMessage("You cannot have a gameobject reference and a gameobject name. The reference will take precedence. Please remove one or the other.");
+            }
         }
 
         public override bool ExecuteAction()

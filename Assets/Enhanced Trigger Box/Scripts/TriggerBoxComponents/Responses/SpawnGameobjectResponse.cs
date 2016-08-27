@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to spawn a gameobject and optionally set a new position and name
+    /// </summary>
     [AddComponentMenu("")]
     public class SpawnGameobjectResponse : ResponseComponent
     {

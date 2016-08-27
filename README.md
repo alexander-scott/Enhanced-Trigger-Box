@@ -1,7 +1,7 @@
 Enhanced Trigger Box
 =======
 
-Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when a player walks into a certain area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example the player musn't be looking at a specific object. Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. These range from spawning or destroying objects to playing animations or alterings materials. 
+Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when a player walks into a certain area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example the player musn't be looking at a specific object. Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. These range from spawning or destroying objects to playing animations or altering materials. 
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
@@ -12,7 +12,7 @@ Getting started
 
 Download the asset from the asset store and import it into your project. Or download the zip file from GitHub and place it in your project. From there you can open up the demo or examples scene and explore that (they both use the FPSController from the standard assets which will also need importing). To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder. From there you can add any conditions or responses using the drop down lists.
 
-Note: If you don't want the demo files or don't want to import the standard assets, don't import the demo folder, just the prefabs and scripts folder.
+Please note that the Demo and Examples scene will not open in anything lower than Unity 5.4 but the asset itself should work from Unity 5.0. If you do not wish to view the demos, do not want to import the standard assets or are using anything under Unity 5.4 you should NOT import the demos folder. Just import the scripts folder and you can add the script to a gameobject and get going from there. 
 
 ### Demo Scene Overview
 
@@ -23,6 +23,8 @@ This scene contains a mashup of a few conditions and responses. All you have to 
 ### Examples Scene Overview
 
 This scene contains a showcase of most of the conditions and responses one at a time giving you an idea of what they do. To activate a response just walk into the box. To test a condition walk into the box and meet the condition, for example the Looking Away condition don't look at the cube in front of you. The cube will turn green when the box gets successfully triggered and it will also send a message to the console.
+
+[Here's a video of the examples scene as of v0.1.0. >](https://youtu.be/bjobfHm6cas)
 
 How does it all work 
 ---------------
@@ -81,9 +83,9 @@ All you need to do is inherit ConditionComponent or ResponseComponent (depending
 
 If you want to view more advanced examples, go to Scripts/TriggerBoxComponents/Conditions or Scripts/TriggerBoxComponents/Responses and take a look at some of them.
 
-#### Inherit EnhancedTriggerBoxComponent
+#### Inherit ConditionComponent or ResponseComponent
 
-The most important thing to do is to inherit ConditionComponent or ResponseComponent in the class definition and for the class to be within the EnhancedTriggerbox.Component namespace It's also recommended to add "[AddComponentMenu("")]" above the class name. This attribute means you won't see it in the Add Component Menu and it unfortunately can't be passed down by inheritance so it must be added manually.
+The most important thing to do is to inherit ConditionComponent or ResponseComponent in the class definition and for the class to be within the EnhancedTriggerbox.Component namespace. It's also recommended to add "[AddComponentMenu("")]" above the class name. This attribute means you won't see it in the Add Component Menu and it unfortunately can't be passed down by inheritance so it must be added manually.
 
 ``` csharp
 namespace EnhancedTriggerbox.Component
@@ -222,9 +224,9 @@ If the component parameter is set to Full Box Collider, all important points on 
 
 One thing to note for the Full Box Collider is that if you're up close to large objects the condition could get met unintentionally. Because only important points on the box collider (such as corners and centers) are checked, if you're really close to a big objects so that none of those points are in your camera the condition will get met. A solution to this is to use the min distance field so that they have to be a certain distance away from the object.
 
-Mesh Renderer uses the in-built isVisible function to work out if it is visible in a camera. Note that the object is considered visible when it needs to be rendered in the scene. For example, it might not actually be visible by any camera but still need to be rendered for shadows. When running in the editor, the scene view cameras will also cause this value to be true. Also remember that if the object is visible in the Scene window and not the game window it will still be classed as visible.
+Mesh Renderer uses the in-built isVisible function to work out if it is visible in a camera. Note that an object is considered visible when it's existence is visible for any reason in the editor. For example, it might not actually be visible by any camera but still need to be rendered for shadows. Also remember that if the object is visible in the scene window and not the game window it will still be classed as visible.
 
-Raycast intensity allows you to customise the raycasts that get fired when checking if there's anything blocking the cameras view to the object. Ignore obstacles won't do any raycast check at all, meaning you just have to look in the direction of the object and the condition will pass, even if there's something in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
+Raycast intensity allows you to customise the raycasts that get fired when checking if there's anything blocking the cameras view to the object. Ignore obstacles won't do any raycast checks at all, meaning you just have to look in the direction of the object and the condition will pass, even if there's something in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider.
 
 #### How doing the Looking Away condition type work?
 

@@ -1,10 +1,12 @@
 ﻿using EnhancedTriggerbox.Component;
 using System;
 using System.Linq;
-using System.Text;
 
 namespace EnhancedTriggerbox
 {
+    /// <summary>
+    /// Singleton that holds an array of condition names and condition responses
+    /// </summary>
     public class ComponentList
     {
         /// <summary>
@@ -17,22 +19,21 @@ namespace EnhancedTriggerbox
         /// </summary>
         public string[] responseNames;
 
-        private static volatile ComponentList instance;
-        private static object syncRoot = new Object();
+        /// <summary>
+        /// The component list instance that holds the arrays
+        /// </summary>
+        private static ComponentList instance;
 
-        private ComponentList() { }
-
+        /// <summary>
+        /// Returns the instance
+        /// </summary>
         public static ComponentList Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    lock (syncRoot)
-                    {
-                        if (instance == null)
-                            instance = new ComponentList();
-                    }
+                    instance = new ComponentList();
                 }
 
                 return instance;
@@ -40,10 +41,11 @@ namespace EnhancedTriggerbox
         }
 
         /// <summary>
-        /// Uses reflection to find all instances of condition/response components and returns them as an array of strings.
+        /// The constructor that uses reflection to find all instances of condition/response components and returns them as an array of strings.
         /// </summary>
-        public void GetComponents()
+        private ComponentList()
         {
+            // Get all the names of the assemblies which inherit ConditionComponent
             string[] listOfComponents = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.GlobalAssemblyCache)
                                          from assemblyType in domainAssembly.GetTypes()
                                          where typeof(ConditionComponent).IsAssignableFrom(assemblyType) && assemblyType.Name != "ConditionComponent"

@@ -45,16 +45,6 @@ namespace EnhancedTriggerbox
         }
 
         /// <summary>
-        /// Cached names of all the conditions. Used in the add condition drop down list.
-        /// </summary>
-        public string[] conditionNames;
-
-        /// <summary>
-        /// Cached names of all the respones. Used in the add response drop down list.
-        /// </summary>
-        public string[] responseNames;
-
-        /// <summary>
         /// This bool is used to store whether the base options tab is open in the inspector so it can persist across sessions
         /// </summary>
         public bool showBaseOptions = true;
@@ -82,6 +72,12 @@ namespace EnhancedTriggerbox
         /// </summary>
         [Tooltip("Only gameobjects with tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. If you leave this field blank any object will be able to trigger it.")]
         public string triggerTags;
+
+        /// <summary>
+        /// If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
+        /// </summary>
+        [Tooltip("If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.")]
+        public bool canWander;
 
         /// <summary>
         /// The colour of the trigger box
@@ -118,12 +114,6 @@ namespace EnhancedTriggerbox
         /// </summary>
         [Tooltip("This is can be used if you cannot get a reference for the above Follow Transform transform. GameObject.Find() will be used to find the gameobject and transform with the name you enter.")]
         public string followTransformName;
-
-        /// <summary>
-        /// If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.
-        /// </summary>
-        [Tooltip("If this is true then the condition checks will continue taking place if the user leaves the trigger box area. If this is false then if the user leaves the trigger box and all conditions haven't been met then it will stop doing condition checks.")]
-        public bool canWander;
 
         /// <summary>
         /// This is set to true when the trigger box is triggered. Once this is true we can start checking if the conditions have been met.
@@ -203,12 +193,6 @@ namespace EnhancedTriggerbox
             EditorGUI.BeginChangeCheck();
 
             EditorGUI.indentLevel = 0;
-
-            // If we haven't got any conditions we need to fetch them
-            if (ComponentList.Instance.conditionNames == null || ComponentList.Instance.conditionNames.Length == 0)
-            {
-                ComponentList.Instance.GetComponents();
-            }
 
             // Draw the drop down list GUI item that displays all of the conditions
             int conditionIndex = EditorGUILayout.Popup("Add a new condition: ", 0, ComponentList.Instance.conditionNames);

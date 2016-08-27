@@ -3,6 +3,9 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox.Component
 {
+    /// <summary>
+    /// This response allows you to call a function on a gameobject and pass in a parameter
+    /// </summary>
     [AddComponentMenu("")]
     public class SendMessageResponse : ResponseComponent
     {

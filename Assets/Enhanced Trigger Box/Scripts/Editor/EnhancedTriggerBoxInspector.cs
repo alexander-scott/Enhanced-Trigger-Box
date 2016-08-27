@@ -43,6 +43,7 @@ namespace EnhancedTriggerbox
                 if (!so.FindProperty("disableEntryCheck").boolValue)
                 {
                     RenderPropertyField(so.FindProperty("triggerTags"));
+                    RenderPropertyField(so.FindProperty("canWander"));
                     RenderPropertyField(so.FindProperty("triggerboxColour"));
 
                     RenderPropertyField(so.FindProperty("triggerFollow"));
@@ -57,7 +58,6 @@ namespace EnhancedTriggerbox
                 RenderPropertyField(so.FindProperty("afterTrigger"));
 
                 RenderPropertyField(so.FindProperty("conditionTime"));
-                RenderPropertyField(so.FindProperty("canWander"));
             }
 
             if (!so.FindProperty("hideWarnings").boolValue)

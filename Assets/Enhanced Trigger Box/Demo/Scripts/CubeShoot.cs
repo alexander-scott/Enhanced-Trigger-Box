@@ -5,13 +5,11 @@ namespace EnhancedTriggerbox.Demo
 {
     public class CubeShoot : MonoBehaviour
     {
-
         public void Start()
         {
             GetComponent<Rigidbody>().isKinematic = true;
         }
 
-        // Update is called once per frame
         public void ShootCube(float velocity)
         {
             GetComponent<Rigidbody>().isKinematic = false;
