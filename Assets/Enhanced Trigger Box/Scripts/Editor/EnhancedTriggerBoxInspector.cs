@@ -72,12 +72,17 @@ namespace EnhancedTriggerbox
                             EditorGUILayout.HelpBox("You have selected Follow Transform but you have not specified either a transform reference or a gameobject name!", MessageType.Warning);
                         }
                     }
+                }
 
-                    // Check that this gameobject has a box collider
-                    if (theObject.gameObject.GetComponent<BoxCollider>() == null)
-                    {
-                        EditorGUILayout.HelpBox("You need to add a box collider to this gameobject. Or alternatively you can check Disable Entry Check to remove the need for one.", MessageType.Warning);
-                    }
+                // Check that this gameobject has a box collider which is set to trigger
+                if (!theObject.gameObject.GetComponent<BoxCollider>().isTrigger)
+                {
+                    EditorGUILayout.HelpBox("You should check the Is Trigger checkbox on this object's box collider as this will allow gameobjects to enter it.", MessageType.Warning);
+                }
+
+                if (!theObject.gameObject.GetComponent<BoxCollider>().enabled)
+                {
+                    EditorGUILayout.HelpBox("You should enable this object's box collider as this will allow gameobjects to enter it.", MessageType.Warning);
                 }
             }
 

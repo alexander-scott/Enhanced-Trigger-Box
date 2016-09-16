@@ -1,11 +1,11 @@
 Enhanced Trigger Box
 =======
 
-Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when a player walks into a certain area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example the player musn't be looking at a specific object. Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. These range from spawning or destroying objects to playing animations or altering materials. 
+Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when a player walks into a certain area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example the player mustn't be looking at a specific object. Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. These range from spawning or destroying objects to playing animations or altering materials. 
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.1.0]*
+*Current version: [v0.1.1]*
 
 Getting started
 ---------------
@@ -32,7 +32,7 @@ At the top level you have the Enhanced Trigger Box script. It has some base opti
 
 When a Enhanced Trigger Box gets entered by another object with a collider (you can disable this entry check if you want and it will be treated as 'entered' on init), all the conditions get checked to see if each condition has been met. If all the conditions have been met, all the responses get executed. 
 
-If you click on one of the Enhanced Trigger Boxes in the scene or drag the ETB prefab in from the prefabs folder you can see the what the script looks like in the inspector.
+If you click on one of the Enhanced Trigger Boxes in the scene or drag the ETB prefab in from the prefabs folder (or just add the EnhancedTriggerBox script to a gameobject) you can see the what the script looks like in the inspector.
 
 ### Base Options Overview
 
@@ -383,9 +383,39 @@ Sound Effect Position:- The position the sound effect will be played at.
 
 ![Audio Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/AudioResponse.png)
 
+### Lighting Response
+
+This response allows you to modify an individual light source or the scene's lighting settings. In future you will be able to make your selected modifications over a period of time. E.g. fade the scenes ambient light colour over a period of 5 seconds.
+
+#### Component Fields
+
+Edit Type:- Select whether you want to modify an indivdual light or the scene's lighting settings.
+
+Target Light:- The light that will modified.
+
+Change Colour:- Choose to change the colour of this light. Remain the same will not change the colour.
+
+Set Colour:- The colour that the target light will be set to.
+
+Set Intensity:- The intensity you want to set the target light to. If you leave this field blank the light intensity will not be changed.
+
+Set Bounce Intensity:- The bounce intensity you want to set the target light to. If you leave this field blank the light bounce intensity will not be changed.
+
+Set Range:- The range you want to set the target light's range to. If you leave this field blank the range will not be changed. Only displayed when a spot or point light is selected.
+
+Set Skybox:- This is the material that you want to set the scene's skybox to. If you leave this field blank the skybox will not be changed.
+
+Change Ambient Light Colour:- Choose to change the colour of the scene's ambient light. Remain the same will not change the colour.
+
+Ambient Light Colour:- The colour that the scene's ambient light will be set to.
+
+![Lighting Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LightingResponse.png)
+
 ### Load Level Response
 
 This response allows you to load a new scene. All you need to do is supply the scene name. Make sure it is included in the build settings.
+
+If you are using anything lower than Unity 5.3 you will need to supply the level number instead of the level name.
 
 ``` csharp
 UnityEngine.SceneManagement.SceneManager.LoadScene(loadLevelName);
@@ -504,6 +534,8 @@ Target Gameobject:- This is the gameobject that you want to be moved
 
 Destination:- This is the position you want to move the gameobject to.
 
+Copy Rotation:- If this checkbox is ticked then the target object's rotation will be set to the destination's rotation.
+
 ![Teleport Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/TeleportResponse.png)
 
 Troubleshooting
@@ -512,3 +544,10 @@ Troubleshooting
 #### System.Reflection.ReflectionTypeLoadException: The classes in the module cannot be loaded.
 
 Enhanced Trigger Box uses .NET Reflection to obtain information about loaded assemblies and the types defined within, in this being the enhanced trigger box components. If you are seeing this error it means your Unity API is set to a .NET version which doesn't support Reflection. To fix this go to "Edit->Project Settings->Player-> Other settings" and set "Api Compatibility Level" to ".NET 2.0" instead of ".NET 2.0 Subset" and then reload your project.
+
+Misc
+---------------
+
+Audio file used in demo/examples scene obtained from [here](https://www.freesound.org/people/cormi/sounds/98471/) and is licensed under the Creative Commons 0 License.
+
+The project itself is licensed under MIT license and you are free to do with it what you want.

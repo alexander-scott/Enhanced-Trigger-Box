@@ -9,6 +9,7 @@ using System.Text;
 namespace EnhancedTriggerbox
 {
     [Serializable, ExecuteInEditMode]
+    [RequireComponent(typeof(BoxCollider))]
 #if UNITY_5_4_OR_NEWER
     [HelpURL("https://alex-scott.co.uk/portfolio/enhanced-trigger-box.html")]
 #endif

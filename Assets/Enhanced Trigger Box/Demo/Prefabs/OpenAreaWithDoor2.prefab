@@ -75,8 +75,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 140118}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -78.17, y: 2.61, z: 42.2}
-  m_LocalScale: {x: 1, y: 5.036603, z: 28.21168}
+  m_LocalPosition: {x: -78.17, y: 2.49, z: 42.2}
+  m_LocalScale: {x: 1, y: 5.2745066, z: 28.211693}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000012970408342}
@@ -992,13 +992,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 0
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.6985294, g: 0.14895114, b: 0.14895114, a: 0.634}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000010123475898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1040,13 +1040,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 1
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000010239900954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1070,13 +1070,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 1
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000010279922756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1352,13 +1352,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 1
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000011652968906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1380,13 +1380,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 1
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000011847641864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1463,13 +1463,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 1
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000012397494146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1674,13 +1674,13 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 1
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 0
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0
 --- !u!114 &114000013933800268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1742,10 +1742,10 @@ MonoBehaviour:
   hideWarnings: 0
   disableEntryCheck: 0
   triggerTags: Player
+  canWander: 0
   triggerboxColour: {r: 0.7352941, g: 0.1081315, b: 0.1081315, a: 0.597}
   afterTrigger: 0
   triggerFollow: 0
   conditionTime: 3
   followTransform: {fileID: 0}
   followTransformName: 
-  canWander: 0

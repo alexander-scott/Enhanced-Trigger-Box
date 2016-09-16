@@ -19,6 +19,11 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public Transform destination;
 
+        /// <summary>
+        /// If this checkbox is ticked then the target object's rotation will be set to the destination's rotation
+        /// </summary>
+        public bool copyRotation;
+
         public override void DrawInspectorGUI()
         {
             targetObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target Gameobject",
@@ -26,6 +31,9 @@ namespace EnhancedTriggerbox.Component
 
             destination = (Transform)EditorGUILayout.ObjectField(new GUIContent("Destination",
                      "This is the position you want to move the above gameobject to."), destination, typeof(Transform), true);
+
+            copyRotation = EditorGUILayout.Toggle(new GUIContent("Copy Rotation",
+                "If this checkbox is ticked then the target object's rotation will be set to the destination's rotation"), copyRotation);
         }
 
         public override void Validation()
@@ -44,8 +52,14 @@ namespace EnhancedTriggerbox.Component
         {
             if (targetObject && destination)
             {
-                // Set the target objects position to the destination
+                // Set the target object's position to the destination
                 targetObject.transform.position = destination.position;
+
+                // Set the target object's rotation to the destionation's rotation
+                if (copyRotation)
+                {
+                    targetObject.transform.rotation = destination.rotation;
+                }
             }
 
             return true;
