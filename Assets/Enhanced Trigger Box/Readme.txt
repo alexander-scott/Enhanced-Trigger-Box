@@ -10,6 +10,11 @@ responses get executed such as camera conditions where for example the player mu
 Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. 
 These range from spawning or destroying objects to playing animations or altering materials.
 
+You can open up the demo or example scenes to see some of them in action. Please note that the Demo and Examples scene 
+require the Unity Standard Assets (specifically the FPSController) to be imported  and will not open in anything lower than 
+Unity 5.4. However the script itself will work from Unity 5.0. If you do not wish to view the demos, do not want to import the 
+standard assets or are using anything under Unity 5.4 you should NOT import the demos folder.
+
 To add a Enhanced Trigger Box to your scene go to the prefabs folder and drag the ETB prefab into your scene. This prefab
 contains the script as well as a box collider to get you started. Move it around or make it bigger or smaller depending
 or what you want. You now have an ETB in the scene. If you walk into this trigger box with a gameobject with the 'Player'

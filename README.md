@@ -548,6 +548,8 @@ Enhanced Trigger Box uses .NET Reflection to obtain information about loaded ass
 Misc
 ---------------
 
-Audio file used in demo/examples scene obtained from [here](https://www.freesound.org/people/cormi/sounds/98471/) and is licensed under the Creative Commons 0 License.
+Audio file used in demo/examples scene obtained from [here](http://www.looperman.com/loops/detail/99733/piano-loop-reflections-of-life-70-by-designedimpression-free-70bpm-ambient-piano-loop) and is licensed under the Creative Commons 0 License.
+
+The background image used on the asset store and this website is found [here](http://wonderfulengineering.com/37-programmer-code-wallpaper-backgrounds-free-download/).
 
 The project itself is licensed under MIT license and you are free to do with it what you want.

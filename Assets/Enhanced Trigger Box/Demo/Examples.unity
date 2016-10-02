@@ -3329,9 +3329,9 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   muteAllAudio: 0
   playMusic: {fileID: 0}
-  loopMusic: 0
+  loopMusic: 1
   musicVolume: 1
-  playSoundEffect: {fileID: 8300000, guid: a86c0ab4f738f5f408269af6f6f2e9e0, type: 3}
+  playSoundEffect: {fileID: 8300000, guid: 7bbc195e1eee3d44c93d6bb6a98fb2bd, type: 3}
   soundEffectPosition: {fileID: 137460680}
 --- !u!114 &555184989
 MonoBehaviour:
