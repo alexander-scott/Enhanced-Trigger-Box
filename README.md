@@ -5,14 +5,14 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.1.1]*
+*Current version: [v0.1.2]*
 
 Getting started
 ---------------
 
 Download the asset from the asset store and import it into your project. Or download the zip file from GitHub and place it in your project. From there you can open up the demo or examples scene and explore that (they both use the FPSController from the standard assets which will also need importing). To add a new Enhanced Trigger Box you can use the prefab located in the prefabs folder. From there you can add any conditions or responses using the drop down lists.
 
-Please note that the Demo and Examples scene will not open in anything lower than Unity 5.4 but the asset itself should work from Unity 5.0. If you do not wish to view the demos, do not want to import the standard assets or are using anything under Unity 5.4 you should NOT import the demos folder. Just import the scripts folder and you can add the script to a gameobject and get going from there. 
+Please note that the Demo and Examples scenes in this asset require the Unity Standard Assets (specifically the FPSController) to be imported and are not supported in anything lower than Unity 5.4. However the script itself will work with Unity 5.0 and above. If you do not wish to view the demos, do not want to import the standard assets or are using anything under Unity 5.4 you should NOT import the demos folder. Just import the scripts folder and you can add the script to a GameObject and get going from there.
 
 ### Demo Scene Overview
 
