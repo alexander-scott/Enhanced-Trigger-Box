@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -83,6 +85,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             playerPrefCondition = (PrefCondition)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
                 "The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than."), playerPrefCondition);
 
@@ -97,6 +101,8 @@ namespace EnhancedTriggerbox.Component
 
             refreshEveryFrame = EditorGUILayout.Toggle(new GUIContent("Refresh Every Frame",
                 "If true, the value in the player pref will be retrieved every time the condition check happens. If false, it will only retrieve the player pref value once, when the game first starts."), refreshEveryFrame);
+
+#endif
         }
 
         public override void Validation()

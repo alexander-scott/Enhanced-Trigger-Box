@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Linq;
 using EnhancedTriggerbox.Component;
 using System.Text;
@@ -163,6 +165,8 @@ namespace EnhancedTriggerbox
         /// </summary>
         public void OnInspectorGUI()
         {
+#if UNITY_EDITOR
+
             // Draw a horizontal line
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
@@ -277,6 +281,7 @@ namespace EnhancedTriggerbox
                     responseIndex = 0;
                 }
             }
+#endif
         }
 
         /// <summary>

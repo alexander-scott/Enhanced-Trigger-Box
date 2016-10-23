@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -26,6 +28,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             targetObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target Gameobject",
                      "This is the gameobject on which will be moved to the below transform."), targetObject, typeof(GameObject), true);
 
@@ -34,6 +38,8 @@ namespace EnhancedTriggerbox.Component
 
             copyRotation = EditorGUILayout.Toggle(new GUIContent("Copy Rotation",
                 "If this checkbox is ticked then the target object's rotation will be set to the destination's rotation"), copyRotation);
+
+#endif
         }
 
         public override void Validation()

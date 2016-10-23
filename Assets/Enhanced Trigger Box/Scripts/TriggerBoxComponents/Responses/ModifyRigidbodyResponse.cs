@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -118,6 +120,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             rigbody = (Rigidbody)EditorGUILayout.ObjectField(new GUIContent("Rigidbody",
                     "The rigidbody that will be changed"), rigbody, typeof(Rigidbody), true);
 
@@ -176,6 +180,8 @@ namespace EnhancedTriggerbox.Component
 
                 EditorGUILayout.EndHorizontal();
             }
+
+#endif
         }
 
         public override bool ExecuteAction()

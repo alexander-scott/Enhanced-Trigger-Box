@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System;
 
 namespace EnhancedTriggerbox.Component
@@ -37,6 +39,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             setPlayerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
                 "This is the key (ID) of the player pref which will have its value set."), setPlayerPrefKey);
 
@@ -45,6 +49,8 @@ namespace EnhancedTriggerbox.Component
 
             setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
                 "This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively."), setPlayerPrefVal);
+
+#endif
         }
 
         public override void Validation()

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -46,6 +48,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             audioSource = (AudioSource)EditorGUILayout.ObjectField(new GUIContent("Audio Source",
                 "The audio source for the music."), audioSource, typeof(AudioSource), true);
 
@@ -66,6 +70,8 @@ namespace EnhancedTriggerbox.Component
 
             soundEffectPosition = (Transform)EditorGUILayout.ObjectField(new GUIContent("Sound Effect Position",
                 "The position the sound effect will be played at."), soundEffectPosition, typeof(Transform), true);
+
+#endif
         }
 
         public override void Validation()

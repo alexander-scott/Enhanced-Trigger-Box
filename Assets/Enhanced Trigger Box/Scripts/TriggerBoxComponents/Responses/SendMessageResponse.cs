@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -46,6 +48,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             messageTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target",
                      "This is the gameobject on which the below function is called on."), messageTarget, typeof(GameObject), true);
 
@@ -60,6 +64,8 @@ namespace EnhancedTriggerbox.Component
 
             parameterValue = EditorGUILayout.TextField(new GUIContent("Value",
                 "This is the value of the parameter that will be sent to the function."), parameterValue);
+
+#endif
         }
 
         public override void Validation()

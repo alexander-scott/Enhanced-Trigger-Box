@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -36,6 +38,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             obj = (GameObject)EditorGUILayout.ObjectField(new GUIContent("GameObject",
                  "The gameobject that will modified."), obj, typeof(GameObject), true);
 
@@ -47,6 +51,8 @@ namespace EnhancedTriggerbox.Component
          
             modifyType = (ModifyType)EditorGUILayout.EnumPopup(new GUIContent("Modify Type",
                    "This is the type of modification. "), modifyType);
+
+#endif
         }
 
         public override void Validation()

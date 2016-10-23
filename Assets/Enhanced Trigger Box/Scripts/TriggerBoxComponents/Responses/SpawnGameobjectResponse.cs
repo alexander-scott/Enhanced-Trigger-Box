@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -26,6 +28,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             prefabToSpawn = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Prefab to spawn",
                 "This is the prefab which will be instanstiated (spawned)."), prefabToSpawn, typeof(GameObject), true);
 
@@ -44,6 +48,8 @@ namespace EnhancedTriggerbox.Component
             //    Handles.PositionHandle((customPositionRotation == null) ? prefabToSpawn.transform.position : customPositionRotation.position,
             //        (customPositionRotation == null) ? prefabToSpawn.transform.rotation : customPositionRotation.rotation);
             //}
+
+#endif
         }
 
         public override bool ExecuteAction()

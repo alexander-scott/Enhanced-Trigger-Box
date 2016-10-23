@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
@@ -69,6 +71,7 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+
             targetTransform = (Transform)EditorGUILayout.ObjectField(new GUIContent("Target Transform",
                    "The transform to apply the condition to."), targetTransform, typeof(Transform), true);
 
@@ -83,6 +86,7 @@ namespace EnhancedTriggerbox.Component
 
             value = EditorGUILayout.FloatField(new GUIContent("Value", 
                 "The value that will be compared against the value in the axis selected above."), value);
+
         }
 
         public override bool ExecuteAction()

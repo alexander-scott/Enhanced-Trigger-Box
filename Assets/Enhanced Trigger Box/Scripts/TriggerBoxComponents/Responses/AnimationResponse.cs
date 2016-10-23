@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -31,6 +33,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             animationTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Animation Target",
                 "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
 
@@ -43,6 +47,8 @@ namespace EnhancedTriggerbox.Component
             animationClip = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
                 "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."),
                 animationClip, typeof(AnimationClip), true);
+
+#endif
         }
 
         public override void Validation()

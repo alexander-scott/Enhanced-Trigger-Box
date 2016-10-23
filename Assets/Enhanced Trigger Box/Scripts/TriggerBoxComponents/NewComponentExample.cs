@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -23,6 +25,8 @@ namespace EnhancedTriggerbox.Component
          */
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             /*  Here's how you would draw a gameobject to a inspector. EditorGUILayout.ObjectField is the typical object reference field you
              *  always see in Unity. It returns the object which we will need to save as exampleGameObject so we do exampleGameObject = ObjectField.
              *  Notice the (GameObject) before EditorGUILayout? This is because the ObjectField returns a object not a GameObject so we must 
@@ -53,6 +57,8 @@ namespace EnhancedTriggerbox.Component
              * Floats - EditorGUILayout.FloatField()
              * Enums - (EnumName)EditorGUILayout.EnumPopup()
              */
+
+#endif
         }
 
         /*

@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Linq;
 
 namespace EnhancedTriggerbox.Component
@@ -34,6 +36,8 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public void OnInspectorGUI()
         {
+#if UNITY_EDITOR
+
             // This try catch is in place to fix an issue which happens when deleting a component. This essentially refreshes the draw sequence.
             try
             {
@@ -56,6 +60,7 @@ namespace EnhancedTriggerbox.Component
             }
 
             GUILayout.EndHorizontal();
+
             EditorGUI.indentLevel = 1;
 
             // Draw the specific components fields (only if the section is folded out). This function should be overriden by each inheirited component.
@@ -69,6 +74,8 @@ namespace EnhancedTriggerbox.Component
             {
                 Validation();
             }
+
+#endif
         }
 
         /// <summary>
@@ -128,6 +135,8 @@ namespace EnhancedTriggerbox.Component
         /// <param name="o">The field that will be drawn</param>
         protected void RenderGeneric(System.Reflection.FieldInfo o)
         {
+#if UNITY_EDITOR
+
             if (o.FieldType == typeof(GameObject))
             {
                 o.SetValue(this, (GameObject)EditorGUILayout.ObjectField(new GUIContent(EnhancedTriggerBox.AddSpacesToSentence(System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(o.Name), true)
@@ -164,6 +173,8 @@ namespace EnhancedTriggerbox.Component
                         "No description provided"), (string)o.GetValue(this)));
             }
             // TODO: Add more generic types
+
+#endif
         }
 
         /// <summary>
@@ -176,6 +187,7 @@ namespace EnhancedTriggerbox.Component
         /// <returns></returns>
         protected bool RenderHeader(string s, bool optionRef, bool bold = true, bool topspace = false)
         {
+#if UNITY_EDITOR
             GUIStyle myFoldoutStyle = new GUIStyle(EditorStyles.foldout);
 
             if (bold)
@@ -187,6 +199,9 @@ namespace EnhancedTriggerbox.Component
             EditorGUI.indentLevel = 0;
 
             return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
+#else
+            return true;
+#endif
         }
 
         /// <summary>
@@ -194,8 +209,10 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         protected void RenderDivider()
         {
+#if UNITY_EDITOR
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+#endif
         }
 
         /// <summary>
@@ -204,7 +221,9 @@ namespace EnhancedTriggerbox.Component
         /// <param name="message">The message to display in the warning</param>
         protected void ShowWarningMessage(string message)
         {
+#if UNITY_EDITOR
             EditorGUILayout.HelpBox(message, MessageType.Warning);
+#endif
         }
     }
 }
