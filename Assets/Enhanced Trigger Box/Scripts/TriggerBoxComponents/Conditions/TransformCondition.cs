@@ -1,7 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEditor;
-#endif
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
 {
@@ -69,27 +66,25 @@ namespace EnhancedTriggerbox.Component
             Z,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            targetTransform = (Transform)EditorGUILayout.ObjectField(new GUIContent("Target Transform",
+            targetTransform = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Transform",
                    "The transform to apply the condition to."), targetTransform, typeof(Transform), true);
 
-            transformComponent = (TransformComponent)EditorGUILayout.EnumPopup(new GUIContent("Transform Component",
+            transformComponent = (TransformComponent)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Transform Component",
                 "The transform component that will be used for the condition. Either position or rotation."), transformComponent);
 
-            axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Target Axis",
+            axis = (Axis)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Target Axis",
                 "The axis that the condition will be based on."), axis);
 
-            conditionType = (ConditionType)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+            conditionType = (ConditionType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
                 "The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than."), conditionType);
 
-            value = EditorGUILayout.FloatField(new GUIContent("Value", 
+            value = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Value", 
                 "The value that will be compared against the value in the axis selected above."), value);
-
-#endif
         }
+#endif
 
         public override bool ExecuteAction()
         {

@@ -1,7 +1,4 @@
 ﻿using System.Collections;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
@@ -97,60 +94,58 @@ namespace EnhancedTriggerbox.Component
             EditColor,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            editType = (EditType)EditorGUILayout.EnumPopup(new GUIContent("Edit Type",
+            editType = (EditType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Edit Type",
                 "Select whether you want to modify an indivdual light or the scene's lighting settings."), editType);
 
             // This if statement only displays properties that are appropiate for the edit type selected above
             if (editType == EditType.SingleLightSource)
             {
-                targetLight = (Light)EditorGUILayout.ObjectField(new GUIContent("Target Light",
+                targetLight = (Light)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Light",
                 "The light that will modified."), targetLight, typeof(Light), true);
 
-                changeColourType = (ChangeColourType)EditorGUILayout.EnumPopup(new GUIContent("Change Colour",
+                changeColourType = (ChangeColourType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Change Colour",
                     "Choose to change the colour of this light. Remain the same will not change the colour."), changeColourType);
 
                 if (changeColourType == ChangeColourType.EditColor)
                 {
-                    setColour = EditorGUILayout.ColorField(new GUIContent("Set Colour",
+                    setColour = UnityEditor.EditorGUILayout.ColorField(new GUIContent("Set Colour",
                         "The colour that the target light will be set to."), setColour);
                 }
 
-                setIntensity = EditorGUILayout.TextField(new GUIContent("Set Intensity",
+                setIntensity = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Intensity",
                     "The intensity you want to set the target light's intensity to. If you leave this field blank the light intensity will not be changed."), setIntensity);
 
-                setBounceIntensity = EditorGUILayout.TextField(new GUIContent("Set Bounce Intensity",
+                setBounceIntensity = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Bounce Intensity",
                    "The bounce intensity you want to set the target light's bounce intensity to. If you leave this field blank the light bounce intensity will not be changed."), setBounceIntensity);
 
                 if (targetLight && (targetLight.type == LightType.Point || targetLight.type == LightType.Spot))
                 {
-                    setRange = EditorGUILayout.TextField(new GUIContent("Set Range",
+                    setRange = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Range",
                         "The range you want to set the target light's range to. If you leave this field blank the range will not be changed."), setRange);
                 }
             }
             else
             {
-                setSkybox = (Material)EditorGUILayout.ObjectField(new GUIContent("Skybox Material",
+                setSkybox = (Material)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Skybox Material",
                     "This is the material that you want to set the scene's skybox to. If you leave this field blank the skybox will not be changed."), setSkybox, typeof(Material), true);
 
-                changeAmbientLightColour = (ChangeColourType)EditorGUILayout.EnumPopup(new GUIContent("Change Ambient Light Colour",
+                changeAmbientLightColour = (ChangeColourType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Change Ambient Light Colour",
                     "Choose to change the colour of the scene's ambient light. Remain the same will not change the colour."), changeAmbientLightColour);
 
                 if (changeAmbientLightColour == ChangeColourType.EditColor)
                 {
-                    ambientLightColour = EditorGUILayout.ColorField(new GUIContent("Set Ambient Light Colour",
+                    ambientLightColour = UnityEditor.EditorGUILayout.ColorField(new GUIContent("Set Ambient Light Colour",
                         "The colour that the scene's ambient light will be set to."), ambientLightColour);
                 }
             }
 
             //duration = EditorGUILayout.FloatField(new GUIContent("Change Duration",
             //        "The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly."), duration);
-
-#endif
         }
+#endif
 
         public override bool ExecuteAction()
         {

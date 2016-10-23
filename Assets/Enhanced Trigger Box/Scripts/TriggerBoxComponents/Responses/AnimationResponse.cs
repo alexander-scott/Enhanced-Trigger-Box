@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -31,25 +28,23 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public AnimationClip animationClip;
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            animationTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Animation Target",
+            animationTarget = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Animation Target",
                 "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
 
-            setMecanimTrigger = EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
+            setMecanimTrigger = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
                 "The name of the trigger on the gameobject animator that you want to trigger."), setMecanimTrigger);
 
-            stopAnim = EditorGUILayout.Toggle(new GUIContent("Stop Animation",
+            stopAnim = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Stop Animation",
                 "Stops the current animation on the animation target."), stopAnim);
 
-            animationClip = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
+            animationClip = (AnimationClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Play Animation Clip",
                 "Fades the animation in on the animation target over 0.3 seconds and fades other animations out."),
                 animationClip, typeof(AnimationClip), true);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -46,27 +43,25 @@ namespace EnhancedTriggerbox.Component
             String,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            messageTarget = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target",
+            messageTarget = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target",
                      "This is the gameobject on which the below function is called on."), messageTarget, typeof(GameObject), true);
 
-            messageTargetName = EditorGUILayout.TextField(new GUIContent("Target Name",
+            messageTargetName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Target Name",
                 "If you are unable to provide a reference for a gameobject you can enter it's name here and it will be found using GameObject.Find(). If you have entered a gameobject reference above, leave this field blank."), messageTargetName);
 
-            messageFunctionName = EditorGUILayout.TextField(new GUIContent("Function Name",
+            messageFunctionName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Function Name",
                 "This is the function which is called on the above gameobject."), messageFunctionName);
 
-            parameterType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Message Type",
+            parameterType = (ParameterType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Message Type",
                    "This is the type of parameter that will be sent to the function. Options are int, float and string."), parameterType);
 
-            parameterValue = EditorGUILayout.TextField(new GUIContent("Value",
+            parameterValue = UnityEditor.EditorGUILayout.TextField(new GUIContent("Value",
                 "This is the value of the parameter that will be sent to the function."), parameterValue);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

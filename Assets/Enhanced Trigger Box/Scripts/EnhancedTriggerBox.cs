@@ -1,12 +1,13 @@
-﻿using System;
+﻿using EnhancedTriggerbox.Component;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using System.Linq;
-using EnhancedTriggerbox.Component;
-using System.Text;
 
 namespace EnhancedTriggerbox
 {
@@ -173,7 +174,7 @@ namespace EnhancedTriggerbox
 
             // This removes items in the list which have been deleted. This can't be done in the loop and has to be done before GUI drawing starts
             // TODO: Fix undo component deletion
-            conditions.RemoveAll(r => r == null);
+            conditions.RemoveAll(r => r == null); 
 
             if (conditions.Count > 0)
             {

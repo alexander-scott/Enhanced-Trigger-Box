@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -26,21 +23,19 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public bool copyRotation;
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            targetObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target Gameobject",
+            targetObject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Gameobject",
                      "This is the gameobject on which will be moved to the below transform."), targetObject, typeof(GameObject), true);
 
-            destination = (Transform)EditorGUILayout.ObjectField(new GUIContent("Destination",
+            destination = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Destination",
                      "This is the position you want to move the above gameobject to."), destination, typeof(Transform), true);
 
-            copyRotation = EditorGUILayout.Toggle(new GUIContent("Copy Rotation",
+            copyRotation = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Copy Rotation",
                 "If this checkbox is ticked then the target object's rotation will be set to the destination's rotation"), copyRotation);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

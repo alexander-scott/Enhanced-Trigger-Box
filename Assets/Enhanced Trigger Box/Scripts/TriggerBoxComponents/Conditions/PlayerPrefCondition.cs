@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -83,27 +80,25 @@ namespace EnhancedTriggerbox.Component
             LessThan,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            playerPrefCondition = (PrefCondition)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+            playerPrefCondition = (PrefCondition)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
                 "The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than."), playerPrefCondition);
 
-            playerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
+            playerPrefKey = UnityEditor.EditorGUILayout.TextField(new GUIContent("Player Pref Key",
                 "The key (ID) of the player pref that will be compared against the above value."), playerPrefKey);
 
-            playerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
+            playerPrefType = (ParameterType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
                    "This is the type of data stored within the player pref. Options are int, float and string."), playerPrefType);
 
-            playerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
+            playerPrefVal = UnityEditor.EditorGUILayout.TextField(new GUIContent("Player Pref Value",
                 "This is the value that will be stored in the player pref."), playerPrefVal);
 
-            refreshEveryFrame = EditorGUILayout.Toggle(new GUIContent("Refresh Every Frame",
+            refreshEveryFrame = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Refresh Every Frame",
                 "If true, the value in the player pref will be retrieved every time the condition check happens. If false, it will only retrieve the player pref value once, when the game first starts."), refreshEveryFrame);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

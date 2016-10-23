@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -118,71 +115,69 @@ namespace EnhancedTriggerbox.Component
             SetDiscrete,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            rigbody = (Rigidbody)EditorGUILayout.ObjectField(new GUIContent("Rigidbody",
+            rigbody = (Rigidbody)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Rigidbody",
                     "The rigidbody that will be changed"), rigbody, typeof(Rigidbody), true);
 
-            setMass = EditorGUILayout.TextField(new GUIContent("Set Mass",
+            setMass = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Mass",
                 "Set the mass of this rigidbody. If left blank the value will not be changed."), setMass);
 
-            setDrag = EditorGUILayout.TextField(new GUIContent("Set Drag",
+            setDrag = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Drag",
                 "Set the drag of this rigidbody. If left blank the value will not be changed."), setDrag);
 
-            setAngularDrag = EditorGUILayout.TextField(new GUIContent("Set Angular Drag",
+            setAngularDrag = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Angular Drag",
                 "Set the angular drag of this rigidbody. If left blank the value will not be changed."), setAngularDrag);
 
-            changeGravity = (ChangeBool)EditorGUILayout.EnumPopup(new GUIContent("Change Gravity",
+            changeGravity = (ChangeBool)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Change Gravity",
                 "Choose to set whether this rigidbody should use gravity. Remain the same will not change the value and toggle will invert the value."), changeGravity);
 
-            changeKinematic = (ChangeBool)EditorGUILayout.EnumPopup(new GUIContent("Change Kinematic",
+            changeKinematic = (ChangeBool)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Change Kinematic",
                 "Choose to set whether this rigidbody should be kinematic. Remain the same will not change the value and toggle will invert the value."), changeKinematic);
 
-            changeInterpolate = (ChangeInterpolate)EditorGUILayout.EnumPopup(new GUIContent("Change Interpolate",
+            changeInterpolate = (ChangeInterpolate)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Change Interpolate",
                 "Choose to set this rigidbody to interpolate or extrapolate. Remain the same will not change the value."), changeInterpolate);
 
-            changeCollisionDetection = (ChangeCollisionDetection)EditorGUILayout.EnumPopup(new GUIContent("Change Collision Detection",
+            changeCollisionDetection = (ChangeCollisionDetection)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Change Collision Detection",
                 "Choose to set this rigidbody's collision detection between discrete or continuous. Remain the same will not change the value."), changeCollisionDetection);
 
-            editConstraints = EditorGUILayout.Toggle(new GUIContent("Edit Constraints", "Allows you to freeze position or rotation. If you want these to be unaffected uncheck this box."), editConstraints);
+            editConstraints = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Edit Constraints", "Allows you to freeze position or rotation. If you want these to be unaffected uncheck this box."), editConstraints);
 
             if (editConstraints)
             {
-                EditorGUILayout.BeginHorizontal();
+                UnityEditor.EditorGUILayout.BeginHorizontal();
 
-                float prevWidth = EditorGUIUtility.labelWidth;
+                float prevWidth = UnityEditor.EditorGUIUtility.labelWidth;
 
-                EditorGUILayout.LabelField(new GUIContent("Freeze Position", "Allows you to freeze movement in a specific axis."));
+                UnityEditor.EditorGUILayout.LabelField(new GUIContent("Freeze Position", "Allows you to freeze movement in a specific axis."));
 
-                EditorGUIUtility.labelWidth = 30f;
+                UnityEditor.EditorGUIUtility.labelWidth = 30f;
 
-                xPos = EditorGUILayout.Toggle("X", xPos);
-                yPos = EditorGUILayout.Toggle("Y", yPos);
-                zPos = EditorGUILayout.Toggle("Z", zPos);
+                xPos = UnityEditor.EditorGUILayout.Toggle("X", xPos);
+                yPos = UnityEditor.EditorGUILayout.Toggle("Y", yPos);
+                zPos = UnityEditor.EditorGUILayout.Toggle("Z", zPos);
 
-                EditorGUIUtility.labelWidth = prevWidth;
+                UnityEditor.EditorGUIUtility.labelWidth = prevWidth;
 
-                EditorGUILayout.EndHorizontal();
+                UnityEditor.EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.BeginHorizontal();
+                UnityEditor.EditorGUILayout.BeginHorizontal();
 
-                EditorGUILayout.LabelField(new GUIContent("Freeze Rotation", "Allows you to freeze rotation in a specific axis."));
+                UnityEditor.EditorGUILayout.LabelField(new GUIContent("Freeze Rotation", "Allows you to freeze rotation in a specific axis."));
 
-                EditorGUIUtility.labelWidth = 30f;
+                UnityEditor.EditorGUIUtility.labelWidth = 30f;
 
-                xRot = EditorGUILayout.Toggle("X", xRot);
-                yRot = EditorGUILayout.Toggle("Y", yRot);
-                zRot = EditorGUILayout.Toggle("Z", zRot);
+                xRot = UnityEditor.EditorGUILayout.Toggle("X", xRot);
+                yRot = UnityEditor.EditorGUILayout.Toggle("Y", yRot);
+                zRot = UnityEditor.EditorGUILayout.Toggle("Z", zRot);
 
-                EditorGUIUtility.labelWidth = prevWidth;
+                UnityEditor.EditorGUIUtility.labelWidth = prevWidth;
 
-                EditorGUILayout.EndHorizontal();
+                UnityEditor.EditorGUILayout.EndHorizontal();
             }
-
-#endif
         }
+#endif
 
         public override bool ExecuteAction()
         {

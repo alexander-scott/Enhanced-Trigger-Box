@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -36,24 +33,22 @@ namespace EnhancedTriggerbox.Component
             Enable,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            obj = (GameObject)EditorGUILayout.ObjectField(new GUIContent("GameObject",
+            obj = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("GameObject",
                  "The gameobject that will modified."), obj, typeof(GameObject), true);
 
             if (modifyType != ModifyType.Enable)
             {
-                gameObjectName = EditorGUILayout.TextField(new GUIContent("GameObject Name",
+                gameObjectName = UnityEditor.EditorGUILayout.TextField(new GUIContent("GameObject Name",
                     "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified."), gameObjectName);
             }
          
-            modifyType = (ModifyType)EditorGUILayout.EnumPopup(new GUIContent("Modify Type",
+            modifyType = (ModifyType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Modify Type",
                    "This is the type of modification. "), modifyType);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

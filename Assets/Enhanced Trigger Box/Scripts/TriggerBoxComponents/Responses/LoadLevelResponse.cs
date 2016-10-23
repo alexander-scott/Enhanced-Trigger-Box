@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -21,18 +18,18 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public int loadLevelNum;
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
 #if UNITY_5_3_OR_NEWER
-            loadLevelName = EditorGUILayout.TextField(new GUIContent("Scene Name",
+            loadLevelName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Scene Name",
                 "This is the name of the scene you want to be loaded."), loadLevelName);
 #else
             loadLevelNum = EditorGUILayout.IntField(new GUIContent("Scene Number",
                 "This is the number of the scene you want to be loaded."), loadLevelNum);
 #endif
-#endif
         }
+#endif
 
         public override bool ExecuteAction()
         {

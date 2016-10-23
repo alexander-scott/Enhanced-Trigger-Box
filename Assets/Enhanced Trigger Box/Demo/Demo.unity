@@ -933,7 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bd875188aa7484ab2319e1ce5a9608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 0
+  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   setPlayerPrefKey: DemoProgression
@@ -1007,7 +1007,7 @@ MonoBehaviour:
   showWarnings: 1
   audioSource: {fileID: 465920518}
   muteAllAudio: 0
-  playMusic: {fileID: 8300000, guid: a86c0ab4f738f5f408269af6f6f2e9e0, type: 3}
+  playMusic: {fileID: 8300000, guid: 7bbc195e1eee3d44c93d6bb6a98fb2bd, type: 3}
   loopMusic: 1
   musicVolume: 0.1
   playSoundEffect: {fileID: 0}

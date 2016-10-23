@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -46,33 +43,31 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public Transform soundEffectPosition;
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            audioSource = (AudioSource)EditorGUILayout.ObjectField(new GUIContent("Audio Source",
+            audioSource = (AudioSource)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Audio Source",
                 "The audio source for the music."), audioSource, typeof(AudioSource), true);
 
-            muteAllAudio = EditorGUILayout.Toggle(new GUIContent("Mute all audio",
+            muteAllAudio = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Mute all audio",
                 "Stops the current audio clip being played on the audio source."), muteAllAudio);
 
-            playMusic = (AudioClip)EditorGUILayout.ObjectField(new GUIContent("Play Music",
+            playMusic = (AudioClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Play Music",
                 "This is the audio clip that will be played on the audio source."), playMusic, typeof(AudioClip), true);
 
-            loopMusic = EditorGUILayout.Toggle(new GUIContent("Loop Music",
+            loopMusic = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Loop Music",
                 "If this is true, the above audio clip will loop when played."), loopMusic);
 
-            musicVolume = EditorGUILayout.FloatField(new GUIContent("Music Volume",
+            musicVolume = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Music Volume",
                     "The volume of the audio clip. Default is 1."), musicVolume);
 
-            playSoundEffect = (AudioClip)EditorGUILayout.ObjectField(new GUIContent("Play Sound Effect",
+            playSoundEffect = (AudioClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Play Sound Effect",
                 "This is an audio clip, played at a certain position in world space as defined below."), playSoundEffect, typeof(AudioClip), true);
 
-            soundEffectPosition = (Transform)EditorGUILayout.ObjectField(new GUIContent("Sound Effect Position",
+            soundEffectPosition = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Sound Effect Position",
                 "The position the sound effect will be played at."), soundEffectPosition, typeof(Transform), true);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

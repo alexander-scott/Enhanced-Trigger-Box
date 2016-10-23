@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using System.Collections;
 
 namespace EnhancedTriggerbox.Component
@@ -108,33 +105,31 @@ namespace EnhancedTriggerbox.Component
             High,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            cam = (Camera)EditorGUILayout.ObjectField(new GUIContent("Camera",
+            cam = (Camera)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Camera",
                    "The camera that will be used for the condition. By default this is the main camera"), cam, typeof(Camera), true);
 
-            cameraConditionType = (LookType)EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+            cameraConditionType = (LookType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
                 "The type of condition you want. The Looking At condition only passes when the user can see a specific transform or gameobject. The Looking Away condition only passes when a transform or gameobject is out of the users camera frustum."), cameraConditionType);
 
-            conditionObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target Object",
+            conditionObject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Object",
                 "This is the object that the condition is based upon."), conditionObject, typeof(GameObject), true);
 
-            componentParameter = (CameraConditionComponentParameters)EditorGUILayout.EnumPopup(new GUIContent("Component Parameter",
+            componentParameter = (CameraConditionComponentParameters)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Component Parameter",
                 "The type of component the condition will be checked against.  Either transform (a single point in space), minimum box collider (any part of a box collider), full box collider (the entire box collider) or mesh renderer (any part of a mesh). For example with the Looking At condition and Minimum Box Collider, if any part of the box collider were to enter the camera's view, the condition would be met."), componentParameter);
 
             if (cameraConditionType == LookType.LookingAt && componentParameter != CameraConditionComponentParameters.MeshRenderer)
             {
-                raycastIntensity = (RaycastIntensity)EditorGUILayout.EnumPopup(new GUIContent("Raycast Intesity",
+                raycastIntensity = (RaycastIntensity)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Raycast Intesity",
                     "When using the Looking At condition type raycasts are fired to make sure nothing is blocking the cameras line of sight to the object. Here you can customise how those raycasts should be fired. Ignore obstacles fires no raycasts and mean the condition will pass even if there is an object in the way. Very low does raycast checks at a maximum of once per second against the objects position. Low does raycast checks at a maximum of once per 0.1 secs against the objects position. Med does raycast checks once per frame against the objects position. High does raycast checks once per frame against every corner of the box collider."), raycastIntensity);
             }
 
-            minDistance = EditorGUILayout.FloatField(new GUIContent("Min Distance", 
+            minDistance = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Min Distance", 
                 "This field allows you to set a minimum distance between the selected camera and target object before the condition gets checked."), minDistance);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using System;
 
 namespace EnhancedTriggerbox.Component
@@ -37,21 +34,19 @@ namespace EnhancedTriggerbox.Component
             String,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            setPlayerPrefKey = EditorGUILayout.TextField(new GUIContent("Player Pref Key",
+            setPlayerPrefKey = UnityEditor.EditorGUILayout.TextField(new GUIContent("Player Pref Key",
                 "This is the key (ID) of the player pref which will have its value set."), setPlayerPrefKey);
 
-            setPlayerPrefType = (ParameterType)EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
+            setPlayerPrefType = (ParameterType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Player Pref Type",
                    "This is the type of data stored within the player pref. Options are int, float and string."), setPlayerPrefType);
 
-            setPlayerPrefVal = EditorGUILayout.TextField(new GUIContent("Player Pref Value",
+            setPlayerPrefVal = UnityEditor.EditorGUILayout.TextField(new GUIContent("Player Pref Value",
                 "This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively."), setPlayerPrefVal);
-
-#endif
         }
+#endif
 
         public override void Validation()
         {

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -26,17 +23,16 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public Transform customPositionRotation;
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            prefabToSpawn = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Prefab to spawn",
+            prefabToSpawn = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Prefab to spawn",
                 "This is the prefab which will be instanstiated (spawned)."), prefabToSpawn, typeof(GameObject), true);
 
-            newInstanceName = EditorGUILayout.TextField(new GUIContent("New instance name",
+            newInstanceName = UnityEditor.EditorGUILayout.TextField(new GUIContent("New instance name",
                 "This field is used to set the name of the newly instantiated object. If left blank the name will remain as the prefab's saved name."), newInstanceName);
 
-            customPositionRotation = (Transform)EditorGUILayout.ObjectField(new GUIContent("Custom Position / Rotation",
+            customPositionRotation = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Custom Position / Rotation",
                 "This is the position and rotation the prefab will be spawned with. If left blank it will use the prefab's saved attributes."),
                 customPositionRotation, typeof(Transform), true);
 
@@ -48,9 +44,8 @@ namespace EnhancedTriggerbox.Component
             //    Handles.PositionHandle((customPositionRotation == null) ? prefabToSpawn.transform.position : customPositionRotation.position,
             //        (customPositionRotation == null) ? prefabToSpawn.transform.rotation : customPositionRotation.rotation);
             //}
-
-#endif
         }
+#endif
 
         public override bool ExecuteAction()
         {

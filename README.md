@@ -103,7 +103,7 @@ public GameObject exampleGameobject;
 
 #### DrawInspectorGUI()
 
-It is recommened that you override DrawInspectorGUI(). This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. Those limitations being you will not be able to use any custom structs or enums and you won't be able to add your own tooltips.
+It is recommened that you override DrawInspectorGUI(). This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. Those limitations being you will not be able to use any custom structs or enums and you won't be able to add your own tooltips. If you do choose to override this function make sure you encapsulate it within the '#if UNITY_EDITOR' tags as this is editor related code.
 
 Here's how you would draw a gameobject to a inspector (first example in the codeblock). EditorGUILayout.ObjectField is the typical object reference field you
 always see in Unity. It returns the object which we will need to save as exampleGameObject so we do exampleGameObject = ObjectField.
@@ -116,23 +116,25 @@ user to use gameobjects currently in the scene which we want so set it to true.
 Below the gameobject example are other examples of how you would add your variables to the inspector including, bools, ints, strings and enums. For more information about using the EditorGUILayout click [here.](https://docs.unity3d.com/ScriptReference/EditorGUILayout.html)
 
 ``` csharp
-public override void DrawInspectorGUI()
-{
-        exampleGameobject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Example Game Object",
-                "Example tooltip"), exampleGameobject, typeof(GameObject), true);
+#if UNITY_EDITOR
+	public override void DrawInspectorGUI()
+	{
+			exampleGameobject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Example Game Object",
+					"Example tooltip"), exampleGameobject, typeof(GameObject), true);
 
-        exampleBool = EditorGUILayout.Toggle(new GUIContent("Example Bool",
-                "Example tooltip"), exampleBool);
+			exampleBool = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Example Bool",
+					"Example tooltip"), exampleBool);
 
-        exampleInt = EditorGUILayout.IntField(new GUIContent("Example Int",
-                "Example tooltip"), exampleInt);
+			exampleInt = UnityEditor.EditorGUILayout.IntField(new GUIContent("Example Int",
+					"Example tooltip"), exampleInt);
 
-		exampleString = EditorGUILayout.TextField(new GUIContent("Example String",
-				"Example tooltip"), exampleString);
+			exampleString = UnityEditor.EditorGUILayout.TextField(new GUIContent("Example String",
+					"Example tooltip"), exampleString);
 
-		exampleEnum = (EnumName)EditorGUILayout.EnumPopup(new GUIContent("Example Enum",
-				"Example tooltip"), exampleEnum);
-}
+			exampleEnum = (EnumName)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Example Enum",
+					"Example tooltip"), exampleEnum);
+	}
+#endif
 ```
 
 #### ExecuteAction()
@@ -544,6 +546,12 @@ Troubleshooting
 #### System.Reflection.ReflectionTypeLoadException: The classes in the module cannot be loaded.
 
 Enhanced Trigger Box uses .NET Reflection to obtain information about loaded assemblies and the types defined within, in this being the enhanced trigger box components. If you are seeing this error it means your Unity API is set to a .NET version which doesn't support Reflection. To fix this go to "Edit->Project Settings->Player-> Other settings" and set "Api Compatibility Level" to ".NET 2.0" instead of ".NET 2.0 Subset" and then reload your project.
+
+#### Error building Player because scripts had compiler errors
+
+This is a bug found when attempting to build a project which has been solved as of 23/10/2016 and is currently being approved by the Unity asset store team. If you come across this bug before asset store approval then please reimport the package, which can be found [here](http://www.looperman.com/loops/detail/99733/piano-loop-reflections-of-life-70-by-designedimpression-free-70bpm-ambient-piano-loop).
+
+If you have created any custom Enhanced Trigger Box Components you will need to make 2 changes to them. At the top of your component where it says “using UnityEditor;” you will need to put before it: “#if UNITY_EDITOR” and immediately after it: “#endif”. Then go to the DrawInspectorGUI() function and at the very top inside it add: “#if UNITY_EDITOR” and at the very bottom of the DrawInspectorGUI () function put: “#endif”. 
 
 Misc
 ---------------

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace EnhancedTriggerbox.Component
 {
@@ -37,21 +34,19 @@ namespace EnhancedTriggerbox.Component
             ChildrenAndParents,
         }
 
+#if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-#if UNITY_EDITOR
-
-            targetGameObject = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Target GameObject",
+            targetGameObject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target GameObject",
                 "The target game object which will have it's material modified."), targetGameObject, typeof(GameObject), true);
 
-            material = (Material)EditorGUILayout.ObjectField(new GUIContent("Set Material",
+            material = (Material)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Set Material",
                 "This is the material that will be set to the target gameobject."), material, typeof(Material), true);
 
-            affectOthers = (AffectOthers)EditorGUILayout.EnumPopup(new GUIContent("Affect Others",
+            affectOthers = (AffectOthers)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Affect Others",
                 "This allows you to apply the selected change to adjacent gameobjects, either children or parents."), affectOthers);
-
-#endif
         }
+#endif
 
         public override bool ExecuteAction()
         {
