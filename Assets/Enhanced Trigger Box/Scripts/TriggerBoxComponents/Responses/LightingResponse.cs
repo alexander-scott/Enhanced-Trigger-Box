@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
@@ -97,6 +99,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             editType = (EditType)EditorGUILayout.EnumPopup(new GUIContent("Edit Type",
                 "Select whether you want to modify an indivdual light or the scene's lighting settings."), editType);
 
@@ -144,6 +148,8 @@ namespace EnhancedTriggerbox.Component
 
             //duration = EditorGUILayout.FloatField(new GUIContent("Change Duration",
             //        "The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly."), duration);
+
+#endif
         }
 
         public override bool ExecuteAction()
@@ -176,7 +182,7 @@ namespace EnhancedTriggerbox.Component
                     }
                     else // Else we'll instantly apply the changes
                     {
-                        if (changeColourType == ChangeColourType.EditColor && setColour != null)
+                        if (changeColourType == ChangeColourType.EditColor)
                         {
                             targetLight.color = setColour;
                         }
@@ -228,7 +234,7 @@ namespace EnhancedTriggerbox.Component
                         RenderSettings.skybox = setSkybox;
                     }
 
-                    if (changeAmbientLightColour == ChangeColourType.EditColor && ambientLightColour != null)
+                    if (changeAmbientLightColour == ChangeColourType.EditColor)
                     {
                         RenderSettings.ambientLight = ambientLightColour;
                     }
@@ -255,7 +261,7 @@ namespace EnhancedTriggerbox.Component
 
             while (progress < 1)
             {
-                if (changeColourType == ChangeColourType.EditColor && setColour != null)
+                if (changeColourType == ChangeColourType.EditColor)
                 {
                     // Color.Lerp() linearly interpolates between two colours over the selected duration. 
                     targetLight.color = Color.Lerp(targetLight.color, setColour, progress);
@@ -304,7 +310,7 @@ namespace EnhancedTriggerbox.Component
                         RenderSettings.skybox.Lerp(RenderSettings.skybox, setSkybox, duration);
                     }
 
-                    if (changeAmbientLightColour == ChangeColourType.EditColor && ambientLightColour != null)
+                    if (changeAmbientLightColour == ChangeColourType.EditColor)
                     {
                         RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, ambientLightColour, duration);
                     }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 
 namespace EnhancedTriggerbox.Component
@@ -108,6 +110,8 @@ namespace EnhancedTriggerbox.Component
 
         public override void DrawInspectorGUI()
         {
+#if UNITY_EDITOR
+
             cam = (Camera)EditorGUILayout.ObjectField(new GUIContent("Camera",
                    "The camera that will be used for the condition. By default this is the main camera"), cam, typeof(Camera), true);
 
@@ -128,6 +132,8 @@ namespace EnhancedTriggerbox.Component
 
             minDistance = EditorGUILayout.FloatField(new GUIContent("Min Distance", 
                 "This field allows you to set a minimum distance between the selected camera and target object before the condition gets checked."), minDistance);
+
+#endif
         }
 
         public override void Validation()
