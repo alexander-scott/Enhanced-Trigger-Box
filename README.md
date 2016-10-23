@@ -551,7 +551,7 @@ Enhanced Trigger Box uses .NET Reflection to obtain information about loaded ass
 
 This is a bug found when attempting to build a project which has been solved as of 23/10/2016 and is currently being approved by the Unity asset store team. If you come across this bug before asset store approval then please reimport the package, which can be found [here](https://www.dropbox.com/s/3as0v2p1aoqg7z7/EnhancedTriggerBox0.1.3.unitypackage?dl=0).
 
-If you have created any custom Enhanced Trigger Box Components you will need to make 2 changes to them. At the top of your component where it says “using UnityEditor;” you will need to put before it: “#if UNITY_EDITOR” and immediately after it: “#endif”. Then go to the DrawInspectorGUI() function and at the very top inside it add: “#if UNITY_EDITOR” and at the very bottom of the DrawInspectorGUI () function put: “#endif”. 
+If you have created any custom Enhanced Trigger Box Components you will need to make some changes to them. First off go to your new component and at the top remove 'using UnityEditor;'. Then scroll down to the DrawInspectorGUI() function. You will most likely have a few errors. These can be fixed by putting 'UnityEditor.' in front of them. Finally above the DrawInspectorGUI() function add: '#if UNITY_EDITOR' and beneath the function put: '#endif'. If you have imported the updated package you can look at the other updated components for guidance.
 
 Misc
 ---------------
