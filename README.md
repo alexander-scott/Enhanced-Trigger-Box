@@ -5,7 +5,7 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.1.2]*
+*Current version: [v0.1.3]*
 
 Getting started
 ---------------
@@ -549,9 +549,9 @@ Enhanced Trigger Box uses .NET Reflection to obtain information about loaded ass
 
 #### Error building Player because scripts had compiler errors
 
-This is a bug found when attempting to build a project which has been solved as of 23/10/2016 and is currently being approved by the Unity asset store team. If you come across this bug before asset store approval then please reimport the package, which can be found [here](https://www.dropbox.com/s/3as0v2p1aoqg7z7/EnhancedTriggerBox0.1.3.unitypackage?dl=0).
+This is a bug found when attempting to build a project which has been solved as of v0.1.3.
 
-If you have created any custom Enhanced Trigger Box Components you will need to make some changes to them. First off go to your new component and at the top remove 'using UnityEditor;'. Then scroll down to the DrawInspectorGUI() function. You will most likely have a few errors. These can be fixed by putting 'UnityEditor.' in front of them. Finally above the DrawInspectorGUI() function add: '#if UNITY_EDITOR' and beneath the function put: '#endif'. If you have imported the updated package you can look at the other updated components for guidance.
+If you are upgrading from a version lower than v0.1.3 and have created any custom Enhanced Trigger Box Components you will need to make some changes to them. First off go to your new component and at the top remove 'using UnityEditor;'. Then scroll down to the DrawInspectorGUI() function. You will most likely have a few errors. These can be fixed by putting 'UnityEditor.' in front of them. Finally above the DrawInspectorGUI() function add: '#if UNITY_EDITOR' and beneath the function put: '#endif'. If you have imported the updated package you can look at the other updated components for guidance.
 
 Misc
 ---------------
