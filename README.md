@@ -38,21 +38,19 @@ If you click on one of the Enhanced Trigger Boxes in the scene or drag the ETB p
 
 ![Test Image](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/BaseOptions.png)
 
-Trigger Tags:- Only gameobjects with tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. If you leave this field blank any object will be able to trigger it.
-
 Debug Trigger Box:- If true, the script will write to the console when certain events happen such as when the trigger box is triggered.
 
 Hide Warnings:- If this is true, the script won't perform checks to notify you if you're missing any required references or if theres any errors.
 
 Disable Entry Check:- If true, the entry check on the trigger box will be disabled, meaning it will go straight to the condition checking instead of waiting for something to enter the trigger box.
 
-Draw Wire:- If this is true, the script won't perform checks when the scene is run to notify you if you're missing any required references.
+Trigger Tags:- Only gameobjects with tags listed here are able to trigger the trigger box. To have more than one tag, put a comma between them. If you leave this field blank any object will be able to trigger it.
 
 TriggerBox Colour:- This is the colour the trigger box and it's edges will have in the editor.
 
-After Trigger:- This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.
-
 Trigger Follow:- This allows you to choose if you want your trigger box to stay positioned on a moving transform or the main camera. If you pick Follow Transform a field will appear to set which transform you want the trigger box to follow. Or if you pick Follow Main Camera the trigger box will stay positioned on wherever the main camera currently is.
+
+After Trigger:- This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.
 
 Condition Time:- This lets you set an additional time requirement on top of the conditions. This is the total time that the conditions must be met for in seconds.
 
@@ -552,6 +550,10 @@ Enhanced Trigger Box uses .NET Reflection to obtain information about loaded ass
 This is a bug found when attempting to build a project which has been solved as of v0.1.3.
 
 If you are upgrading from a version lower than v0.1.3 and have created any custom Enhanced Trigger Box Components you will need to make some changes to them. First off go to your new component and at the top remove 'using UnityEditor;'. Then scroll down to the DrawInspectorGUI() function. You will most likely have a few errors. These can be fixed by putting 'UnityEditor.' in front of them. Finally above the DrawInspectorGUI() function add: '#if UNITY_EDITOR' and beneath the function put: '#endif'. If you have imported the updated package you can look at the other updated components for guidance.
+
+#### Variable values not being saved correctly in custom components
+
+This is quite a vague issue so there could be a whole multitude of reasons why it isn't saving. One thing I would recommend checking is that all the variables are public and not private. This has solved a frustrating problem for me in the past.
 
 Misc
 ---------------

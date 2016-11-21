@@ -153,6 +153,9 @@ MonoBehaviour:
   obj: {fileID: 0}
   gameObjectName: CubeLeftSide
   modifyType: 1
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &211646602
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -316,6 +319,9 @@ MonoBehaviour:
   obj: {fileID: 1045425615}
   gameObjectName: 
   modifyType: 2
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &282534179
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -333,6 +339,9 @@ MonoBehaviour:
   obj: {fileID: 1653758927}
   gameObjectName: 
   modifyType: 2
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &282534180
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -350,6 +359,9 @@ MonoBehaviour:
   obj: {fileID: 577214494}
   gameObjectName: 
   modifyType: 1
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &282534181
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -470,6 +482,9 @@ MonoBehaviour:
   obj: {fileID: 1653758927}
   gameObjectName: 
   modifyType: 0
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!1 &309845669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,6 +1384,9 @@ MonoBehaviour:
   obj: {fileID: 1700837941}
   gameObjectName: 
   modifyType: 2
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &1012423017
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1533,15 +1551,15 @@ Prefab:
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
       propertyPath: responses.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4000011644986488, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1.928
+      value: -1.93
       objectReference: {fileID: 0}
     - target: {fileID: 4000011644986488, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.10672469
+      value: -0.11
       objectReference: {fileID: 0}
     - target: {fileID: 4000011644986488, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2302,6 +2320,9 @@ MonoBehaviour:
   obj: {fileID: 1846069420}
   gameObjectName: 
   modifyType: 2
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &1591653989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2382,6 +2403,9 @@ MonoBehaviour:
   obj: {fileID: 161392770}
   gameObjectName: 
   modifyType: 0
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!1001 &1599617146
 Prefab:
   m_ObjectHideFlags: 0
