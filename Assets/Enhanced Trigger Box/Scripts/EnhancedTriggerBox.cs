@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using System.Collections;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,7 +12,7 @@ using UnityEditor;
 
 namespace EnhancedTriggerbox
 {
-    [Serializable, ExecuteInEditMode]
+    [Serializable]
     [RequireComponent(typeof(BoxCollider))]
 #if UNITY_5_4_OR_NEWER
     [HelpURL("https://alex-scott.co.uk/portfolio/enhanced-trigger-box.html")]
@@ -128,6 +129,8 @@ namespace EnhancedTriggerbox
         /// This is set to true when all the conditions have been met.
         /// </summary>
         private bool conditionMet = false;
+
+        private bool waiting = false;
 
         /// <summary>
         /// This is a timer used to make sure the time the condition has been met for is longer than conditionTime
@@ -338,7 +341,7 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// Update loop called every frame
         /// </summary>
-        void FixedUpdate()
+        void Update()
         {
             if (!disableEntryCheck)
             {
@@ -354,7 +357,7 @@ namespace EnhancedTriggerbox
             }
 
             // If the player has entered the trigger box
-            if (triggered)
+            if (triggered && !waiting)
             {
                 conditionMet = true;
 
@@ -373,7 +376,7 @@ namespace EnhancedTriggerbox
                 // If all have conditions have been met we must check that they have been met for longer than the specified conditionTime
                 if (conditionMet && CheckConditionTimer())
                 {
-                    ConditionsMet();
+                    StartCoroutine(ConditionsMet());
                 }
             }
         }
@@ -381,19 +384,30 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// This function executes all the responses and only happens after all the conditions have been met
         /// </summary>
-        private void ConditionsMet()
+        private IEnumerator ConditionsMet()
         {
-            // Execute every response
-            for (int i = 0; i < responses.Count; i++)
-            {
-                responses[i].ExecuteAction();
-            }
+            waiting = true; // This is used so the coroutine doesn't get accidently triggered twice
 
             // If debugTriggerBox is selected, write to the console saying the trigger box has successfully been triggered
             if (debugTriggerBox)
             {
                 Debug.Log(gameObject.name + " has been triggered!");
             }
+
+            float waitTime = 0f;
+
+            // Execute every response
+            for (int i = 0; i < responses.Count; i++)
+            {
+                responses[i].ExecuteAction();
+
+                if (responses[i].duration > waitTime)
+                {
+                    waitTime = responses[i].duration;
+                }
+            }
+
+            yield return new WaitForSeconds(waitTime);
 
             // Depending on the selected option either set this as inactive, destroy it or destroy its parent
             switch (afterTrigger)
@@ -408,6 +422,10 @@ namespace EnhancedTriggerbox
 
                 case AfterTriggerOptions.DestroyParent:
                     Destroy(transform.parent.gameObject);
+                    break;
+
+                case AfterTriggerOptions.DoNothing:
+                    waiting = false;
                     break;
             }
         }

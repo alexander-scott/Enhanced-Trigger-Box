@@ -68,15 +68,6 @@ namespace EnhancedTriggerbox.Component
         #endregion
 
         /// <summary>
-        /// The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly.
-        /// </summary>
-        public float duration;
-
-        private bool crRunning;
-
-        private bool crComplete;
-
-        /// <summary>
         /// The available edit types for this response
         /// </summary>
         public enum EditType
@@ -142,10 +133,43 @@ namespace EnhancedTriggerbox.Component
                 }
             }
 
-            //duration = EditorGUILayout.FloatField(new GUIContent("Change Duration",
-            //        "The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly."), duration);
+            duration = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Change Duration",
+                    "The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly."), duration);
         }
 #endif
+
+        public override void Validation()
+        {
+            float f;
+            if (!float.TryParse(setIntensity, out f) && !string.IsNullOrEmpty(setIntensity))
+            {
+                ShowWarningMessage("Set intensity must be a valid float value.");
+            }
+            else
+            {
+                if (f > 8 || f < 0)
+                {
+                    ShowWarningMessage("Set intensity must be between 0 and 8.");
+                }
+            }
+
+            if (!float.TryParse(setBounceIntensity, out f) && !string.IsNullOrEmpty(setBounceIntensity))
+            {
+                ShowWarningMessage("Set bounce intensity must be a valid float value.");
+            }
+            else
+            {
+                if (f > 8 || f < 0)
+                {
+                    ShowWarningMessage("Set bounce intensity must be between 0 and 8.");
+                }
+            }
+
+            if (!float.TryParse(setRange, out f) && !string.IsNullOrEmpty(setRange) && (targetLight.type == LightType.Point || targetLight.type == LightType.Spot))
+            {
+                ShowWarningMessage("Set range must be a valid float value.");
+            }
+        }
 
         public override bool ExecuteAction()
         {
@@ -157,23 +181,7 @@ namespace EnhancedTriggerbox.Component
                     // If duration isn't 0 then we'll apply the changes over a set duration using a coroutine
                     if (duration != 0f)
                     {
-                        if (!crRunning)
-                        {
-                            crRunning = true;
-                            StartCoroutine(ChangeLightColourOverTime());
-                        }
-                        else
-                        {
-                            if (!crComplete)
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                        
+                        StartCoroutine(ChangeLightColourOverTime());
                     }
                     else // Else we'll instantly apply the changes
                     {
@@ -208,7 +216,18 @@ namespace EnhancedTriggerbox.Component
                             }
                         }
 
-                        return true;
+                        if (!string.IsNullOrEmpty(setRange) && (targetLight.type == LightType.Point || targetLight.type == LightType.Spot))
+                        {
+                            float f;
+                            if (float.TryParse(setRange, out f))
+                            {
+                                targetLight.range = f;
+                            }
+                            else
+                            {
+                                Debug.Log("Unable to parse the Set Range value to a float. Please make sure it's a valid float.");
+                            }
+                        }
                     }
                 }
                 else
@@ -233,8 +252,6 @@ namespace EnhancedTriggerbox.Component
                     {
                         RenderSettings.ambientLight = ambientLightColour;
                     }
-
-                    return true;
                 }
             }
 
@@ -242,17 +259,19 @@ namespace EnhancedTriggerbox.Component
         }
 
         /// <summary>
-        /// This function is a WIP and not currently usable. It will apply changes to lighting over time.
+        /// This coroutine will apply changes to lighting over time.
         /// </summary>
         /// <returns></returns>
         private IEnumerator ChangeLightColourOverTime()
         {
-            // Is this while loop necessary?
-            //while (true)
-            //{
-            float smoothness = 0.02f;
-            float progress = 0; //This float will serve as the 3rd parameter of the lerp function.
-            float increment = smoothness / duration; //The amount of change to apply.
+            float smoothness = 0.02f; // Should the user be able to set this?
+            float progress = 0; // This float will serve as the 3rd parameter of the lerp function.
+            float increment = smoothness / duration; // The amount of change to apply.
+
+            float targetIntensity, targetBounceIntensity, targetRange;
+            float.TryParse(setIntensity, out targetIntensity);
+            float.TryParse(setBounceIntensity, out targetBounceIntensity);
+            float.TryParse(setRange, out targetRange);
 
             while (progress < 1)
             {
@@ -264,55 +283,49 @@ namespace EnhancedTriggerbox.Component
 
                 if (!string.IsNullOrEmpty(setIntensity))
                 {
-                    float f;
-                    if (float.TryParse(setIntensity, out f))
-                    {
-                        targetLight.intensity = Mathf.Lerp(targetLight.intensity, f, progress);
-                    }
+                    // Mathf.Lerp() linearly interpolates a float between two values over a selected duration.
+                    targetLight.intensity = Mathf.Lerp(targetLight.intensity, targetIntensity, progress);
                 }
 
                 if (!string.IsNullOrEmpty(setBounceIntensity))
                 {
-                    float f;
-                    if (float.TryParse(setBounceIntensity, out f))
-                    {
-                        targetLight.bounceIntensity = Mathf.Lerp(targetLight.bounceIntensity, f, progress);
-                    }
+                    targetLight.bounceIntensity = Mathf.Lerp(targetLight.bounceIntensity, targetBounceIntensity, progress);
                 }
-                progress += increment;
-                //yield return new WaitForSeconds(smoothness);
-            }
-            //break;
-            //}
-            crComplete = true;
 
-            yield return 0;
+                if (!string.IsNullOrEmpty(setRange) && (targetLight.type == LightType.Point || targetLight.type == LightType.Spot))
+                {
+                    targetLight.range = Mathf.Lerp(targetLight.range, targetRange, progress);
+                }
+
+                progress += increment;
+                yield return new WaitForSeconds(smoothness);
+            }
         }
 
         /// <summary>
-        /// This function is a WIP and not currently usable. It will apply changes to lighting settings over time.
+        /// This coroutine will apply changes to lighting settings over time.
         /// </summary>
         /// <returns></returns>
         private IEnumerator ChangeSceneLightingOverTime()
         {
-            while (true)
+            float smoothness = 0.02f; // Should the user be able to set this?
+            float progress = 0; // This float will serve as the 3rd parameter of the lerp function.
+            float increment = smoothness / (duration * 10); // The amount of change to apply. Is the multiply by 10 needed?
+
+            while (progress < 1)
             {
-                float pauseEndTime = Time.realtimeSinceStartup + duration;
-                while (Time.realtimeSinceStartup < pauseEndTime)
+                if (setSkybox != null)
                 {
-                    if (setSkybox != null)
-                    {
-                        RenderSettings.skybox.Lerp(RenderSettings.skybox, setSkybox, duration);
-                    }
-
-                    if (changeAmbientLightColour == ChangeColourType.EditColor)
-                    {
-                        RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, ambientLightColour, duration);
-                    }
-
-                    yield return 0;
+                    RenderSettings.skybox.Lerp(RenderSettings.skybox, setSkybox, progress);
                 }
-                break;
+
+                if (changeAmbientLightColour == ChangeColourType.EditColor)
+                {
+                    RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, ambientLightColour, progress);
+                }
+
+                progress += increment;
+                yield return new WaitForSeconds(smoothness);
             }
         }
     }

@@ -51,7 +51,7 @@ LightmapSettings:
     m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 0
+    m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
     serializedVersion: 4
     m_Resolution: 1
@@ -150,6 +150,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 0}
   gameObjectName: CubeLeftSide
   modifyType: 1
@@ -170,6 +171,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   prefabToSpawn: {fileID: 113420, guid: 9e6fa9642951a2a4499d69dfedd1b4d8, type: 2}
   newInstanceName: 
   customPositionRotation: {fileID: 0}
@@ -187,6 +189,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
   setPlayerPrefVal: 3
@@ -204,6 +207,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 899243893}
   cameraConditionType: 0
   conditionObject: {fileID: 1944559925}
@@ -316,6 +320,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 1045425615}
   gameObjectName: 
   modifyType: 2
@@ -336,6 +341,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 1653758927}
   gameObjectName: 
   modifyType: 2
@@ -356,6 +362,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 577214494}
   gameObjectName: 
   modifyType: 1
@@ -376,6 +383,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
   setPlayerPrefVal: 2
@@ -393,6 +401,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   playerPrefCondition: 1
   playerPrefKey: DemoProgression
   playerPrefType: 0
@@ -412,6 +421,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 899243893}
   cameraConditionType: 0
   conditionObject: {fileID: 1700837941}
@@ -442,6 +452,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   prefabToSpawn: {fileID: 100080, guid: 2fe6f74b3b275374ca5d82be806e41fd, type: 2}
   newInstanceName: 
   customPositionRotation: {fileID: 0}
@@ -459,6 +470,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 899243893}
   cameraConditionType: 0
   conditionObject: {fileID: 1314213552}
@@ -479,6 +491,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 1653758927}
   gameObjectName: 
   modifyType: 0
@@ -951,6 +964,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
   setPlayerPrefVal: 0
@@ -1020,6 +1034,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   audioSource: {fileID: 465920518}
   muteAllAudio: 0
   playMusic: {fileID: 8300000, guid: 7bbc195e1eee3d44c93d6bb6a98fb2bd, type: 3}
@@ -1381,6 +1396,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 1700837941}
   gameObjectName: 
   modifyType: 2
@@ -1401,6 +1417,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   setPlayerPrefKey: DemoProgression
   setPlayerPrefType: 0
   setPlayerPrefVal: 1
@@ -1418,6 +1435,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 899243893}
   cameraConditionType: 0
   conditionObject: {fileID: 2110441795}
@@ -1438,6 +1456,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 0}
   cameraConditionType: 0
   conditionObject: {fileID: 0}
@@ -2170,6 +2189,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   rigbody: {fileID: 974882540}
   setMass: 
   setDrag: 
@@ -2317,6 +2337,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 1846069420}
   gameObjectName: 
   modifyType: 2
@@ -2367,6 +2388,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 899243893}
   cameraConditionType: 0
   conditionObject: {fileID: 521920628}
@@ -2400,6 +2422,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 161392770}
   gameObjectName: 
   modifyType: 0

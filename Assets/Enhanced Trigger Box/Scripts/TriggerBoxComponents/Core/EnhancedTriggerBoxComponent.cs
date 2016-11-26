@@ -32,6 +32,12 @@ namespace EnhancedTriggerbox.Component
         public bool showWarnings = true;
 
         /// <summary>
+        /// The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly. Currently only used within the lighting response.
+        /// </summary>
+        [SerializeField]
+        public float duration = 0f;
+
+        /// <summary>
         /// This function display the custom fields for each component in the inspector
         /// </summary>
         public void OnInspectorGUI()

@@ -1263,9 +1263,13 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   obj: {fileID: 1187686460}
   gameObjectName: 
   modifyType: 2
+  selectedComponentIndex: 0
+  selectedComponent: {fileID: 0}
+  componentCount: 0
 --- !u!114 &219088282
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1280,6 +1284,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 1187686460}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -1514,6 +1519,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   playerPrefCondition: 0
   playerPrefKey: ETBExamples
   playerPrefType: 0
@@ -1533,6 +1539,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 619425165}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -2570,6 +2577,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 379814888}
   cameraConditionType: 0
   conditionObject: {fileID: 845303575}
@@ -2590,6 +2598,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 845303575}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -2736,6 +2745,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   cam: {fileID: 379814888}
   cameraConditionType: 1
   conditionObject: {fileID: 1628980991}
@@ -2756,6 +2766,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 1628980991}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -2865,6 +2876,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   rigbody: {fileID: 265555753}
   setMass: 
   setDrag: 
@@ -2894,6 +2906,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 265555752}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -3326,6 +3339,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   audioSource: {fileID: 0}
   muteAllAudio: 0
   playMusic: {fileID: 0}
@@ -3347,6 +3361,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 137460676}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -4462,6 +4477,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   loadLevelName: Examples
   loadLevelNum: 0
 --- !u!1 &787533861
@@ -5405,6 +5421,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   messageTarget: {fileID: 2071894109}
   messageTargetName: 
   messageFunctionName: ShootCubes
@@ -5617,34 +5634,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 982177671}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1030064499
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1030064500}
-  m_Layer: 0
-  m_Name: NewPositon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1030064500
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1030064499}
-  m_LocalRotation: {x: -0.8504759, y: -0, z: -0, w: -0.52601403}
-  m_LocalPosition: {x: 0, y: 5.630487, z: 8.475578}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -207.99701, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 1251668955}
-  m_RootOrder: 0
 --- !u!1001 &1054014399
 Prefab:
   m_ObjectHideFlags: 0
@@ -6195,6 +6184,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 2044183695}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -6212,6 +6202,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetTransform: {fileID: 2044183700}
   transformComponent: 2
   axis: 1
@@ -6231,6 +6222,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   animationTarget: {fileID: 2044183695}
   setMecanimTrigger: 
   stopAnim: 1
@@ -6511,12 +6503,11 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1251668954}
-  m_LocalRotation: {x: 0.3044932, y: -0, z: -0, w: 0.9525146}
-  m_LocalPosition: {x: 28.389997, y: 21.04, z: -18.92}
+  m_LocalRotation: {x: 0.01535926, y: -0.95130193, z: 0.30410552, w: 0.048047222}
+  m_LocalPosition: {x: 28.6, y: 21.04, z: -9.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 35.448, y: 0, z: 0}
-  m_Children:
-  - {fileID: 1030064500}
+  m_LocalEulerAnglesHint: {x: 35.448, y: -174.38, z: 0}
+  m_Children: []
   m_Father: {fileID: 1170347721}
   m_RootOrder: 4
 --- !u!108 &1251668956
@@ -6530,11 +6521,11 @@ Light:
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 8
-  m_Range: 36.98
-  m_SpotAngle: 67
+  m_Range: 49.98
+  m_SpotAngle: 52.9
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -8206,6 +8197,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 1098027722}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -8223,6 +8215,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 5
   editType: 0
   targetLight: {fileID: 1251668956}
   changeColourType: 1
@@ -8233,24 +8226,6 @@ MonoBehaviour:
   setSkybox: {fileID: 0}
   changeAmbientLightColour: 0
   ambientLightColour: {r: 0, g: 0, b: 0, a: 0}
-  duration: 0
---- !u!114 &1585258576
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1585258570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0492f26696b37c04e844cfdadfb1a64a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hideShowSection: 1
-  deleted: 0
-  showWarnings: 1
-  targetObject: {fileID: 1251668954}
-  destination: {fileID: 1030064500}
-  copyRotation: 1
 --- !u!1001 &1589576104
 Prefab:
   m_ObjectHideFlags: 0
@@ -8659,6 +8634,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 1729164093}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -8676,6 +8652,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   setPlayerPrefKey: ETBExamples
   setPlayerPrefType: 0
   setPlayerPrefVal: 1
@@ -9035,7 +9012,7 @@ Prefab:
         type: 2}
       propertyPath: responses.Array.data[2]
       value: 
-      objectReference: {fileID: 1585258576}
+      objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
       propertyPath: responses.Array.data[3]
@@ -10448,6 +10425,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   animationTarget: {fileID: 1543440858}
   setMecanimTrigger: Ascend
   stopAnim: 0
@@ -10466,6 +10444,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 1543440858}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -11047,6 +11026,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetObject: {fileID: 1838738951}
   destination: {fileID: 1250118440}
   copyRotation: 0
@@ -11064,6 +11044,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   targetGameObject: {fileID: 1838738951}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
@@ -11162,6 +11143,7 @@ MonoBehaviour:
   hideShowSection: 1
   deleted: 0
   showWarnings: 1
+  duration: 0
   setPlayerPrefKey: ETBExamples
   setPlayerPrefType: 0
   setPlayerPrefVal: 0
