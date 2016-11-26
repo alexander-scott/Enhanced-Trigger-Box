@@ -130,6 +130,9 @@ namespace EnhancedTriggerbox
         /// </summary>
         private bool conditionMet = false;
 
+        /// <summary>
+        /// This is used when the ConditionsMet coroutine is executing to stop it accidently executing twice
+        /// </summary>
         private bool waiting = false;
 
         /// <summary>

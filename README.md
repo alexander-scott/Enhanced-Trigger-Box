@@ -5,7 +5,7 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.1.3]*
+*Current version: [v0.2]*
 
 Getting started
 ---------------
@@ -385,7 +385,7 @@ Sound Effect Position:- The position the sound effect will be played at.
 
 ### Lighting Response
 
-This response allows you to modify an individual light source or the scene's lighting settings. In future you will be able to make your selected modifications over a period of time. E.g. fade the scenes ambient light colour over a period of 5 seconds.
+This response allows you to modify an individual light source or the scene's lighting settings. You can also make your changes apply over a period of time.
 
 #### Component Fields
 
@@ -409,6 +409,8 @@ Change Ambient Light Colour:- Choose to change the colour of the scene's ambient
 
 Ambient Light Colour:- The colour that the scene's ambient light will be set to.
 
+Change Duration:- The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly.
+
 ![Lighting Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LightingResponse.png)
 
 ### Load Level Response
@@ -425,9 +427,9 @@ UnityEngine.SceneManagement.SceneManager.LoadScene(loadLevelName);
 
 ### Modify GameObject Response
 
-This response allows you to modify a gameobject by either disabling, enabling or destroying it. You can either pass in a gameobject reference or pass in the gameobjects name and the object will be found using GameObject.Find().
+This response allows you to modify a gameobject by either disabling, enabling or destroying it. Or you can enable/disable specific Unity components on a gameobject. You can either pass in a gameobject reference or pass in the gameobjects name and the object will be found using GameObject.Find().
 
-You are unable to enable a gameobject by name because GameObject.Find() cannot be used on inactive objects and the workarounds require you to modify your game which is not what I want. It is good practice to use object references instead of searching for objects anyway.
+You are unable to enable a gameobject by name because GameObject.Find() cannot be used on inactive objects. You also cannot disable or enable a Unity component without supplying a gameobject reference. It is good practice to use object references instead of searching for objects anyway. 
 
 ``` csharp
 gameObject.SetActive(true);
@@ -437,11 +439,13 @@ Destroy(gameObject);
 
 #### Component Fields
 
-gameObject:- The gameobject that will modified.
+GameObject:- The gameobject that will modified.
 
-gameObjectName:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified
+GameObject Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified
 
-modifyType:- This is the type of modification you want to happen to the gameobject. Options are destroy, disable and enable.
+Modify Type:- This is the type of modification you want to happen to the gameobject. Options are destroy, disable, enable, disable component and enable component.
+
+Select Component:- This is the Unity component on the gameobject that you want to enable/disable.
 
 ![Modify GameObject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/ModifyGameObjectResponse.png)
 
@@ -553,7 +557,7 @@ If you are upgrading from a version lower than v0.1.3 and have created any custo
 
 #### Variable values not being saved correctly in custom components
 
-This is quite a vague issue so there could be a whole multitude of reasons why it isn't saving. One thing I would recommend checking is that all the variables are public and not private. This has solved a frustrating problem for me in the past.
+This is quite a vague issue so there could be a whole multitude of reasons why it isn't saving. One thing I would recommend checking is that all the variables are public and not private. This has solved a similar problem for me in the past and could be the solution to your problem.
 
 Misc
 ---------------
