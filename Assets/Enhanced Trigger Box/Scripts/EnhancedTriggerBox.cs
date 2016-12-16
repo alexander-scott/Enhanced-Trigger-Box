@@ -406,11 +406,12 @@ namespace EnhancedTriggerbox
 
                 if (responses[i].duration > waitTime)
                 {
-                    waitTime = responses[i].duration;
+                    waitTime = responses[i].duration; 
                 }
             }
 
-            yield return new WaitForSeconds(waitTime);
+            // If one of the responses is using has a duration attribute then we'll need to wait for that amount of time before disabling/destroying the trigger box as that will cancel whatever the component is doing
+            yield return new WaitForSeconds(waitTime); 
 
             // Depending on the selected option either set this as inactive, destroy it or destroy its parent
             switch (afterTrigger)

@@ -103,9 +103,9 @@ public GameObject exampleGameobject;
 
 It is recommened that you override DrawInspectorGUI(). This function deals with drawing the GUI, aka what your component will look like in the inspector. If you do not override this function the base function will draw it for you with certain limitations. Those limitations being you will not be able to use any custom structs or enums and you won't be able to add your own tooltips. If you do choose to override this function make sure you encapsulate it within the '#if UNITY_EDITOR' tags as this is editor related code.
 
-Here's how you would draw a gameobject to a inspector (first example in the codeblock). EditorGUILayout.ObjectField is the typical object reference field you
+Here's how you would draw a gameobject to a inspector (first example in the codeblock). UnityEditor.EditorGUILayout.ObjectField is the typical object reference field you
 always see in Unity. It returns the object which we will need to save as exampleGameObject so we do exampleGameObject = ObjectField.
-Notice the (GameObject) before EditorGUILayout? This is because the ObjectField returns a object not a GameObject so we must 
+Notice the (GameObject) before UnityEditor.EditorGUILayout? This is because the ObjectField returns a object not a GameObject so we must 
 explicitly convert it to a GameObject. For the first bit of object field we'll create a new GUIContent which will hold the field name 
 (label before the field) and field tooltip (text that is displayed on hover). After that we pass in exampleGameObject again as the ObjectField 
 needs the current object there so it is displayed correctly. Then we set the type which is in this case gameobject. The final 'true' allows the 
@@ -162,6 +162,8 @@ public override bool ExecuteAction()
         return true;
 }
 ```
+
+If your response takes some time to fully execute you should use the 'duration' variable (from the EnhancedTriggerBoxComponent class) to tell the main script to wait for it to finish before deactivating/destroying the trigger box. For a usage example look in the lighting response at the ChangeLightColourOverTime() coroutine.
 
 #### OnAwake()
 

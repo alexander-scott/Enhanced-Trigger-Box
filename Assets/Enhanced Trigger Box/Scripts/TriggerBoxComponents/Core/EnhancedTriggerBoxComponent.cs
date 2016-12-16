@@ -136,7 +136,7 @@ namespace EnhancedTriggerbox.Component
         }
 
         /// <summary>
-        /// Draws each generic variable in the component. Not all types can be drawn. Enums are the most prominent that cannot be drawn.
+        /// Draws each generic variable in the component. Not all types can be drawn. Enums or structs are the most prominent that cannot be drawn.
         /// </summary>
         /// <param name="o">The field that will be drawn</param>
         protected void RenderGeneric(System.Reflection.FieldInfo o)
