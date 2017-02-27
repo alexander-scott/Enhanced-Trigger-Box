@@ -80,7 +80,7 @@ namespace EnhancedTriggerbox.Component
         {
             if (stopAnim && animationTarget)
             {
-#if UNITY_5_4_OR_NEWER
+#if UNITY_5_4 || UNITY_5_5
                 animationTarget.GetComponent<Animator>().Stop();
 #else
                 animationTarget.GetComponent<Animator>().StopPlayback();

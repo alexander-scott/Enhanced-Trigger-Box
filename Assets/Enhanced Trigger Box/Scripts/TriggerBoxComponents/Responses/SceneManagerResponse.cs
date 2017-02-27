@@ -92,9 +92,13 @@ namespace EnhancedTriggerbox.Component
             }
             else
             {
+#if UNITY_5_5_OR_NEWER
+                UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(loadLevelName);
+#else
                 UnityEngine.SceneManagement.SceneManager.UnloadScene(loadLevelName);
+#endif
             }
-                       
+
 #else
             Application.LoadLevel(loadLevelNum);
 #endif
