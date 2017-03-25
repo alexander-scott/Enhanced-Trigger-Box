@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
 {
@@ -6,7 +7,7 @@ namespace EnhancedTriggerbox.Component
     /// This response allows you to load/unload a scene
     /// </summary>
     [AddComponentMenu("")]
-    public class SceneManagerResponse : ResponseComponent
+    public class LoadLevelResponse : ResponseComponent
     {
         public ResponseType responseType;
 
@@ -53,7 +54,7 @@ namespace EnhancedTriggerbox.Component
                 additive = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Additive",
                     "If this is true the new scene will be displayed alongside/as well as the current scene. If this is false the current scene will be unloaded."), additive);
             }
-            
+
 #else
             loadLevelNum = EditorGUILayout.IntField(new GUIContent("Scene Number",
                 "This is the index of the scene you want to be loaded."), loadLevelNum);

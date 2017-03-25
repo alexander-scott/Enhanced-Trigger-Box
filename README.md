@@ -415,18 +415,6 @@ Change Duration:- The duration that the selected change will happen over in seco
 
 ![Lighting Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LightingResponse.png)
 
-### Load Level Response
-
-This response allows you to load a new scene. All you need to do is supply the scene name. Make sure it is included in the build settings.
-
-If you are using anything lower than Unity 5.3 you will need to supply the level number instead of the level name.
-
-``` csharp
-UnityEngine.SceneManagement.SceneManager.LoadScene(loadLevelName);
-```
-
-![Load Level Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LoadLevelResponse.png)
-
 ### Modify GameObject Response
 
 This response allows you to modify a gameobject by either disabling, enabling or destroying it. Or you can enable/disable specific Unity components on a gameobject. You can either pass in a gameobject reference or pass in the gameobjects name and the object will be found using GameObject.Find().
@@ -491,6 +479,8 @@ Change Interpolate:- Choose to set this rigidbody to interpolate or extrapolate.
 Change Collision Detection:- Choose to set this rigidbody's collision detection between discrete or continuous. Selecting remain the same will not change the value.
 
 ![Rigidbody Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/RigidbodyResponse.png)
+
+### Scene Manager Response
 
 ### Send Message Response
 
