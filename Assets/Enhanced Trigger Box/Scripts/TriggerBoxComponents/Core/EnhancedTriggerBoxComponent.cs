@@ -114,6 +114,11 @@ namespace EnhancedTriggerbox.Component
             }
         }
 
+        public virtual void ResetComponent()
+        {
+
+        }
+
         /// <summary>
         /// If this component is a condition this function is called when the trigger box is triggered (player enters it) and must returns true or
         /// false depending on if the condition has been met. If this component is a response then this function is called when all conditions

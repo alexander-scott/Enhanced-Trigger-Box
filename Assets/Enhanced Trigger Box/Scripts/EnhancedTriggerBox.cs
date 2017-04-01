@@ -430,6 +430,10 @@ namespace EnhancedTriggerbox
 
                 case AfterTriggerOptions.DoNothing:
                     waiting = false;
+                    for (int i = 0; i < conditions.Count; i++)
+                    {
+                        conditions[i].ResetComponent(); // Reset all the conditions
+                    }
                     break;
             }
         }
