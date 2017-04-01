@@ -20,6 +20,7 @@ namespace EnhancedTriggerbox.Component
         public TriggerType triggerType;
 
         /// <summary>
+        /// This flag is used to store if the key has been released when used in conjunction with the condition timer. As it is impossible to release a key for a certain duration
         /// </summary>
         private bool triggered;
 
@@ -53,6 +54,7 @@ namespace EnhancedTriggerbox.Component
                     break;
 
                 case TriggerType.OnReleased:
+                    if (triggered) // If has been released before
                         return true;
 
                     if (Input.GetKeyUp(inputKey)) // Return true as soon as the key is RELEASED

@@ -5,7 +5,7 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.2]*
+*Current version: [v0.25]*
 
 Getting started
 ---------------
@@ -252,6 +252,18 @@ Min Distance:- This field allows you to set a minimum distance between the selec
 
 ![Camera Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/CameraCondition.png)
 
+### Input Condition
+
+This condition requires the user to either press or release a certain key to be met. Only keyboard inputs are currently supported.
+
+#### Component fields
+
+Input Key:- The key that needs to be interacted with to meet the condition.
+
+Trigger Type:- The type of interaction required. OnPressed requires the user to simply press the key down. OnReleased requires the user to let go of the key after pressing it.
+
+![Input Condition](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/InputCondition.png)
+
 ### Player Pref Condition
 
 The player pref condition can be used to compare values stored in player prefs. For example, the player pref, LevelProgression, must have a value of over 5 before this condition gets met. To use this condition select the condition type, such as greater than, then enter the key of the player pref and finally the value that you want to compare that player pref with. 
@@ -415,6 +427,22 @@ Change Duration:- The duration that the selected change will happen over in seco
 
 ![Lighting Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LightingResponse.png)
 
+### Load Level Response
+
+This response allows you to load or unload as scene, as well as options to either asynchronously or additively load a scene.
+
+#### Component Fields
+
+Response Type:- The type of response that you want be executed. Either loading or unloading a scene.
+
+Load Level Name:- The name of the scene you want to load. Depending on your Unity version this may be a the scene index instead of name.
+
+Asynchronously:- Only available when loading a scene. If this is true, the scene will be loaded asynchronously. This means that the playing scene won't freeze as it's loading this new scene on a background thread. If this is false everything will freeze/wait until the new scene is loaded.
+
+Additive:- Only available when loading a scene. If this is true the new scene will be displayed alongside/as well as the current scene. If this is false the current scene will be unloaded.
+
+![Load Level Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/LoadLevelResponse.png)
+
 ### Modify GameObject Response
 
 This response allows you to modify a gameobject by either disabling, enabling or destroying it. Or you can enable/disable specific Unity components on a gameobject. You can either pass in a gameobject reference or pass in the gameobjects name and the object will be found using GameObject.Find().
@@ -479,8 +507,6 @@ Change Interpolate:- Choose to set this rigidbody to interpolate or extrapolate.
 Change Collision Detection:- Choose to set this rigidbody's collision detection between discrete or continuous. Selecting remain the same will not change the value.
 
 ![Rigidbody Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/RigidbodyResponse.png)
-
-### Scene Manager Response
 
 ### Send Message Response
 
