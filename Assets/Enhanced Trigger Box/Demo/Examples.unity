@@ -4958,7 +4958,8 @@ MonoBehaviour:
   showWarnings: 1
   duration: 0
   inputKey: 101
-  triggerType: 1
+  triggerType: 0
+  etb: {fileID: 863001261}
 --- !u!114 &863001260
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -4977,6 +4978,12 @@ MonoBehaviour:
   targetGameObject: {fileID: 379891595}
   material: {fileID: 2100000, guid: f8d196e8632774422836dfecae7da723, type: 2}
   affectOthers: 0
+--- !u!114 &863001261 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1046704718}
+  m_Script: {fileID: 11500000, guid: 2a62fb07d8923234c83625cb5bdebfd3, type: 3}
 --- !u!1001 &875698349
 Prefab:
   m_ObjectHideFlags: 0
@@ -5933,6 +5940,11 @@ Prefab:
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
       propertyPath: afterTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
+        type: 2}
+      propertyPath: conditionTime
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

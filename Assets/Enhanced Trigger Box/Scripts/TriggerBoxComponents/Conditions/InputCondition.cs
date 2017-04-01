@@ -24,6 +24,9 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         private bool triggered;
 
+        [SerializeField]
+        private EnhancedTriggerBox etb; // Serialise and save it so we don't do GetComponent every frame
+
         public enum TriggerType
         {
             OnPressed,
@@ -41,6 +44,22 @@ namespace EnhancedTriggerbox.Component
                 "NOTE: OnReleased will not work with the condition timer. As soon as it gets met once it will remain true for the remainder of the timer. OnPressed however requires the user to continue holding it down for the duration of the timer."), triggerType);
         }
 #endif
+
+        public override void Validation()
+        {
+            if (triggerType == TriggerType.OnReleased) // This check means most of the time we don't actually need to do the get component, yet still display the warning if needed
+            {
+                if (etb == null)
+                {
+                    etb = GetComponent<EnhancedTriggerBox>();
+                }
+
+                if (etb.conditionTime > 0f)
+                {
+                    ShowWarningMessage("Using a Condition Timer with the OnReleased trigger type will have no effect! This is because it is impossible to release a key for a certain duration.");
+                }
+            }
+        }
 
         public override bool ExecuteAction()
         {
