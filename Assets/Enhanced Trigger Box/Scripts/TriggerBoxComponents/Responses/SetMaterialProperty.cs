@@ -9,9 +9,19 @@ namespace EnhancedTriggerbox.Component
     [AddComponentMenu("")]
     public class SetMaterialProperty : ResponseComponent
     {
+        /// <summary>
+        /// A reference of the material that you want to set a properties value.
+        /// </summary>
         public Material targetMaterial;
 
+        /// <summary>
+        /// The name of the property that you want to set.
+        /// </summary>
         public string propertyName;
+
+        /// <summary>
+        /// The type of the property that you want to set.
+        /// </summary>
         public PropertyType propertyType;
 
         public float propertyFloat;
@@ -20,6 +30,9 @@ namespace EnhancedTriggerbox.Component
         public Vector4 propertyVector4;
         public Texture propertyTexture;
 
+        /// <summary>
+        /// Available types of property
+        /// </summary>
         public enum PropertyType
         {
             Float,
@@ -228,34 +241,6 @@ namespace EnhancedTriggerbox.Component
                 {
                     switch (propertyType)
                     {
-                        case PropertyType.Float:
-                            if (string.IsNullOrEmpty(propertyFloat.ToString()))
-                            {
-                                ShowWarningMessage("You need to enter a value to set the property with!");
-                            }
-                            break;
-
-                        case PropertyType.Int:
-                            if (string.IsNullOrEmpty(propertyInt.ToString()))
-                            {
-                                ShowWarningMessage("You need to enter a value to set the property with!");
-                            }
-                            break;
-
-                        case PropertyType.Colour:
-                            if (propertyColour == null)
-                            {
-                                ShowWarningMessage("You need to enter a colour to set the property with!");
-                            }
-                            break;
-
-                        case PropertyType.Vector4:
-                            if (propertyVector4 == null)
-                            {
-                                ShowWarningMessage("You need to enter a vector to set the property with!");
-                            }
-                            break;
-
                         case PropertyType.Texture:
                             if (propertyTexture == null)
                             {

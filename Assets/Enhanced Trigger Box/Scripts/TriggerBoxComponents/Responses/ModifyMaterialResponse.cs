@@ -50,6 +50,11 @@ namespace EnhancedTriggerbox.Component
 
         public override bool ExecuteAction()
         {
+            if (targetGameObject == null || material == null)
+            {
+                return true;
+            }
+
             // Sets the material to the target gameobject
             targetGameObject.GetComponent<MeshRenderer>().material = material;
 

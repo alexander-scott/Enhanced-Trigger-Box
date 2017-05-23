@@ -141,6 +141,11 @@ namespace EnhancedTriggerbox
         /// </summary>
         private float conditionTimer = 0f;
 
+        /// <summary>
+        /// The gameobject that has collided with this trigger box. To use this data in ExecuteAction(), components must set requiresCollisionObjectData to true.
+        /// </summary>
+        private GameObject collidingObject; 
+
         #endregion
 
         #region Enums
@@ -184,22 +189,29 @@ namespace EnhancedTriggerbox
                 // Display all the conditions
                 for (int i = conditions.Count - 1; i >= 0; i--)
                 {
-                    if (conditions[i].deleted) // If the X button has been pressed in the top right corner of a component
+                    if (conditions[i])
                     {
-                        conditions[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
-                        Undo.RecordObject(this, "Delete"); // Save the state of this object
+                        if (conditions[i].deleted) // If the X button has been pressed in the top right corner of a component
+                        {
+                            conditions[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
+                            Undo.RecordObject(this, "Delete"); // Save the state of this object
 
-                        EnhancedTriggerBoxComponent removeComponent = conditions[i];
-                        conditions.RemoveAt(i); // Remove from the condition list
+                            EnhancedTriggerBoxComponent removeComponent = conditions[i];
+                            conditions.RemoveAt(i); // Remove from the condition list
 
-                        Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
+                            Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
+                        }
+                        else
+                        {
+                            conditions[i].showWarnings = !hideWarnings;
+                            conditions[i].OnInspectorGUI(); // Draw this component in the inspector
+
+                            GUILayout.Space(10.0f);
+                        }
                     }
                     else
                     {
-                        conditions[i].showWarnings = !hideWarnings;
-                        conditions[i].OnInspectorGUI(); // Draw this component in the inspector
-
-                        GUILayout.Space(10.0f);
+                        conditions.RemoveAt(i);
                     }
                 }
             }
@@ -245,24 +257,31 @@ namespace EnhancedTriggerbox
 
             if (responses.Count > 0)
             {
-                for (int i = 0; i < responses.Count; i++)
+                for (int i = responses.Count - 1; i >= 0; i--)
                 {
-                    if (responses[i].deleted)
+                    if (responses[i])
                     {
-                        responses[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
-                        Undo.RecordObject(this, "Delete"); // Save the state of this object
+                        if (responses[i].deleted)
+                        {
+                            responses[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
+                            Undo.RecordObject(this, "Delete"); // Save the state of this object
 
-                        EnhancedTriggerBoxComponent removeComponent = responses[i];
-                        responses.RemoveAt(i); // Remove from the condition list
+                            EnhancedTriggerBoxComponent removeComponent = responses[i];
+                            responses.RemoveAt(i); // Remove from the condition list
 
-                        Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
+                            Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
+                        }
+                        else
+                        {
+                            responses[i].showWarnings = !hideWarnings;
+                            responses[i].OnInspectorGUI(); // Draw response in the inspector
+
+                            GUILayout.Space(10.0f);
+                        }
                     }
                     else
                     {
-                        responses[i].showWarnings = !hideWarnings;
-                        responses[i].OnInspectorGUI(); // Draw response in the inspector
-
-                        GUILayout.Space(10.0f);
+                        responses.RemoveAt(i);
                     }
                 }
             }
@@ -365,7 +384,14 @@ namespace EnhancedTriggerbox
                 // Loop through each condition to check if it has been met
                 for (int i = 0; i < conditions.Count; i++)
                 {
-                    conditionMet = conditions[i].ExecuteAction();
+                    if (conditions[i].requiresCollisionObjectData)
+                    {
+                        conditionMet = conditions[i].ExecuteAction(collidingObject);
+                    }
+                    else
+                    {
+                        conditionMet = conditions[i].ExecuteAction();
+                    }     
 
                     // If one has failed we don't need to check the rest so break out of the loop
                     if (!conditionMet)
@@ -400,7 +426,14 @@ namespace EnhancedTriggerbox
             // Execute every response
             for (int i = 0; i < responses.Count; i++)
             {
-                responses[i].ExecuteAction();
+                if (responses[i].requiresCollisionObjectData)
+                {
+                    responses[i].ExecuteAction(collidingObject);
+                }
+                else
+                {
+                    responses[i].ExecuteAction();
+                }
 
                 if (responses[i].duration > waitTime)
                 {
@@ -447,6 +480,7 @@ namespace EnhancedTriggerbox
                 if ((triggerTags.Split(',').Contains(other.gameObject.tag)) || string.IsNullOrEmpty(triggerTags))
                 {
                     triggered = true;
+                    collidingObject = other.gameObject;
                 }
             }
         }
@@ -462,6 +496,7 @@ namespace EnhancedTriggerbox
                 if ((triggerTags.Split(',').Contains(other.gameObject.tag)) || string.IsNullOrEmpty(triggerTags))
                 {
                     triggered = false;
+                    collidingObject = null;
                 }
             }
         }

@@ -34,6 +34,11 @@ namespace EnhancedTriggerbox.Component
         public float duration = 0f;
 
         /// <summary>
+        /// If this is true, ExecuteAction(Gameobject) will be called instead of ExecuteAction() which allows components to utilise collision data
+        /// </summary>
+        public bool requiresCollisionObjectData = false;
+
+        /// <summary>
         /// This function display the custom fields for each component in the inspector
         /// </summary>
         public void OnInspectorGUI()
@@ -124,6 +129,11 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         /// <returns></returns>
         public virtual bool ExecuteAction()
+        {
+            return false;
+        }
+
+        public virtual bool ExecuteAction(GameObject collidingObject)
         {
             return false;
         }
