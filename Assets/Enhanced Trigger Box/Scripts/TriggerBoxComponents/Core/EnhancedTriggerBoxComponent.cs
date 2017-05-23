@@ -11,30 +11,26 @@ namespace EnhancedTriggerbox.Component
     /// All conditions and responses inherit this class allowing them to share the same functionality and work nicely together
     /// </summary>
     [Serializable, HideInInspector, AddComponentMenu("")]
-    public class EnhancedTriggerBoxComponent : MonoBehaviour
+    public abstract class EnhancedTriggerBoxComponent : MonoBehaviour
     {
         /// <summary>
         /// Used in tandem with the GUI Foldout feature to show and hide this component
         /// </summary>
-        [SerializeField]
         protected bool hideShowSection = true;
 
         /// <summary>
         /// If the delete button is selected then this becomes true, letting the main script know to remove and destroy this item from the list
         /// </summary>
-        [SerializeField]
         public bool deleted = false;
 
         /// <summary>
         /// Global setting that affects whether warnings for each component are displayed or not
         /// </summary>
-        [SerializeField]
         public bool showWarnings = true;
 
         /// <summary>
         /// The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly. Currently only used within the lighting response.
         /// </summary>
-        [SerializeField]
         public float duration = 0f;
 
         /// <summary>
@@ -72,6 +68,7 @@ namespace EnhancedTriggerbox.Component
             // Draw the specific components fields (only if the section is folded out). This function should be overriden by each inheirited component.
             if (hideShowSection)
             {
+                UnityEditor.Undo.RecordObject(this, "Value Change");
                 DrawInspectorGUI();
             }
 

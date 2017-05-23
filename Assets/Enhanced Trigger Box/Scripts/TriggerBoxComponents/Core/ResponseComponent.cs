@@ -6,7 +6,7 @@ namespace EnhancedTriggerbox.Component
     /// This class should be inherited by all responses. By doing so it will appear in the add response drop down list
     /// </summary>
     [AddComponentMenu("")]
-    public class ResponseComponent : EnhancedTriggerBoxComponent
+    public abstract class ResponseComponent : EnhancedTriggerBoxComponent
     {
     }
 }
