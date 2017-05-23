@@ -14,6 +14,7 @@ namespace EnhancedTriggerbox
 {
     [Serializable]
     [RequireComponent(typeof(BoxCollider))]
+    [DisallowMultipleComponent]
 #if UNITY_5_4_OR_NEWER
     [HelpURL("https://alex-scott.co.uk/portfolio/enhanced-trigger-box.html")]
 #endif
@@ -178,24 +179,25 @@ namespace EnhancedTriggerbox
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
-            // This removes items in the list which have been deleted. This can't be done in the loop and has to be done before GUI drawing starts
-            // TODO: Fix undo component deletion
-            conditions.RemoveAll(r => r == null); 
-
             if (conditions.Count > 0)
             {
                 // Display all the conditions
-                for (int i = 0; i < conditions.Count; i++)
+                for (int i = conditions.Count - 1; i >= 0; i--)
                 {
-                    if (conditions[i].deleted)
+                    if (conditions[i].deleted) // If the X button has been pressed in the top right corner of a component
                     {
-                        // If the condition has been deleted we will destroy it
-                        Undo.DestroyObjectImmediate(conditions[i]);
+                        conditions[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
+                        Undo.RecordObject(this, "Delete"); // Save the state of this object
+
+                        EnhancedTriggerBoxComponent removeComponent = conditions[i];
+                        conditions.RemoveAt(i); // Remove from the condition list
+
+                        Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
                     }
                     else
                     {
                         conditions[i].showWarnings = !hideWarnings;
-                        conditions[i].OnInspectorGUI();
+                        conditions[i].OnInspectorGUI(); // Draw this component in the inspector
 
                         GUILayout.Space(10.0f);
                     }
@@ -241,20 +243,24 @@ namespace EnhancedTriggerbox
             EditorGUI.indentLevel = 0;
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
-            responses.RemoveAll(r => r == null);
-
             if (responses.Count > 0)
             {
                 for (int i = 0; i < responses.Count; i++)
                 {
                     if (responses[i].deleted)
                     {
-                        Undo.DestroyObjectImmediate(responses[i]);
+                        responses[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
+                        Undo.RecordObject(this, "Delete"); // Save the state of this object
+
+                        EnhancedTriggerBoxComponent removeComponent = responses[i];
+                        responses.RemoveAt(i); // Remove from the condition list
+
+                        Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
                     }
                     else
                     {
                         responses[i].showWarnings = !hideWarnings;
-                        responses[i].OnInspectorGUI();
+                        responses[i].OnInspectorGUI(); // Draw response in the inspector
 
                         GUILayout.Space(10.0f);
                     }
@@ -322,10 +328,6 @@ namespace EnhancedTriggerbox
                 {
                     conditions[i].OnAwake();
                 }
-                else
-                {
-                    conditions.RemoveAt(i);
-                }
             }
 
             for (int i = 0; i < responses.Count; i++)
@@ -333,10 +335,6 @@ namespace EnhancedTriggerbox
                 if (responses[i])
                 {
                     responses[i].OnAwake();
-                }
-                else
-                {
-                    responses.RemoveAt(i);
                 }
             }
         }
