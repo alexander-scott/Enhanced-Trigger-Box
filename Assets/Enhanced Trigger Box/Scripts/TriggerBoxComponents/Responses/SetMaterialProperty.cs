@@ -94,6 +94,7 @@ namespace EnhancedTriggerbox.Component
         {
             if (targetMaterial == null || string.IsNullOrEmpty(propertyName))
             {
+                Debug.Log("Unable to execute Set Material Property Response. Missing material or property name!");
                 return true;
             }
 

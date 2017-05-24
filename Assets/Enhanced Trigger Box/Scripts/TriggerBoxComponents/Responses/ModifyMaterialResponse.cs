@@ -14,88 +14,159 @@ namespace EnhancedTriggerbox.Component
         public GameObject targetGameObject;
 
         /// <summary>
+        /// The target game object's name
+        /// </summary>
+        public string targetGameObjectName;
+
+        /// <summary>
         /// This is the material that will be set to the target gameobject.
         /// </summary>
         public Material material;
 
         /// <summary>
-        /// This allows you to apply the selected change to adjacent gameobjects, either children or parents.
+        /// This lets you set who this change applies to. Self is the gameobject. Children is all the children of the gameobject. Parents is all the parents of the gameobject.
+        /// NOTE: The reason this is called affectOthers and not affectOptions is to prevent breaking other peoples saved/seralised data.
         /// </summary>
         public AffectOthers affectOthers;
+
+        /// <summary>
+        /// This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+        /// </summary>
+        public GameobjectTargetType gameObjectTargetType = GameobjectTargetType.GameObjectReference;
 
         /// <summary>
         /// Available options for affecting others gameobjects.
         /// </summary>
         public enum AffectOthers
         {
-            None,
+            Self,
+            SelfAndChildren,
+            SelfAndParents,
+            SelfChildrenAndParents,
             Children,
             Parents,
             ChildrenAndParents,
         }
 
+        /// <summary>
+        /// Type of gameobject
+        /// </summary>
+        public enum GameobjectTargetType
+        {
+            GameObjectReference,
+            GameObjectName,
+            CollisionGameObject,
+        }
+
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            targetGameObject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target GameObject",
-                "The target game object which will have it's material modified."), targetGameObject, typeof(GameObject), true);
+            gameObjectTargetType = (GameobjectTargetType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Gameobject Type",
+                   "This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box."), gameObjectTargetType);
 
+            switch (gameObjectTargetType)
+            {
+                case GameobjectTargetType.GameObjectReference:
+                    targetGameObject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target GameObject",
+                    "The target game object which will have it's material modified."), targetGameObject, typeof(GameObject), true);
+                    break;
+
+                case GameobjectTargetType.GameObjectName:
+                    targetGameObjectName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Target Gameobject Name",
+                    "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())."), targetGameObjectName);
+                    break;
+            }
+            
             material = (Material)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Set Material",
                 "This is the material that will be set to the target gameobject."), material, typeof(Material), true);
 
-            affectOthers = (AffectOthers)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Affect Others",
-                "This allows you to apply the selected change to adjacent gameobjects, either children or parents."), affectOthers);
+            affectOthers = (AffectOthers)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Affect Options",
+                "This lets you set who this change applies to. Self is the gameobject. Children is all the children of the gameobject. Parents is all the parents of the gameobject."), affectOthers);
         }
 #endif
 
-        public override bool ExecuteAction()
+        public override bool ExecuteAction(GameObject collisionGameObject)
         {
+            switch (gameObjectTargetType)
+            {
+                case GameobjectTargetType.CollisionGameObject:
+                    targetGameObject = collisionGameObject;
+                    break;
+
+                case GameobjectTargetType.GameObjectName:
+                    targetGameObject = GameObject.Find(targetGameObjectName);
+                    break;
+            }
+
             if (targetGameObject == null || material == null)
             {
+                Debug.Log("Unable to execute Modify Material Response. Missing gameobject or material reference!");
                 return true;
             }
 
-            // Sets the material to the target gameobject
-            targetGameObject.GetComponent<MeshRenderer>().material = material;
-
+            // What a magnificent switch statement...
             switch (affectOthers)
             {
-                case AffectOthers.Children: // Sets the material to the gameobjects children
-                    MeshRenderer[] childMeshRenderers = targetGameObject.GetComponentsInChildren<MeshRenderer>();
-
-                    for (int i = 0; i < childMeshRenderers.Length; i++)
-                    {
-                        childMeshRenderers[i].material = material;
-                    }
+                case AffectOthers.Self:
+                    AffectSelf();
                     break;
 
-                case AffectOthers.Parents: // Sets the material to the gameobjects parents
-                    MeshRenderer[] parentMeshRenderers = targetGameObject.GetComponentsInParent<MeshRenderer>();
-
-                    for (int i = 0; i < parentMeshRenderers.Length; i++)
-                    {
-                        parentMeshRenderers[i].material = material;
-                    }
+                case AffectOthers.Children:
+                    AffectChildren();
                     break;
 
-                case AffectOthers.ChildrenAndParents: // Sets the material to the gameobjects children and parents
-                    MeshRenderer[] parentMeshRenderers1 = targetGameObject.GetComponentsInParent<MeshRenderer>();
+                case AffectOthers.Parents:
+                    AffectParents();
+                    break;
 
-                    for (int i = 0; i < parentMeshRenderers1.Length; i++)
-                    {
-                        parentMeshRenderers1[i].material = material;
-                    }
+                case AffectOthers.ChildrenAndParents:
+                    AffectChildren();
+                    AffectParents();
+                    break;
 
-                    MeshRenderer[] childMeshRenderers1 = targetGameObject.GetComponentsInChildren<MeshRenderer>();
+                case AffectOthers.SelfAndChildren:
+                    AffectSelf();
+                    AffectChildren();
+                    break;
 
-                    for (int i = 0; i < childMeshRenderers1.Length; i++)
-                    {
-                        childMeshRenderers1[i].material = material;
-                    }
+                case AffectOthers.SelfAndParents:
+                    AffectSelf();
+                    AffectParents();
+                    break;
+
+                case AffectOthers.SelfChildrenAndParents:
+                    AffectSelf();
+                    AffectChildren();
+                    AffectParents();
                     break;
             }
 
             return true;
+        }
+
+        private void AffectSelf()
+        {
+            targetGameObject.GetComponent<MeshRenderer>().material = material;
+        }
+
+        private void AffectChildren()
+        {
+            MeshRenderer[] childMeshRenderers = targetGameObject.GetComponentsInChildren<MeshRenderer>();
+
+            for (int i = 0; i < childMeshRenderers.Length; i++)
+            {
+                childMeshRenderers[i].material = material;
+            }
+        }
+
+        private void AffectParents()
+        {
+            MeshRenderer[] parentMeshRenderers = targetGameObject.GetComponentsInParent<MeshRenderer>();
+
+            for (int i = 0; i < parentMeshRenderers.Length; i++)
+            {
+                parentMeshRenderers[i].material = material;
+            }
         }
 
         public override void Validation()
@@ -109,6 +180,12 @@ namespace EnhancedTriggerbox.Component
             {
                 ShowWarningMessage("You need to add a reference to a material for the modify material response to work.");
             }
+        }
+
+        public override void OnAwake()
+        {
+            base.OnAwake();
+            requiresCollisionObjectData = true;
         }
     }
 }

@@ -133,6 +133,12 @@ namespace EnhancedTriggerbox.Component
             return false;
         }
 
+        /// <summary>
+        /// Same as the function above, however this version of it uses a gameobject reference from the colliding object.
+        /// NOTE: To enable this function to be called over the above one, requiresCollisionObjectData needs to be set to true within the component.
+        /// </summary>
+        /// <param name="collidingObject"></param>
+        /// <returns></returns>
         public virtual bool ExecuteAction(GameObject collidingObject)
         {
             return false;
