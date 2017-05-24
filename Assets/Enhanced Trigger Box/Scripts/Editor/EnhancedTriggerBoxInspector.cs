@@ -38,12 +38,20 @@ namespace EnhancedTriggerbox
             {
                 RenderPropertyField(so.FindProperty("debugTriggerBox"));
                 RenderPropertyField(so.FindProperty("hideWarnings"));
-                RenderPropertyField(so.FindProperty("disableEntryCheck"));
 
-                if (!so.FindProperty("disableEntryCheck").boolValue)
+                if (so.FindProperty("afterTrigger").enumValueIndex != 4)
+                {
+                    RenderPropertyField(so.FindProperty("disableEntryCheck"));
+                    if (!so.FindProperty("disableEntryCheck").boolValue)
+                    {
+                        RenderPropertyField(so.FindProperty("canWander"));
+                    }   
+                }
+
+                if (!so.FindProperty("disableEntryCheck").boolValue || so.FindProperty("afterTrigger").enumValueIndex == 4)
                 {
                     RenderPropertyField(so.FindProperty("triggerTags"));
-                    RenderPropertyField(so.FindProperty("canWander"));
+
                     RenderPropertyField(so.FindProperty("triggerboxColour"));
 
                     RenderPropertyField(so.FindProperty("triggerFollow"));
@@ -105,6 +113,14 @@ namespace EnhancedTriggerbox
                     if (theObject.Responses[i])
                     {
                         EditorUtility.SetDirty(theObject.Responses[i]);
+                    }
+                }
+
+                for (int i = 0; i < theObject.ExitResponses.Count; i++)
+                {
+                    if (theObject.ExitResponses[i])
+                    {
+                        EditorUtility.SetDirty(theObject.ExitResponses[i]);
                     }
                 }
             }

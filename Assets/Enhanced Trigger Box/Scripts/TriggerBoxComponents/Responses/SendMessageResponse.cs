@@ -34,6 +34,19 @@ namespace EnhancedTriggerbox.Component
         public string parameterValue;
 
         /// <summary>
+        /// This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+        /// </summary>
+        public ReferenceType referenceType;
+
+        public override bool requiresCollisionObjectData
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Used to determine the datatype of a parameter.
         /// </summary>
         public enum ParameterType
@@ -43,14 +56,32 @@ namespace EnhancedTriggerbox.Component
             String,
         }
 
+        public enum ReferenceType
+        {
+            Null,
+            GameObjectReference,
+            GameObjectName,
+            CollisionGameObject,
+        }
+
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            messageTarget = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target",
-                     "This is the gameobject on which the below function is called on."), messageTarget, typeof(GameObject), true);
+            referenceType = (ReferenceType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Reference Type",
+                   "This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box."), referenceType);
 
-            messageTargetName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Target Name",
-                "If you are unable to provide a reference for a gameobject you can enter it's name here and it will be found using GameObject.Find(). If you have entered a gameobject reference above, leave this field blank."), messageTargetName);
+            switch (referenceType)
+            {
+                case ReferenceType.GameObjectReference:
+                    messageTarget = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Gameobject",
+                     "This is the gameobject on which will be moved to the below transform."), messageTarget, typeof(GameObject), true);
+                    break;
+
+                case ReferenceType.GameObjectName:
+                    messageTargetName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Target Gameobject Name",
+                    "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())."), messageTargetName);
+                    break;
+            }
 
             messageFunctionName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Function Name",
                 "This is the function which is called on the above gameobject."), messageFunctionName);
@@ -65,6 +96,18 @@ namespace EnhancedTriggerbox.Component
 
         public override void Validation()
         {
+            if (referenceType == ReferenceType.Null)
+            {
+                if (!messageTarget && !string.IsNullOrEmpty(messageTargetName))
+                {
+                    referenceType = ReferenceType.GameObjectName;
+                }
+                else
+                {
+                    referenceType = ReferenceType.GameObjectReference;
+                }
+            }
+
             // Check that the correct combination of fields have been filled in
             if (messageTarget && string.IsNullOrEmpty(messageFunctionName))
             {
@@ -104,23 +147,29 @@ namespace EnhancedTriggerbox.Component
             }
         }
 
-        public override bool ExecuteAction()
+        public override bool ExecuteAction(GameObject collisionGameObject)
         {
-            // This will send the messages to the selected gameobjects
-            if (messageFunctionName != "" && (messageTarget || !string.IsNullOrEmpty(messageTargetName)))
+            switch (referenceType)
             {
-                if (!string.IsNullOrEmpty(messageTargetName))
-                {
-                    try
+                case ReferenceType.Null:
+                    if (!messageTarget && !string.IsNullOrEmpty(messageTargetName)) // Prevents error
                     {
-                        messageTarget = GameObject.Find(messageTargetName);
+                        referenceType = ReferenceType.GameObjectName;
                     }
-                    catch
-                    {
-                        Debug.Log("Unable to find the gameobject with the name " + messageTargetName);
-                    }
-                }
+                    break;
 
+                case ReferenceType.CollisionGameObject:
+                    messageTarget = collisionGameObject;
+                    break;
+
+                case ReferenceType.GameObjectName:
+                    messageTarget = GameObject.Find(messageTargetName);
+                    break;
+            }
+
+            // This will send the messages to the selected gameobjects
+            if (messageTarget)
+            {
                 if (parameterValue != "")
                 {
                     switch (parameterType)
@@ -140,6 +189,10 @@ namespace EnhancedTriggerbox.Component
                 {
                     messageTarget.SendMessage(messageFunctionName, SendMessageOptions.DontRequireReceiver);
                 }
+            }
+            else
+            {
+                Debug.Log("Unable to execute Send Message Response. Gameobject not found!");
             }
 
             return true;

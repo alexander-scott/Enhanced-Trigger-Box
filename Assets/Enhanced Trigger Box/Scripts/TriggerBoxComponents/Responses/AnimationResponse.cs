@@ -14,6 +14,11 @@ namespace EnhancedTriggerbox.Component
         public GameObject animationTarget;
 
         /// <summary>
+        /// The target game object's name
+        /// </summary>
+        public string targetGameObjectName;
+
+        /// <summary>
         /// The name of the trigger on the gameobject animator that you want to trigger.
         /// </summary>
         public string setMecanimTrigger;
@@ -28,11 +33,44 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public AnimationClip animationClip;
 
+        /// <summary>
+        /// This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+        /// </summary>
+        public ReferenceType referenceType = ReferenceType.GameObjectReference;
+
+        public override bool requiresCollisionObjectData
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public enum ReferenceType
+        {
+            GameObjectReference,
+            GameObjectName,
+            CollisionGameObject,
+        }
+
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            animationTarget = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Animation Target",
-                "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
+            referenceType = (ReferenceType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Reference Type",
+                   "This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box."), referenceType);
+
+            switch (referenceType)
+            {
+                case ReferenceType.GameObjectReference:
+                    animationTarget = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Animation Target",
+                    "The gameobject to apply the animation to."), animationTarget, typeof(GameObject), true);
+                    break;
+
+                case ReferenceType.GameObjectName:
+                    targetGameObjectName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Animation Target Name",
+                    "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())."), targetGameObjectName);
+                    break;
+            }
 
             setMecanimTrigger = UnityEditor.EditorGUILayout.TextField(new GUIContent("Set Mecanim Trigger",
                 "The name of the trigger on the gameobject animator that you want to trigger."), setMecanimTrigger);
@@ -76,8 +114,19 @@ namespace EnhancedTriggerbox.Component
             }
         }
 
-        public override bool ExecuteAction()
+        public override bool ExecuteAction(GameObject collisionGameObject)
         {
+            switch (referenceType)
+            {
+                case ReferenceType.CollisionGameObject:
+                    animationTarget = collisionGameObject;
+                    break;
+
+                case ReferenceType.GameObjectName:
+                    animationTarget = GameObject.Find(targetGameObjectName);
+                    break;
+            }
+
             if (stopAnim && animationTarget)
             {
 #if UNITY_5_4 || UNITY_5_5

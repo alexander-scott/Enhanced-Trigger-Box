@@ -32,7 +32,15 @@ namespace EnhancedTriggerbox.Component
         /// <summary>
         /// This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
         /// </summary>
-        public GameobjectTargetType gameObjectTargetType = GameobjectTargetType.GameObjectReference;
+        public ReferenceType referenceType = ReferenceType.GameObjectReference;
+
+        public override bool requiresCollisionObjectData
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         /// <summary>
         /// Available options for affecting others gameobjects.
@@ -51,7 +59,7 @@ namespace EnhancedTriggerbox.Component
         /// <summary>
         /// Type of gameobject
         /// </summary>
-        public enum GameobjectTargetType
+        public enum ReferenceType
         {
             GameObjectReference,
             GameObjectName,
@@ -61,17 +69,17 @@ namespace EnhancedTriggerbox.Component
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            gameObjectTargetType = (GameobjectTargetType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Gameobject Type",
-                   "This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box."), gameObjectTargetType);
+            referenceType = (ReferenceType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Reference Type",
+                   "This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box."), referenceType);
 
-            switch (gameObjectTargetType)
+            switch (referenceType)
             {
-                case GameobjectTargetType.GameObjectReference:
+                case ReferenceType.GameObjectReference:
                     targetGameObject = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target GameObject",
                     "The target game object which will have it's material modified."), targetGameObject, typeof(GameObject), true);
                     break;
 
-                case GameobjectTargetType.GameObjectName:
+                case ReferenceType.GameObjectName:
                     targetGameObjectName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Target Gameobject Name",
                     "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())."), targetGameObjectName);
                     break;
@@ -87,13 +95,13 @@ namespace EnhancedTriggerbox.Component
 
         public override bool ExecuteAction(GameObject collisionGameObject)
         {
-            switch (gameObjectTargetType)
+            switch (referenceType)
             {
-                case GameobjectTargetType.CollisionGameObject:
+                case ReferenceType.CollisionGameObject:
                     targetGameObject = collisionGameObject;
                     break;
 
-                case GameobjectTargetType.GameObjectName:
+                case ReferenceType.GameObjectName:
                     targetGameObject = GameObject.Find(targetGameObjectName);
                     break;
             }
@@ -180,12 +188,6 @@ namespace EnhancedTriggerbox.Component
             {
                 ShowWarningMessage("You need to add a reference to a material for the modify material response to work.");
             }
-        }
-
-        public override void OnAwake()
-        {
-            base.OnAwake();
-            requiresCollisionObjectData = true;
         }
     }
 }

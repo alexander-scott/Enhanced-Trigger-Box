@@ -35,6 +35,12 @@ namespace EnhancedTriggerbox
         private List<EnhancedTriggerBoxComponent> responses = new List<EnhancedTriggerBoxComponent>();
 
         /// <summary>
+        /// Holds all the exit responses the user has added to the trigger box
+        /// </summary>
+        [SerializeField]
+        private List<EnhancedTriggerBoxComponent> exitResponses = new List<EnhancedTriggerBoxComponent>();
+
+        /// <summary>
         /// The getter that will return all the conditions. Used when iterating through all the conditions.
         /// </summary>
         public List<EnhancedTriggerBoxComponent> Conditions
@@ -48,6 +54,14 @@ namespace EnhancedTriggerbox
         public List<EnhancedTriggerBoxComponent> Responses
         {
             get { return responses; }
+        }
+
+        /// <summary>
+        /// The getter that will return all the exit responses. Used when iterating through all the exit responses.
+        /// </summary>
+        public List<EnhancedTriggerBoxComponent> ExitResponses
+        {
+            get { return exitResponses; }
         }
 
         /// <summary>
@@ -134,7 +148,7 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// This is used when the ConditionsMet coroutine is executing to stop it accidently executing twice
         /// </summary>
-        private bool waiting = false;
+        private bool responsesExecuting = false;
 
         /// <summary>
         /// This is a timer used to make sure the time the condition has been met for is longer than conditionTime
@@ -144,7 +158,7 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// The gameobject that has collided with this trigger box. To use this data in ExecuteAction(), components must set requiresCollisionObjectData to true.
         /// </summary>
-        private GameObject collidingObject; 
+        private GameObject collidingObject;
 
         #endregion
 
@@ -159,6 +173,7 @@ namespace EnhancedTriggerbox
             DestroyTriggerBox,
             DestroyParent,
             DoNothing,
+            OnExitResponse,
         }
 
         /// <summary>
@@ -173,6 +188,8 @@ namespace EnhancedTriggerbox
 
         #endregion
 
+        #region Inspector Drawing
+
         /// <summary>
         /// Draws the inspector GUI
         /// </summary>
@@ -186,42 +203,78 @@ namespace EnhancedTriggerbox
 
             if (conditions.Count > 0)
             {
-                // Display all the conditions
-                for (int i = conditions.Count - 1; i >= 0; i--)
+                DisplayComponents(conditions);
+            }
+
+            DisplayAddComponent("Condition", ComponentList.Instance.conditionNames, conditions);
+
+            EditorGUI.indentLevel = 0;
+            EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+
+            if (responses.Count > 0)
+            {
+                DisplayComponents(responses);
+            }
+
+            DisplayAddComponent("Response", ComponentList.Instance.responseNames, responses);
+
+            if (afterTrigger == AfterTriggerOptions.OnExitResponse)
+            {
+                EditorGUI.indentLevel = 0;
+                EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
+
+                if (exitResponses.Count > 0)
                 {
-                    if (conditions[i])
+                    DisplayComponents(exitResponses);
+                }
+
+                DisplayAddComponent("Exit Response", ComponentList.Instance.responseNames, exitResponses);
+            }
+
+#endif
+        }
+
+#if UNITY_EDITOR
+        private void DisplayComponents(List<EnhancedTriggerBoxComponent> components)
+        {
+            // Display all the components
+            for (int i = components.Count - 1; i >= 0; i--)
+            {
+                if (components[i])
+                {
+                    if (components[i].deleted) // If the X button has been pressed in the top right corner of a component
                     {
-                        if (conditions[i].deleted) // If the X button has been pressed in the top right corner of a component
-                        {
-                            conditions[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
-                            Undo.RecordObject(this, "Delete"); // Save the state of this object
+                        components[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
+                        Undo.RecordObject(this, "Delete"); // Save the state of this object
 
-                            EnhancedTriggerBoxComponent removeComponent = conditions[i];
-                            conditions.RemoveAt(i); // Remove from the condition list
+                        EnhancedTriggerBoxComponent removeComponent = components[i];
+                        components.RemoveAt(i); // Remove from the component list
 
-                            Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
-                        }
-                        else
-                        {
-                            conditions[i].showWarnings = !hideWarnings;
-                            conditions[i].OnInspectorGUI(); // Draw this component in the inspector
-
-                            GUILayout.Space(10.0f);
-                        }
+                        Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
                     }
                     else
                     {
-                        conditions.RemoveAt(i);
+                        components[i].showWarnings = !hideWarnings;
+                        components[i].OnInspectorGUI(); // Draw this component in the inspector
+
+                        GUILayout.Space(10.0f);
                     }
                 }
+                else
+                {
+                    components.RemoveAt(i);
+                }
             }
+        }
 
+        private void DisplayAddComponent(string componentType, string[] componentNames, List<EnhancedTriggerBoxComponent> componentList)
+        {
             EditorGUI.BeginChangeCheck();
 
             EditorGUI.indentLevel = 0;
 
-            // Draw the drop down list GUI item that displays all of the conditions
-            int conditionIndex = EditorGUILayout.Popup("Add a new condition: ", 0, ComponentList.Instance.conditionNames);
+            // Draw the drop down list GUI item that displays all of the components
+            int conditionIndex = EditorGUILayout.Popup("Add a new " + componentType + ": ", 0, componentNames);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -229,12 +282,12 @@ namespace EnhancedTriggerbox
                 if (conditionIndex != 0)
                 {
                     // Determine the type of the component that needs to be added
-                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + ComponentList.Instance.conditionNames[conditionIndex].Replace(" ", "").ToString());
+                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + componentNames[conditionIndex].Replace(" ", "").ToString());
 
                     // If we couldn't find the component, write to the console saying it wasn't found
                     if (conType == null)
                     {
-                        Debug.Log("Unable to find the condition " + ComponentList.Instance.conditionNames[conditionIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
+                        Debug.Log("Unable to find the " + componentType + " " + componentNames[conditionIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
                     }
                     else
                     {
@@ -242,79 +295,17 @@ namespace EnhancedTriggerbox
                         EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
                         obj.hideFlags = HideFlags.HideInInspector;
 
-                        conditions.Add(obj);
+                        componentList.Insert(0, obj);
                     }
 
                     // Reset the drop down list
                     conditionIndex = 0;
                 }
             }
-
-            // The below code is identical to the above, just conditions has been changed to responses
-
-            EditorGUI.indentLevel = 0;
-            EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
-
-            if (responses.Count > 0)
-            {
-                for (int i = responses.Count - 1; i >= 0; i--)
-                {
-                    if (responses[i])
-                    {
-                        if (responses[i].deleted)
-                        {
-                            responses[i].deleted = false; // Set this to false to prevent a infinite loop when redoing
-                            Undo.RecordObject(this, "Delete"); // Save the state of this object
-
-                            EnhancedTriggerBoxComponent removeComponent = responses[i];
-                            responses.RemoveAt(i); // Remove from the condition list
-
-                            Undo.DestroyObjectImmediate(removeComponent); // Destroy this object and record the operation
-                        }
-                        else
-                        {
-                            responses[i].showWarnings = !hideWarnings;
-                            responses[i].OnInspectorGUI(); // Draw response in the inspector
-
-                            GUILayout.Space(10.0f);
-                        }
-                    }
-                    else
-                    {
-                        responses.RemoveAt(i);
-                    }
-                }
-            }
-
-            EditorGUI.BeginChangeCheck();
-
-            EditorGUI.indentLevel = 0;
-
-            int responseIndex = EditorGUILayout.Popup("Add a new response: ", 0, ComponentList.Instance.responseNames);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                if (responseIndex != 0)
-                {
-                    Type conType = Type.GetType("EnhancedTriggerbox.Component." + ComponentList.Instance.responseNames[responseIndex].Replace(" ", "").ToString());
-
-                    if (conType == null)
-                    {
-                        Debug.Log("Unable to find the response " + ComponentList.Instance.responseNames[responseIndex].Replace(" ", "").ToString() + ". Make sure it has the EnhancedTriggerbox.Component namespace.");
-                    }
-                    else
-                    {
-                        EnhancedTriggerBoxComponent obj = Undo.AddComponent(gameObject, conType) as EnhancedTriggerBoxComponent;
-                        obj.hideFlags = HideFlags.HideInInspector;
-
-                        responses.Add(obj);
-                    }
-
-                    responseIndex = 0;
-                }
-            }
-#endif
         }
+#endif
+
+        #endregion
 
         /// <summary>
         /// Called when the game is first started
@@ -322,7 +313,7 @@ namespace EnhancedTriggerbox
         void Start()
         {
             // If a name of an object is entered then we will find that object and map it to followTransform
-            if (!string.IsNullOrEmpty(followTransformName) && !disableEntryCheck)
+            if (!disableEntryCheck && !string.IsNullOrEmpty(followTransformName))
             {
                 try
                 {
@@ -341,19 +332,27 @@ namespace EnhancedTriggerbox
             }
 
             // Do all the OnAwake functions for conditions/responses
-            for (int i = 0; i < conditions.Count; i++)
+            for (int i = conditions.Count - 1; i >= 0; i--)
             {
                 if (conditions[i])
                 {
                     conditions[i].OnAwake();
                 }
+                else
+                {
+                    conditions.RemoveAt(i);
+                }
             }
 
-            for (int i = 0; i < responses.Count; i++)
+            for (int i = responses.Count - 1; i >= 0; i--)
             {
                 if (responses[i])
                 {
                     responses[i].OnAwake();
+                }
+                else
+                {
+                    responses.RemoveAt(i);
                 }
             }
         }
@@ -377,26 +376,33 @@ namespace EnhancedTriggerbox
             }
 
             // If the player has entered the trigger box
-            if (triggered && !waiting)
+            if (triggered && !responsesExecuting)
             {
                 conditionMet = true;
 
                 // Loop through each condition to check if it has been met
-                for (int i = 0; i < conditions.Count; i++)
+                for (int i = conditions.Count - 1; i >= 0; i--)
                 {
-                    if (conditions[i].requiresCollisionObjectData)
+                    if (conditions[i])
                     {
-                        conditionMet = conditions[i].ExecuteAction(collidingObject);
+                        if (conditions[i].requiresCollisionObjectData)
+                        {
+                            conditionMet = conditions[i].ExecuteAction(collidingObject);
+                        }
+                        else
+                        {
+                            conditionMet = conditions[i].ExecuteAction();
+                        }
+
+                        // If one has failed we don't need to check the rest so break out of the loop
+                        if (!conditionMet)
+                        {
+                            break;
+                        }
                     }
                     else
                     {
-                        conditionMet = conditions[i].ExecuteAction();
-                    }     
-
-                    // If one has failed we don't need to check the rest so break out of the loop
-                    if (!conditionMet)
-                    {
-                        break;
+                        conditions.RemoveAt(i);
                     }
                 }
 
@@ -413,7 +419,7 @@ namespace EnhancedTriggerbox
         /// </summary>
         private IEnumerator ConditionsMet()
         {
-            waiting = true; // This is used so the coroutine doesn't get accidently triggered twice
+            responsesExecuting = true; // This is used so the coroutine doesn't get accidently triggered twice
 
             // If debugTriggerBox is selected, write to the console saying the trigger box has successfully been triggered
             if (debugTriggerBox)
@@ -421,28 +427,50 @@ namespace EnhancedTriggerbox
                 Debug.Log(gameObject.name + " has been triggered!");
             }
 
-            float waitTime = 0f;
-
-            // Execute every response
-            for (int i = 0; i < responses.Count; i++)
+            // There is the possibility of the exit responses still being executed. This ends them all
+            if (afterTrigger == AfterTriggerOptions.OnExitResponse)
             {
-                if (responses[i].requiresCollisionObjectData)
+                for (int i = exitResponses.Count - 1; i >= 0; i--)
                 {
-                    responses[i].ExecuteAction(collidingObject);
-                }
-                else
-                {
-                    responses[i].ExecuteAction();
-                }
-
-                if (responses[i].duration > waitTime)
-                {
-                    waitTime = responses[i].duration; 
+                    exitResponses[i].EndComponentCoroutine();
                 }
             }
 
-            // If one of the responses is using has a duration attribute then we'll need to wait for that amount of time before disabling/destroying the trigger box as that will cancel whatever the component is doing
-            yield return new WaitForSeconds(waitTime); 
+            float waitTime = 0f;
+
+            // Execute every response
+            for (int i = responses.Count - 1; i >= 0; i--)
+            {
+                if (responses[i])
+                {
+                    if (responses[i].requiresCollisionObjectData)
+                    {
+                        responses[i].ExecuteAction(collidingObject);
+                    }
+                    else
+                    {
+                        responses[i].ExecuteAction();
+                    }
+
+                    // Find the longest response duration
+                    if (responses[i].duration > waitTime)
+                    {
+                        waitTime = responses[i].duration;
+                    }
+                }
+                else
+                {
+                    responses.RemoveAt(i);
+                }
+            }
+
+            if (afterTrigger == AfterTriggerOptions.DestroyParent ||
+                afterTrigger == AfterTriggerOptions.DestroyTriggerBox ||
+                afterTrigger == AfterTriggerOptions.SetInactive)
+            {
+                // If one of the responses is using has a duration attribute then we'll need to wait for that amount of time before disabling/destroying the trigger box as that will cancel whatever the component is doing
+                yield return new WaitForSeconds(waitTime);
+            }
 
             // Depending on the selected option either set this as inactive, destroy it or destroy its parent
             switch (afterTrigger)
@@ -459,13 +487,56 @@ namespace EnhancedTriggerbox
                     Destroy(transform.parent.gameObject);
                     break;
 
-                case AfterTriggerOptions.DoNothing:
-                    waiting = false;
+                case AfterTriggerOptions.DoNothing: // If do nothing is set, simply reset the two variables and all the components
+                    responsesExecuting = false;
+
+                    if (!disableEntryCheck)
+                        triggered = false;
+
                     for (int i = 0; i < conditions.Count; i++)
                     {
-                        conditions[i].ResetComponent(); // Reset all the conditions
+                        conditions[i].ResetComponent();
+                    }
+                    for (int i = 0; i < responses.Count; i++)
+                    {
+                        responses[i].ResetComponent(); 
                     }
                     break;
+            }
+        }
+
+        private void OnExitResponses()
+        {
+            responsesExecuting = false; // Essentially reset the trigger box
+            triggered = false;
+
+            for (int i = responses.Count - 1; i >= 0; i--)
+            {
+                // Make sure all coroutines (or things that take time to execute) have been stopped
+                responses[i].EndComponentCoroutine();
+            }
+
+            // Reset the components
+            for (int i = responses.Count - 1; i >= 0; i--)
+            {
+                responses[i].ResetComponent(); 
+            }
+            for (int i = conditions.Count - 1; i >= 0; i--)
+            {
+                conditions[i].ResetComponent();
+            }
+
+            // Execute all the exit responses the same way as the normal responses
+            for (int i = exitResponses.Count - 1; i >= 0; i--) 
+            {
+                if (exitResponses[i].requiresCollisionObjectData)
+                {
+                    exitResponses[i].ExecuteAction(collidingObject);
+                }
+                else
+                {
+                    exitResponses[i].ExecuteAction();
+                }
             }
         }
 
@@ -477,7 +548,7 @@ namespace EnhancedTriggerbox
         {
             if (!disableEntryCheck)
             {
-                if ((triggerTags.Split(',').Contains(other.gameObject.tag)) || string.IsNullOrEmpty(triggerTags))
+                if (string.IsNullOrEmpty(triggerTags) || (triggerTags.Split(',').Contains(other.gameObject.tag))) // If it has a valid tag
                 {
                     triggered = true;
                     collidingObject = other.gameObject;
@@ -486,17 +557,26 @@ namespace EnhancedTriggerbox
         }
 
         /// <summary>
-        /// Called when a collider exits this collider. Only serves a purpose if the player cannot wander as it forces the condition checks to stop until the user re-enters the trigger box.
+        /// Called when a collider exits this collider
         /// </summary>
         /// <param name="other">The collider leaving this collider</param>
         private void OnTriggerExit(Collider other)
         {
-            if (!canWander && !disableEntryCheck)
+            if (collidingObject == other.gameObject) // Only look for an exit from the same object that entered
             {
-                if ((triggerTags.Split(',').Contains(other.gameObject.tag)) || string.IsNullOrEmpty(triggerTags))
+                if (afterTrigger == AfterTriggerOptions.OnExitResponse) // If we have been told to do something on exit
                 {
-                    triggered = false;
-                    collidingObject = null;
+                    if (responsesExecuting) // If all the responses are executing/finished executing
+                    {
+                        OnExitResponses();
+                    }
+                }
+                else // Else we need simply set triggered to false because the object has left the trigger box
+                {
+                    if (!canWander) // Unless the object is allowed to wander then leave it as true
+                    {
+                        triggered = false;
+                    }
                 }
             }
         }
@@ -527,7 +607,7 @@ namespace EnhancedTriggerbox
             }
             else
             {
-                conditionTimer += Time.fixedDeltaTime;
+                conditionTimer += Time.deltaTime;
             }
 
             return false;
@@ -556,7 +636,7 @@ namespace EnhancedTriggerbox
                          i < text.Length - 1 && !char.IsUpper(text[i + 1])))
                     {
                         newText.Append(' ');
-                    } 
+                    }
                 }
 
                 newText.Append(text[i]);

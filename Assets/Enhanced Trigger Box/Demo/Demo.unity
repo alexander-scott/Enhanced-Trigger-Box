@@ -147,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -157,6 +156,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 2
 --- !u!114 &211646602
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959fa7d3f047b8c479df6c53c49f242f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -186,7 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bd875188aa7484ab2319e1ce5a9608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -204,7 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -317,7 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -327,6 +323,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!114 &282534179
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -338,7 +335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -348,6 +344,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!114 &282534180
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -359,7 +356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -369,6 +365,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!114 &282534181
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -380,7 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bd875188aa7484ab2319e1ce5a9608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -398,7 +394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5ffe1855f7454499c8976a964bff02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -418,7 +413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -449,7 +443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959fa7d3f047b8c479df6c53c49f242f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -467,7 +460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -488,7 +480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -498,6 +489,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!1 &309845669
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,7 +953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bd875188aa7484ab2319e1ce5a9608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -983,6 +974,7 @@ MonoBehaviour:
   responses:
   - {fileID: 680251007}
   - {fileID: 680251011}
+  exitResponses: []
   showBaseOptions: 1
   debugTriggerBox: 1
   hideWarnings: 0
@@ -1031,7 +1023,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e585ae70c585991458951865f220217f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -1393,7 +1384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -1403,6 +1393,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!114 &1012423017
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -1414,7 +1405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bd875188aa7484ab2319e1ce5a9608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -1432,7 +1422,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -1453,7 +1442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -2186,7 +2174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9e48af55de30f4c8a1ea37a244f537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -2334,7 +2321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -2344,6 +2330,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!114 &1591653989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2361,6 +2348,7 @@ MonoBehaviour:
   responses:
   - {fileID: 1591653988}
   - {fileID: 1591653992}
+  exitResponses: []
   showBaseOptions: 1
   debugTriggerBox: 1
   hideWarnings: 0
@@ -2385,7 +2373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5f9e2d9b474e45b82f5fb42960852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -2419,7 +2406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 170e3358abcd7014281ff3cee18197ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideShowSection: 1
   deleted: 0
   showWarnings: 1
   duration: 0
@@ -2429,6 +2415,7 @@ MonoBehaviour:
   selectedComponentIndex: 0
   selectedComponent: {fileID: 0}
   componentCount: 0
+  referenceType: 0
 --- !u!1001 &1599617146
 Prefab:
   m_ObjectHideFlags: 0

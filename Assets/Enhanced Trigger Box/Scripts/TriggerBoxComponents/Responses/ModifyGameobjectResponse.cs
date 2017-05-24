@@ -41,6 +41,19 @@ namespace EnhancedTriggerbox.Component
         public int componentCount = 0;
 
         /// <summary>
+        /// This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+        /// </summary>
+        public ReferenceType referenceType;
+
+        public override bool requiresCollisionObjectData
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// The available types of modification to a gameobject
         /// </summary>
         public enum ModifyType
@@ -52,16 +65,31 @@ namespace EnhancedTriggerbox.Component
             EnableComponent,
         }
 
+        public enum ReferenceType
+        {
+            Null,
+            GameObjectReference,
+            GameObjectName,
+            CollisionGameObject,
+        }
+
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            obj = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("GameObject",
-                 "The gameobject that will modified."), obj, typeof(GameObject), true);
+            referenceType = (ReferenceType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Reference Type",
+                   "This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box."), referenceType);
 
-            if (modifyType != ModifyType.Enable)
+            switch (referenceType)
             {
-                gameObjectName = UnityEditor.EditorGUILayout.TextField(new GUIContent("GameObject Name",
+                case ReferenceType.GameObjectReference:
+                    obj = (GameObject)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("GameObject",
+                    "The gameobject that will modified."), obj, typeof(GameObject), true);
+                    break;
+
+                case ReferenceType.GameObjectName:
+                    gameObjectName = UnityEditor.EditorGUILayout.TextField(new GUIContent("GameObject Name",
                     "If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified."), gameObjectName);
+                    break;
             }
 
             modifyType = (ModifyType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Modification Type",
@@ -104,76 +132,72 @@ namespace EnhancedTriggerbox.Component
 
         public override void Validation()
         {
-            // If the user has supplied both a gameobject reference and a gameobject name
-            if (obj && !string.IsNullOrEmpty(gameObjectName) && modifyType != ModifyType.Enable)
+            if (referenceType == ReferenceType.Null)
             {
-                ShowWarningMessage("You cannot have a gameobject reference and a gameobject name. The reference will take precedence. Please remove one or the other.");
+                if (!obj && !string.IsNullOrEmpty(gameObjectName))
+                {
+                    referenceType = ReferenceType.GameObjectName;
+                }
+                else
+                {
+                    referenceType = ReferenceType.GameObjectReference;
+                }
             }
 
             // If the user is disabling/enabling a gameobject but hasn't supplied a gameobject reference
-            if ((modifyType == ModifyType.DisableComponent || modifyType == ModifyType.EnableComponent) && !obj)
+            if ((modifyType == ModifyType.DisableComponent || modifyType == ModifyType.EnableComponent) && referenceType != ReferenceType.GameObjectReference)
             {
                 ShowWarningMessage("You cannot enable or disable a component on a gameobject without supplying a gameobject reference.");
             }
 
             // If the user is disabling/enabling a gameobject but the gameobject hasn't got any components that can be disabled/enabled
-            if ((modifyType == ModifyType.DisableComponent || modifyType == ModifyType.EnableComponent) && obj && componentCount == 0)
+            if ((modifyType == ModifyType.DisableComponent || modifyType == ModifyType.EnableComponent) && referenceType == ReferenceType.GameObjectReference && componentCount == 0)
             {
                 ShowWarningMessage("The  gameobject you've chosen to enable or disable a component on hasn't got any components attached to it that can be enabled or disabled.");
             }
         }
 
-        public override bool ExecuteAction()
+        public override bool ExecuteAction(GameObject collisionGameObject)
         {
+            switch (referenceType)
+            {
+                case ReferenceType.Null:
+                    if (!obj && !string.IsNullOrEmpty(gameObjectName))  // Prevents error
+                    {
+                        obj = GameObject.Find(gameObjectName);
+                    }
+                    break;
+
+                case ReferenceType.CollisionGameObject:
+                    obj = collisionGameObject;
+                    break;
+
+                case ReferenceType.GameObjectName:
+                    obj = GameObject.Find(gameObjectName);
+                    break;
+            }
+
+            if (!obj)
+            {
+                return false;
+            }
+
             switch (modifyType)
             {
                 case ModifyType.Destroy:
-                    if (obj)
-                    {
-                        Destroy(obj);
-                    }
-                    else if (!string.IsNullOrEmpty(gameObjectName))
-                    {
-                        GameObject gameobj = GameObject.Find(gameObjectName);
-                        if (gameobj == null)
-                        {
-                            Debug.Log("Unable to find and destroy the gameobject with the name " + gameObjectName);
-                        }
-                        else
-                        {
-                            Destroy(gameobj);
-                        }
-                    }
+                    Destroy(obj);
                     break;
 
                 case ModifyType.Disable:
-                    if (obj)
-                    {
-                        obj.SetActive(false);
-                    }
-                    else if (!string.IsNullOrEmpty(gameObjectName))
-                    {
-                        GameObject gameobj = GameObject.Find(gameObjectName);
-                        if (gameobj == null)
-                        {
-                            Debug.Log("Unable to find and disable the gameobject with the name " + gameObjectName);
-                        }
-                        else
-                        {
-                            gameobj.SetActive(false);
-                        }
-                    }
+                    obj.SetActive(false);
                     break;
 
                 case ModifyType.Enable:
-                    if (obj)
-                    {
-                        obj.SetActive(true);
-                    }
+                    obj.SetActive(true);
                     break;
 
                 case ModifyType.DisableComponent:
-                    if (obj)
+                    if (referenceType == ReferenceType.GameObjectReference)
                     {
                         var propInfo = selectedComponent.GetType().GetProperty("enabled");
                         if (propInfo != null)
@@ -188,7 +212,7 @@ namespace EnhancedTriggerbox.Component
                     break;
 
                 case ModifyType.EnableComponent:
-                    if (obj)
+                    if (referenceType == ReferenceType.GameObjectReference)
                     {
                         var propInfo = selectedComponent.GetType().GetProperty("enabled");
                         if (propInfo != null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -36,7 +37,9 @@ namespace EnhancedTriggerbox.Component
         /// <summary>
         /// If this is true, ExecuteAction(Gameobject) will be called instead of ExecuteAction() which allows components to utilise collision data
         /// </summary>
-        public bool requiresCollisionObjectData = false;
+        public virtual bool requiresCollisionObjectData { get; protected set;}
+
+        protected List<Coroutine> activeCoroutines = new List<Coroutine>();
 
         /// <summary>
         /// This function display the custom fields for each component in the inspector
@@ -119,6 +122,21 @@ namespace EnhancedTriggerbox.Component
         public virtual void ResetComponent()
         {
 
+        }
+
+        public void EndComponentCoroutine()
+        {
+            for (int i = activeCoroutines.Count - 1; i >= 0; i--)
+            {
+                if (activeCoroutines[i] != null)
+                {
+                    StopCoroutine(activeCoroutines[i]);
+                }
+                else
+                {
+                    activeCoroutines.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>

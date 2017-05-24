@@ -181,7 +181,7 @@ namespace EnhancedTriggerbox.Component
                     // If duration isn't 0 then we'll apply the changes over a set duration using a coroutine
                     if (duration != 0f)
                     {
-                        StartCoroutine(ChangeLightColourOverTime());
+                        activeCoroutines.Add(StartCoroutine(ChangeLightColourOverTime()));
                     }
                     else // Else we'll instantly apply the changes
                     {
@@ -239,7 +239,7 @@ namespace EnhancedTriggerbox.Component
             {
                 if (duration != 0f)
                 {
-                    StartCoroutine(ChangeSceneLightingOverTime());
+                    activeCoroutines.Add(StartCoroutine(ChangeSceneLightingOverTime()));
                 }
                 else
                 {
