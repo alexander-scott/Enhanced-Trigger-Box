@@ -1,11 +1,11 @@
 Enhanced Trigger Box
 =======
 
-Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when a player walks into a certain area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example the player mustn't be looking at a specific object. Or player pref conditions such as progress through a level. Responses are executed after all conditions have been met. These range from spawning or destroying objects to playing animations or altering materials. 
+Enhanced Trigger Box is a free tool that be used within Unity. It allows developers to setup various responses to be executed when an object enters a specified area. You can also setup conditions that must be met before the responses get executed such as camera conditions where for example a player mustn't be looking at a specific object. Or player pref conditions such as progress through a level.  Responses are executed after all conditions have been met.These range from spawning GameObjects or disabling components to playing animations or altering material properties.
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.25]*
+*Current version: [v0.3]*
 
 Getting started
 ---------------
@@ -50,7 +50,7 @@ TriggerBox Colour:- This is the colour the trigger box and it's edges will have 
 
 Trigger Follow:- This allows you to choose if you want your trigger box to stay positioned on a moving transform or the main camera. If you pick Follow Transform a field will appear to set which transform you want the trigger box to follow. Or if you pick Follow Main Camera the trigger box will stay positioned on wherever the main camera currently is.
 
-After Trigger:- This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.
+After Trigger:- This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate. ExecuteExitResponses allows you to set up additional responses to be executed after the object that entered the trigger box leaves it.
 
 Condition Time:- This lets you set an additional time requirement on top of the conditions. This is the total time that the conditions must be met for in seconds.
 
@@ -72,12 +72,18 @@ Below the conditions section is the responses section. Similarly, there is a dro
 
 Each response will do something different and will only do it when all conditions have been met, in the order that they are listed. 
 
+### Exit Responses Overview
+
+If you set After Trigger to ExecuteExitResponses, you'll have access to a third section which displays all active Exit Responses and allows you to add more. Exit Responses are the same as responses, but instead of executing when a GameObject enters the trigger box, they get executed when the GameObject leaves the trigger box.
+
+After the GameObject leaves the trigger box and the Exit Responses get executed, the trigger box will revert to untriggered, allowing it to be initally triggered by other GameObjects. Only the GameObject that entered the trigger box can trigger the leave event.
+
 Creating a new Component
 ---------------
 
 Creating a new Condition or Response is relatively painless. Open up NewComponentExample.cs in Scripts/TriggerBoxComponents. You can use this example as a template for new components.
 
-All you need to do is inherit ConditionComponent or ResponseComponent (depending on whether the new component is a condition or response), make sure it's in the Enhanced Trigger Box namespace and then override some functions. There are 4 functions you can override. 1 is mandatory, 1 is recommended and the other two are optional. These will be explained in detail below.
+All you need to do is inherit ConditionComponent or ResponseComponent (depending on whether the new component is a condition or response), make sure it's in the Enhanced Trigger Box namespace and then override some functions. There are 5 functions you can override. 1 is mandatory, 1 is recommended and the other three are optional. These will be explained in detail below.
 
 If you want to view more advanced examples, go to Scripts/TriggerBoxComponents/Conditions or Scripts/TriggerBoxComponents/Responses and take a look at some of them.
 
@@ -165,6 +171,24 @@ public override bool ExecuteAction()
 
 If your response takes some time to fully execute you should use the 'duration' variable (from the EnhancedTriggerBoxComponent class) to tell the main script to wait for it to finish before deactivating/destroying the trigger box. For a usage example look in the lighting response at the ChangeLightColourOverTime() coroutine.
 
+You can also ovveride an overload function for ExecuteAction: ExecuteAction(GameObject collisionGameObject). This overload provides you with access to the GameObject that collided with the trigger box, allowing you to manipulate that as you wish. 
+
+However, you must tell the EnhancedTriggerBox that you are using the function with the collision data over the function without it. To do this you need to override the variable 'requiresCollisionObjectData' and set it to true. Below is an example of usage of the overload function as well as how you would override the variable.
+
+``` csharp
+public override bool requiresCollisionObjectData
+{
+    get
+    {
+        return true;
+    }
+}
+
+public override bool ExecuteAction(GameObject collisionGameObject)
+{
+	collisionGameObject.GetComponent<MeshRenderer>().material.SetColor(propertyName, propertyColour);
+}
+
 #### OnAwake()
 
 OnAwake() is an optional function that you can override. This function is called when the game first starts or when the Enhanced Trigger Box gets
@@ -198,6 +222,10 @@ public override void Validation()
 Now your can add your new component as a condition or response in the editor! Because it's inherited ConditionComponent or ResponseComponent it will follow
 all the same rules as the other components and functions will get called when they're supposed to. If you think your new component could be useful to others,
 send it to me or create a pull request on GitHub and I'll add it to the asset.
+
+#### ResetComponent()
+
+ResetComponent() is an optional function you can override. AfterTrigger in Base Options needs to be set to DoNothing or ExecuteExitResponses for this function to be called.  It is called after all responses have finished executing. It can be used to reset variables or reacquire data before the trigger box starts checking for triggers again.
 
 Individual Conditions
 ---------------
@@ -316,7 +344,7 @@ get checked to see if they have been met. Once they all have been met, all the r
 
 ### Animation Response
 
-The animation response can be used to set a mecanim trigger on a gameobject, stop all animations on a gameobject or play an animation clip on a gameobject.
+The animation response can be used to set a mecanim trigger on a gameobject, stop all animations on a gameobject or play an animation clip on a gameobject. You can either pass in a reference for a GameObject, supply a GameObject's name or use the GameObject that triggered the box as a target for this response.
 
 #### How does it work?
 
@@ -341,7 +369,11 @@ if (!string.IsNullOrEmpty(setMecanimTrigger) && animationTarget)
 
 #### Component Fields
 
+ReferenceType:- This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+
 Animation Target:- The gameobject to apply the animation to.
+
+Animation Target Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())
 
 Set Mecanim Trigger:- The name of the trigger on the gameobject animator that you want to trigger.
 
@@ -445,7 +477,7 @@ Additive:- Only available when loading a scene. If this is true the new scene wi
 
 ### Modify GameObject Response
 
-This response allows you to modify a gameobject by either disabling, enabling or destroying it. Or you can enable/disable specific Unity components on a gameobject. You can either pass in a gameobject reference or pass in the gameobjects name and the object will be found using GameObject.Find().
+This response allows you to modify a gameobject by either disabling, enabling or destroying it. Or you can enable/disable specific Unity components on a gameobject. You can either pass in a reference for a GameObject, supply a GameObject's name or use the GameObject that triggered the box as a target for this response.
 
 You are unable to enable a gameobject by name because GameObject.Find() cannot be used on inactive objects. You also cannot disable or enable a Unity component without supplying a gameobject reference. It is good practice to use object references instead of searching for objects anyway. 
 
@@ -457,9 +489,11 @@ Destroy(gameObject);
 
 #### Component Fields
 
+ReferenceType:- This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+
 GameObject:- The gameobject that will modified.
 
-GameObject Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find()) and modified
+GameObject Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())
 
 Modify Type:- This is the type of modification you want to happen to the gameobject. Options are destroy, disable, enable, disable component and enable component.
 
@@ -467,24 +501,7 @@ Select Component:- This is the Unity component on the gameobject that you want t
 
 ![Modify GameObject Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/ModifyGameObjectResponse.png)
 
-### Player Pref Response
-
-This response allows you to save a value to a player pref. The supported data types are int, float and string. If you're dealing with ints or floats you can choose to increment or decrement the value by 1 by entering '++' or '--' in the value field.
-
-``` csharp
-PlayerPrefs.SetString(setPlayerPrefKey, setPlayerPrefVal);
-```
-#### Component Fields
-
-Player Pref Key:- This is the key (ID) of the player pref which will have its value set.
-
-Player Pref Type:- This is the type of data stored within the player pref.
-
-Player Pref Value:- This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively.
-
-![Player Pref Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/PlayerPrefResponse.png)
-
-### Rigidbody Response
+### Modify Rigidbody Response
 
 This response allows you to modify any part of a rigidbody component on another gameobject.
 
@@ -508,9 +525,26 @@ Change Collision Detection:- Choose to set this rigidbody's collision detection 
 
 ![Rigidbody Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/RigidbodyResponse.png)
 
+### Player Pref Response
+
+This response allows you to save a value to a player pref. The supported data types are int, float and string. If you're dealing with ints or floats you can choose to increment or decrement the value by 1 by entering '++' or '--' in the value field.
+
+``` csharp
+PlayerPrefs.SetString(setPlayerPrefKey, setPlayerPrefVal);
+```
+#### Component Fields
+
+Player Pref Key:- This is the key (ID) of the player pref which will have its value set.
+
+Player Pref Type:- This is the type of data stored within the player pref.
+
+Player Pref Value:- This is the value that will be stored in the player pref. If you enter ++ or -- the value in the player pref will be incremented or decremented respectively.
+
+![Player Pref Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/PlayerPrefResponse.png)
+
 ### Send Message Response
 
-The send message response can be used to call a function on a select gameobject and pass in a parameter as well. Supported parameter types currently include int, float and string.
+The send message response can be used to call a function on a select gameobject and pass in a parameter as well. Supported parameter types currently include int, float and string. You can either pass in a reference for a GameObject, supply a GameObject's name or use the GameObject that triggered the box as a target for this response.
 
 #### How does it work?
 
@@ -522,7 +556,11 @@ messageTarget.SendMessage(messageFunctionName, int.Parse(parameterValue), SendMe
 
 #### Component Fields
 
+ReferenceType:- This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+
 Message Target:- This is the gameobject on which the below function is called on.
+
+Message Target Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())
 
 Message Function Name:- This is the function which is called on the above gameobject.
 
@@ -531,6 +569,32 @@ Message Type:- This is the type of parameter that will be sent to the function. 
 Message Value:- This is the value of the parameter that will be sent to the function.
 
 ![Send Message Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SendMessageResponse.png)
+
+### Set Material Property
+
+This response allows you to change a property within a material. The material can either be a material from a gameobject or a material in the project browser. Properties that can be changed include float, int, color, vector4 and texture. You can either pass in a reference for a GameObject, supply a GameObject's name or use the GameObject that triggered the box as a target for this response.
+
+#### Component Fields
+
+ReferenceType:- This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+
+GameObject:- The gameobject with the material you want to edit.
+
+GameObject Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())
+
+Material:-  A reference of the material that you want to set a properties value.
+
+Clone Material:- If true, the script will work with a clone of the material on this gameobject. If false, it will use the original material in the project directory. WARNING: If false, it will permanently change that materials values.
+
+Material Property Name:- The name of the property that you want to set.
+
+Material Property Type:- The type of the property that you want to set. Float, Int, Colour, Vector4 or Texture.
+
+Material Property Value:- The new value of this property.
+
+Change Duration:- The duration you want this change to happen over. Leaving this at 0 will result in it happening instantly. 
+
+![Set Material Property Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/SetMaterialPropertyResponse.png)
 
 ### Spawn GameObject Response
 
@@ -548,11 +612,15 @@ Custom Position / Rotation:- This is the position and rotation the prefab will b
 
 ### Teleport Response
 
-The response simply allows you to move gameobjects from one point to another.
+The response simply allows you to move gameobjects from one point to another. You can either pass in a reference for a GameObject, supply a GameObject's name or use the GameObject that triggered the box as a target for this response.
 
 #### Component fields
 
+ReferenceType:- This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+
 Target Gameobject:- This is the gameobject that you want to be moved
+
+Target Gameobject Name:- If you cannot get a reference for a gameobject you can enter it's name here and it will be found (GameObject.Find())
 
 Destination:- This is the position you want to move the gameobject to.
 
