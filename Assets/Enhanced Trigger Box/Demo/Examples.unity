@@ -592,6 +592,10 @@ Prefab:
       propertyPath: disableEntryCheck
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012283059912, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
+      propertyPath: m_Name
+      value: ETB_RedGoal
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
   m_IsPrefabParent: 0
@@ -2814,7 +2818,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012283059912, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
       propertyPath: m_Name
-      value: ETB (1)
+      value: ETB_GreenGoal
       objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
@@ -3698,7 +3702,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deleted: 0
   showWarnings: 1
-  duration: 1
+  duration: 0.5
   targetGameobject: {fileID: 0}
   targetGameobjectName: 
   targetMaterial: {fileID: 0}
@@ -4056,7 +4060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2027efd5cbcc7f4383f7b73677884f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 1000013350044780, guid: 20ccb1793df45c3489b8f5394b409d2b, type: 2}
   velocity: 1000
 --- !u!1 &597788336
 GameObject:
@@ -4481,9 +4484,9 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 649700599}
-  m_Text: 'Resuable Trigger Boxes
+  m_Text: 'Reusable Trigger Boxes
 
-    (left click is fire)'
+    (left click to shoot cubes)'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -6650,7 +6653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deleted: 0
   showWarnings: 1
-  duration: 1
+  duration: 0.5
   targetGameobject: {fileID: 0}
   targetGameobjectName: 
   targetMaterial: {fileID: 0}
@@ -7372,7 +7375,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012283059912, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
       propertyPath: m_Name
-      value: ETB (1)
+      value: ETB_BlueGoal
       objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
@@ -9614,7 +9617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deleted: 0
   showWarnings: 1
-  duration: 1
+  duration: 0.5
   targetGameobject: {fileID: 0}
   targetGameobjectName: 
   targetMaterial: {fileID: 0}
@@ -11558,6 +11561,10 @@ Prefab:
       propertyPath: responses.Array.data[0]
       value: 
       objectReference: {fileID: 1657048387}
+    - target: {fileID: 1000012283059912, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
+      propertyPath: m_Name
+      value: ETB_LoadLevel
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
   m_IsPrefabParent: 0
@@ -13095,7 +13102,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2034953864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -86, y: 7.1, z: 39.58}
+  m_LocalPosition: {x: -86, y: 4.51, z: 39.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:

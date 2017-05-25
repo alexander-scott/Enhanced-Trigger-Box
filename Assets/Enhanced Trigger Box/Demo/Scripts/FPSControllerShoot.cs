@@ -3,17 +3,16 @@ using System.Collections;
 
 public class FPSControllerShoot : MonoBehaviour
 {
-    public GameObject cubePrefab;
-
     public float velocity = 1000f;
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject go = Instantiate(cubePrefab);
+            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            go.tag = "CubeShoot";
             go.transform.position = Camera.main.transform.position;
-            Rigidbody rb = go.GetComponent<Rigidbody>();
+            Rigidbody rb = go.AddComponent<Rigidbody>();
             Vector3 v3T = Input.mousePosition;
             v3T.z = 10.0f;
             go.transform.LookAt(Camera.main.ScreenToWorldPoint(v3T));

@@ -56,7 +56,7 @@ namespace EnhancedTriggerbox.Component
             }
 
 #else
-            loadLevelNum = EditorGUILayout.IntField(new GUIContent("Scene Number",
+            loadLevelNum = UnityEditor.EditorGUILayout.IntField(new GUIContent("Scene Number",
                 "This is the index of the scene you want to be loaded."), loadLevelNum);
 #endif
         }

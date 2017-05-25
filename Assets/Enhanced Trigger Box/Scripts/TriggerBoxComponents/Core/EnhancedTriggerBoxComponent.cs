@@ -39,6 +39,9 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public virtual bool requiresCollisionObjectData { get; protected set;}
 
+        /// <summary>
+        /// Holds a list containing the active coroutines on this component.
+        /// </summary>
         protected List<Coroutine> activeCoroutines = new List<Coroutine>();
 
         /// <summary>
@@ -132,10 +135,8 @@ namespace EnhancedTriggerbox.Component
                 {
                     StopCoroutine(activeCoroutines[i]);
                 }
-                else
-                {
-                    activeCoroutines.RemoveAt(i);
-                }
+
+                activeCoroutines.RemoveAt(i);
             }
         }
 
@@ -240,7 +241,7 @@ namespace EnhancedTriggerbox.Component
 
             EditorGUI.indentLevel = 0;
 
-            return EditorGUILayout.Foldout(optionRef, s, myFoldoutStyle);
+            return EditorGUILayout.Foldout(optionRef, new GUIContent(s, ""), myFoldoutStyle);
 #else
             return true;
 #endif

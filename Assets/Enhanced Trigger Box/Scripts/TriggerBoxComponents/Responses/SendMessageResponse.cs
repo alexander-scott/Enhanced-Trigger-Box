@@ -154,7 +154,7 @@ namespace EnhancedTriggerbox.Component
                 case ReferenceType.Null:
                     if (!messageTarget && !string.IsNullOrEmpty(messageTargetName)) // Prevents error
                     {
-                        referenceType = ReferenceType.GameObjectName;
+                        messageTarget = GameObject.Find(messageTargetName);
                     }
                     break;
 

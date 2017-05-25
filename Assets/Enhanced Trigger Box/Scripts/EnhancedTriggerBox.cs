@@ -108,7 +108,7 @@ namespace EnhancedTriggerbox
         /// <summary>
         /// A set of options for when the trigger box has been trigged. Nothing does nothing. Trigger box destroys trigger box. Parent destroys parent.
         /// </summary>
-        [Tooltip("This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate.")]
+        [Tooltip("This allows you to choose what happens to this gameobject after the trigger box has been triggered. Set Inactive will set this gameobject as inactive. Destroy trigger box will destroy this gameobject. Destroy parent will destroy this gameobject's parent. Do Nothing will mean the trigger box will stay active and continue to operate. ExecuteExitResponses allows you to set up additional responses to be executed after the object that entered the trigger box leaves it.")]
         public AfterTriggerOptions afterTrigger;
 
         /// <summary>
@@ -141,11 +141,6 @@ namespace EnhancedTriggerbox
         private bool triggered = false;
 
         /// <summary>
-        /// This is set to true when all the conditions have been met.
-        /// </summary>
-        private bool conditionMet = false;
-
-        /// <summary>
         /// This is used when the ConditionsMet coroutine is executing to stop it accidently executing twice
         /// </summary>
         private bool responsesExecuting = false;
@@ -160,6 +155,11 @@ namespace EnhancedTriggerbox
         /// </summary>
         private GameObject collidingObject;
 
+        /// <summary>
+        /// Used to cache the box collider so GetComponent doesn't have to be called multiple times a frame.
+        /// </summary>
+        private Collider etbCollider;
+
         #endregion
 
         #region Enums
@@ -173,7 +173,7 @@ namespace EnhancedTriggerbox
             DestroyTriggerBox,
             DestroyParent,
             DoNothing,
-            OnExitResponse,
+            ExecuteExitResponses,
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace EnhancedTriggerbox
 
             DisplayAddComponent("Response", ComponentList.Instance.responseNames, responses);
 
-            if (afterTrigger == AfterTriggerOptions.OnExitResponse)
+            if (afterTrigger == AfterTriggerOptions.ExecuteExitResponses)
             {
                 EditorGUI.indentLevel = 0;
                 EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
@@ -311,24 +311,27 @@ namespace EnhancedTriggerbox
         /// Called when the game is first started
         /// </summary>
         void Start()
-        {
-            // If a name of an object is entered then we will find that object and map it to followTransform
-            if (!disableEntryCheck && !string.IsNullOrEmpty(followTransformName))
+        { 
+            if (disableEntryCheck) 
             {
-                try
-                {
-                    followTransform = GameObject.Find(followTransformName).transform;
-                }
-                catch
-                {
-                    Debug.Log("Unable to find game object" + followTransformName + " for Trigger Follow. Reverting to static.");
-                    triggerFollow = TriggerFollow.Static;
-                }
-            }
-
-            if (disableEntryCheck)
-            {
+                // If entry check is disabled, then triggered is true by default
                 triggered = true;
+            }
+            else
+            {
+                // If a name of an object is entered then we will find that object and map it to followTransform
+                if (!string.IsNullOrEmpty(followTransformName))
+                {
+                    try
+                    {
+                        followTransform = GameObject.Find(followTransformName).transform;
+                    }
+                    catch
+                    {
+                        Debug.Log("Unable to find game object" + followTransformName + " for Trigger Follow. Reverting to static.");
+                        triggerFollow = TriggerFollow.Static;
+                    }
+                }
             }
 
             // Do all the OnAwake functions for conditions/responses
@@ -364,21 +367,23 @@ namespace EnhancedTriggerbox
         {
             if (!disableEntryCheck)
             {
-                // This if statement updates the trigger boxes position to either stay on a transform or on the main camera
-                if (triggerFollow == TriggerFollow.FollowTransform)
+                // This switch statement updates the trigger boxes position to either stay on a transform or on the main camera
+                switch (triggerFollow)
                 {
-                    transform.position = followTransform.position;
-                }
-                else if (triggerFollow == TriggerFollow.FollowMainCamera)
-                {
-                    transform.position = Camera.main.transform.position;
+                    case TriggerFollow.FollowTransform:
+                        transform.position = followTransform.position;
+                        break;
+
+                    case TriggerFollow.FollowMainCamera:
+                        transform.position = Camera.main.transform.position;
+                        break;
                 }
             }
 
-            // If the player has entered the trigger box
+            // If triggered is true (set when an object collides with this ETB) and the conditions haven't already been met and the responses aren't executing
             if (triggered && !responsesExecuting)
             {
-                conditionMet = true;
+                bool conditionMet = true; // Default this to true
 
                 // Loop through each condition to check if it has been met
                 for (int i = conditions.Count - 1; i >= 0; i--)
@@ -428,7 +433,7 @@ namespace EnhancedTriggerbox
             }
 
             // There is the possibility of the exit responses still being executed. This ends them all
-            if (afterTrigger == AfterTriggerOptions.OnExitResponse)
+            if (afterTrigger == AfterTriggerOptions.ExecuteExitResponses)
             {
                 for (int i = exitResponses.Count - 1; i >= 0; i--)
                 {
@@ -487,7 +492,8 @@ namespace EnhancedTriggerbox
                     Destroy(transform.parent.gameObject);
                     break;
 
-                case AfterTriggerOptions.DoNothing: // If do nothing is set, simply reset the two variables and all the components
+                case AfterTriggerOptions.DoNothing: // If do nothing is set, simply reset the variables and all the components
+                    conditionTimer = 0f;
                     responsesExecuting = false;
 
                     if (!disableEntryCheck)
@@ -502,14 +508,15 @@ namespace EnhancedTriggerbox
                         responses[i].ResetComponent(); 
                     }
                     break;
+
+                case AfterTriggerOptions.ExecuteExitResponses:
+                    // Do nothing. Wait for the triggered object to leave the trigger box
+                    break;
             }
         }
 
         private void OnExitResponses()
         {
-            responsesExecuting = false; // Essentially reset the trigger box
-            triggered = false;
-
             for (int i = responses.Count - 1; i >= 0; i--)
             {
                 // Make sure all coroutines (or things that take time to execute) have been stopped
@@ -538,6 +545,10 @@ namespace EnhancedTriggerbox
                     exitResponses[i].ExecuteAction();
                 }
             }
+
+            responsesExecuting = false; // Essentially reset the trigger box
+            triggered = false;
+            conditionTimer = 0f;
         }
 
         /// <summary>
@@ -564,7 +575,7 @@ namespace EnhancedTriggerbox
         {
             if (collidingObject == other.gameObject) // Only look for an exit from the same object that entered
             {
-                if (afterTrigger == AfterTriggerOptions.OnExitResponse) // If we have been told to do something on exit
+                if (afterTrigger == AfterTriggerOptions.ExecuteExitResponses) // If we have been told to do something on exit
                 {
                     if (responsesExecuting) // If all the responses are executing/finished executing
                     {
@@ -588,10 +599,15 @@ namespace EnhancedTriggerbox
         {
             Gizmos.color = triggerboxColour;
 
-            if (!disableEntryCheck && GetComponent<Collider>())
+            if (!disableEntryCheck)
             {
-                Gizmos.DrawCube(new Vector3(GetComponent<Collider>().bounds.center.x, GetComponent<Collider>().bounds.center.y, GetComponent<Collider>().bounds.center.z),
-                                new Vector3(GetComponent<Collider>().bounds.size.x, GetComponent<Collider>().bounds.size.y, GetComponent<Collider>().bounds.size.z));
+                if (etbCollider == null)
+                {
+                    etbCollider = GetComponent<Collider>(); // Cache the collider
+                }
+
+                Gizmos.DrawCube(new Vector3(etbCollider.bounds.center.x, etbCollider.bounds.center.y, etbCollider.bounds.center.z),
+                                new Vector3(etbCollider.bounds.size.x, etbCollider.bounds.size.y, etbCollider.bounds.size.z));
             }
         }
 
