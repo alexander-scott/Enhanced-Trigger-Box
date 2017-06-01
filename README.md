@@ -188,6 +188,7 @@ public override bool ExecuteAction(GameObject collisionGameObject)
 {
 	collisionGameObject.GetComponent<MeshRenderer>().material.SetColor(propertyName, propertyColour);
 }
+```
 
 #### OnAwake()
 
