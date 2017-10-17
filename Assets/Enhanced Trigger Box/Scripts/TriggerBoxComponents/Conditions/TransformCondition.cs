@@ -14,6 +14,11 @@ namespace EnhancedTriggerbox.Component
         public Transform targetTransform;
 
         /// <summary>
+        /// The destination transform that is used for distance checks between it and the target transform
+        /// </summary>
+        public Transform destinationTransform;
+
+        /// <summary>
         /// The transform component that will be used for the condition. Either position or rotation.
         /// </summary>
         public TransformComponent transformComponent;
@@ -32,6 +37,24 @@ namespace EnhancedTriggerbox.Component
         /// The value that will be compared against the value in the axis selected above.
         /// </summary>
         public float value;
+
+        /// <summary>
+        /// The type of transform check that will be performed. Single Axis only applies to the target object on a specified axis. 
+        /// Distance To Object checks calculate distance between the target object and a destination object.
+        /// </summary>
+        public TransformConditionType transformConditionType;
+
+        /// <summary>
+        /// The types of conditions
+        /// </summary>
+        public enum TransformConditionType
+        {
+            SingleAxis,
+            DistanceToObject2D,
+            DistanceToObject3D,
+            LocalDistanceToObject2D,
+            LocalDistanceToObject3D,
+        }
 
         /// <summary>
         /// The types of transform components
@@ -63,7 +86,7 @@ namespace EnhancedTriggerbox.Component
         {
             X,
             Y,
-            Z,
+            Z
         }
 
 #if UNITY_EDITOR
@@ -72,17 +95,28 @@ namespace EnhancedTriggerbox.Component
             targetTransform = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Transform",
                    "The transform to apply the condition to."), targetTransform, typeof(Transform), true);
 
-            transformComponent = (TransformComponent)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Transform Component",
+            transformConditionType = (TransformConditionType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+                "The type of transform check that will be performed. Single Axis only applies to the target object on a specified axis. Distance To Object checks calculate distance between the target object and a destination object."), transformConditionType);
+
+            if (transformConditionType == TransformConditionType.SingleAxis)
+            {
+                transformComponent = (TransformComponent)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Transform Component",
                 "The transform component that will be used for the condition. Either position or rotation."), transformComponent);
 
-            axis = (Axis)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Target Axis",
+                axis = (Axis)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Target Axis",
                 "The axis that the condition will be based on."), axis);
+            }
+            else
+            {
+                destinationTransform = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Destination Transform",
+                   "The transform that will be used alongside the target transform to calculate the distance."), destinationTransform, typeof(Transform), true);
+            }
 
-            conditionType = (ConditionType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Condition Type",
+            conditionType = (ConditionType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Compare Type",
                 "The type of condition the user wants. Options are greater than, greater than or equal to, equal to, less than or equal to or less than."), conditionType);
 
             value = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Value", 
-                "The value that will be compared against the value in the axis selected above."), value);
+                "The value that will be compared against the value calculated above."), value);
         }
 #endif
 
@@ -94,66 +128,92 @@ namespace EnhancedTriggerbox.Component
                 return false;
             }
 
-            switch (transformComponent)
+            switch (transformConditionType)
             {
-                case TransformComponent.Position:
-                    switch (axis)
+                case TransformConditionType.SingleAxis:
+                    switch (transformComponent)
                     {
-                        case Axis.X:
-                            return CompareValue(targetTransform.position.x);
+                        case TransformComponent.Position:
+                            switch (axis)
+                            {
+                                case Axis.X:
+                                    return CompareValue(targetTransform.position.x);
 
-                        case Axis.Y:
-                            return CompareValue(targetTransform.position.y);
+                                case Axis.Y:
+                                    return CompareValue(targetTransform.position.y);
 
-                        case Axis.Z:
-                            return CompareValue(targetTransform.position.z);
+                                case Axis.Z:
+                                    return CompareValue(targetTransform.position.z);
+                            }
+                            break;
+
+                        case TransformComponent.Rotation:
+                            switch (axis)
+                            {
+                                case Axis.X:
+                                    return CompareValue(targetTransform.rotation.x);
+
+                                case Axis.Y:
+                                    return CompareValue(targetTransform.rotation.y);
+
+                                case Axis.Z:
+                                    return CompareValue(targetTransform.rotation.z);
+                            }
+                            break;
+
+                        case TransformComponent.LocalPosition:
+                            switch (axis)
+                            {
+                                case Axis.X:
+                                    return CompareValue(targetTransform.localPosition.x);
+
+                                case Axis.Y:
+                                    return CompareValue(targetTransform.localPosition.y);
+
+                                case Axis.Z:
+                                    return CompareValue(targetTransform.localPosition.z);
+                            }
+                            break;
+
+                        case TransformComponent.LocalRotation:
+                            switch (axis)
+                            {
+                                case Axis.X:
+                                    return CompareValue(targetTransform.localRotation.x);
+
+                                case Axis.Y:
+                                    return CompareValue(targetTransform.localRotation.y);
+
+                                case Axis.Z:
+                                    return CompareValue(targetTransform.localRotation.z);
+                            }
+                            break;
                     }
                     break;
 
-                case TransformComponent.Rotation:
-                    switch (axis)
-                    {
-                        case Axis.X:
-                            return CompareValue(targetTransform.rotation.x);
+                case TransformConditionType.DistanceToObject2D:
+                    return CompareValue(Vector2.Distance(targetTransform.position, destinationTransform.position));
 
-                        case Axis.Y:
-                            return CompareValue(targetTransform.rotation.y);
+                case TransformConditionType.DistanceToObject3D:
+                    return CompareValue(Vector3.Distance(targetTransform.position, destinationTransform.position));
 
-                        case Axis.Z:
-                            return CompareValue(targetTransform.rotation.z);
-                    }
-                    break;
+                case TransformConditionType.LocalDistanceToObject2D:
+                    return CompareValue(Vector2.Distance(targetTransform.localPosition, destinationTransform.localPosition));
 
-                case TransformComponent.LocalPosition:
-                    switch (axis)
-                    {
-                        case Axis.X:
-                            return CompareValue(targetTransform.localPosition.x);
-
-                        case Axis.Y:
-                            return CompareValue(targetTransform.localPosition.y);
-
-                        case Axis.Z:
-                            return CompareValue(targetTransform.localPosition.z);
-                    }
-                    break;
-
-                case TransformComponent.LocalRotation:
-                    switch (axis)
-                    {
-                        case Axis.X:
-                            return CompareValue(targetTransform.localRotation.x);
-
-                        case Axis.Y:
-                            return CompareValue(targetTransform.localRotation.y);
-
-                        case Axis.Z:
-                            return CompareValue(targetTransform.localRotation.z);
-                    }
-                    break;
+                case TransformConditionType.LocalDistanceToObject3D:
+                    return CompareValue(Vector3.Distance(targetTransform.localPosition, destinationTransform.localPosition));
             }
 
             return false;
+        }
+
+        public override void Validation()
+        {
+            if (transformConditionType != TransformConditionType.SingleAxis && !destinationTransform)
+            {
+                ShowWarningMessage("You need to assign a transform to the Destination Transform to calculate the distance between that and the Target Transform.");
+            }
+            base.Validation();
         }
 
         /// <summary>

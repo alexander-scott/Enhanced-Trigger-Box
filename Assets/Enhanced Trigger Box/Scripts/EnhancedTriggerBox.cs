@@ -273,9 +273,20 @@ namespace EnhancedTriggerbox
 
             EditorGUI.indentLevel = 0;
 
-            // Draw the drop down list GUI item that displays all of the components
-            int conditionIndex = EditorGUILayout.Popup("Add a new " + componentType + ": ", 0, componentNames);
-
+            int conditionIndex = 0;
+            try
+            {
+                // Draw the drop down list GUI item that displays all of the components
+                conditionIndex = EditorGUILayout.Popup("Add a new " + componentType + ": ", 0, componentNames);
+            }
+            catch
+            {
+                // I know this is very bad practice but I can't for the life of me work out what is causing
+                // ArgumentException: Getting control 0's position in a group with only 0 controls when doing Repaint Aborting
+                // but this does remove the error.
+                return;
+            } 
+            
             if (EditorGUI.EndChangeCheck())
             {
                 // If the user has selected an item in the drop down list

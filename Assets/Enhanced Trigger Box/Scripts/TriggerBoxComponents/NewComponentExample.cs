@@ -9,7 +9,8 @@ namespace EnhancedTriggerbox.Component
      * In this case you will need to replace EnhancedTriggerBoxComponent below with either of those two.
      */
     [AddComponentMenu("")]
-    public class NewComponentExample : EnhancedTriggerBoxComponent // REPLACE THIS!
+    public class NewComponentExample 
+        : EnhancedTriggerBoxComponent // REPLACE THIS!!!
     {
         /* 
          * Here you can declare your variables or structs or anything you want, just like a normal script.
