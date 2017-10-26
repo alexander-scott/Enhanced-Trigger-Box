@@ -5,16 +5,44 @@ namespace EnhancedTriggerbox.Component
 {
     public class ModifyTransformResponse : ResponseComponent
     {
+        /// <summary>
+        /// The target transform that will be modified.
+        /// </summary>
         public Transform targetTransform;
 
+        /// <summary>
+        /// If you cannot get a reference for a transform you can enter a gameobject's name and it will be found (GameObject.Find())
+        /// </summary>
+        public string targetTransformName;
+
+        /// <summary>
+        /// The attribute on the target transform you want to modify. This can be either Transform, Rotation or Scale.
+        /// </summary>
         public SelectAttribute targetAttribute;
 
+        /// <summary>
+        /// The Axis that you want to modify on this attribute on this transform. This can be either X, Y or Z.
+        /// </summary>
         public Axis targetAxis;
 
+        /// <summary>
+        /// If this value is true, the modifications will be done in local space rather than world space.
+        /// </summary>
         public bool localSpace;
 
+        /// <summary>
+        /// The value you would like to set this attribute to.
+        /// </summary>
         public float targetValue;
 
+        /// <summary>
+        /// This is how you will provide the response access to a specific gameobject. You can either use a reference, name or use the gameobject that collides with this trigger box.
+        /// </summary>
+        public ReferenceType referenceType;
+
+        /// <summary>
+        /// The available attributes that can be modified
+        /// </summary>
         public enum SelectAttribute
         {
             Position,
@@ -32,11 +60,31 @@ namespace EnhancedTriggerbox.Component
             Z
         }
 
+        public enum ReferenceType
+        {
+            TransformReference,
+            TransformName,
+            CollisionTransform,
+        }
+
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            targetTransform = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Transform",
+            referenceType = (ReferenceType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Reference Type",
+                   "This is how you will provide the response access to a specific transform. You can either use a reference, name or use the gameobject that collides with this trigger box."), referenceType);
+
+            switch (referenceType)
+            {
+                case ReferenceType.TransformReference:
+                    targetTransform = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Target Transform",
                      "The target transform that will be modified."), targetTransform, typeof(Transform), true);
+                    break;
+
+                case ReferenceType.TransformName:
+                    targetTransformName = UnityEditor.EditorGUILayout.TextField(new GUIContent("Transform Name",
+                    "If you cannot get a reference for a transform you can the gameobject's name here and it will be found (GameObject.Find()) and modified."), targetTransformName);
+                    break;
+            }
 
             targetAttribute = (SelectAttribute)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Target Attribute",
                 "The attribute on the target transform you want to modify. This can be either Transform, Rotation or Scale."), targetAttribute);
@@ -48,18 +96,29 @@ namespace EnhancedTriggerbox.Component
                    "If this value is true, the modifications will be done in local space rather than world space."), localSpace);
 
             targetValue = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Target Value",
-                    "The value you would like to set this"), targetValue);
+                    "The value you would like to set this attribute to."), targetValue);
 
             duration = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Change Duration",
                     "The duration that the selected change will happen over in seconds. If you leave it as 0 it will perform the changes instantly."), duration);
         }
 #endif
 
-        public override bool ExecuteAction()
+        public override bool ExecuteAction(GameObject collisionGameObject)
         {
+            switch (referenceType)
+            {
+                case ReferenceType.CollisionTransform:
+                    targetTransform = collisionGameObject.transform;
+                    break;
+
+                case ReferenceType.TransformName:
+                    targetTransform = GameObject.Find(targetTransformName).transform;
+                    break;
+            }
+
             if (!targetTransform)
             {
-                Debug.LogError("Target Transform has not been assigned a reference on the ModifyTransformResponse.");
+                Debug.LogError("Error in ModifyTransformResponse. Unable to retrieve the transform to modify.");
                 return false;
             }
 
@@ -94,6 +153,7 @@ namespace EnhancedTriggerbox.Component
 
         private float GetStartValue()
         {
+            // What a messy function
             switch (targetAttribute)
             {
                 case SelectAttribute.Position:
@@ -174,6 +234,7 @@ namespace EnhancedTriggerbox.Component
 
         private void SetValue(float value)
         {
+            // What an even messier function
             switch (targetAttribute)
             {
                 case SelectAttribute.Position:
