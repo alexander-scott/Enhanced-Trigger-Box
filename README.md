@@ -388,45 +388,29 @@ Animation Clip:- The animation clip to play.
 
 The audio response can be used to play music, mute audio on the main camera and play sound effects at any position. There is also the option to loop the music and change the volume of the music and sound effect.
 
-#### How does it work?
-
-This response is very self-explanatory as it literally just calls Unity audio functions. One thing to note is playing music (and stopping music) will use the main cameras audio source. Perhaps I will add support for playing music at a different audio source but right now I don't think there's any demand for it.
-
- ``` csharp
-if (muteAllAudio)
-{
-    Camera.main.GetComponent<AudioSource>().Stop();
-}
-
-if (playMusic)
-{
-    Camera.main.GetComponent<AudioSource>().loop = loopMusic;
-    Camera.main.GetComponent<AudioSource>().clip = playMusic;
-    Camera.main.GetComponent<AudioSource>().volume = musicVolume;
-    Camera.main.GetComponent<AudioSource>().Play();
-}
-
-if (playSoundEffect)
-{
-    AudioSource.PlayClipAtPoint(playSoundEffect, soundEffectPosition.position, musicVolume);
-}
-```
+The Audio Response can be used to modify an Audio Source through actions such as playing an audio clip, stopping all audio, changing the volume or restarting an audio clip. It can also be used to play sound effects at a position.
 
 #### Component Fields
 
-Audio Source:- The audio source for the music
+Response Type:- The type of response that this component will be using. AudioSource allows you to modify an audio source and SoundEffect allows you to play positional sound effects.
 
-Mute All Audio:- Stops the current audio clip being played on the audio source.
+Audio Source:- The audio source that will be modified.
 
-Play Music:- This is the audio clip that will be played on the audio source.
+Audio Source Action:- The type of The type of action to be performed on the audio source. Play allows you to play an Audio Clip, Stop stops an audio source's currently playing clip, Restart put the time of the audio clip back to 0 and ChangeVolume sets the volume of the audio source.
 
-Loop Music:- If this is true, the above audio clip will loop when played.
+Audio Clip:- This is the audio clip that will be played on the audio source if the action selected is Play.
 
-Music Volume:- The volume of the music when played. Default is 1.
+Music Volume:- The volume of the audio clip when played. Or if the action is change volume this is the volume that the audio source will be set to. Default is 1.
+
+Change Duration:- The duration that the volume change will happen over in seconds. If you leave it as 0 it will perform the changes instantly. Only used if the action selected is Change Volume.
+
+Loop Music:- If this is true, the audio clip will loop when played if the action selected is Play.
 
 Play Sound Effect:- This is an audio clip, played at a certain position in world space as defined below.
 
 Sound Effect Position:- The position the sound effect will be played at.
+
+Sound Effect Volume:- The volume of the played sound effect. Default is 1.
 
 ![Audio Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/AudioResponse.png)
 
