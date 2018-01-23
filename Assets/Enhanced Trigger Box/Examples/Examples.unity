@@ -4190,15 +4190,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deleted: 0
   showWarnings: 1
-  duration: 0
+  duration: 1
   audioSource: {fileID: 0}
-  playMusic: {fileID: 0}
+  playMusic: {fileID: 8300000, guid: 7bbc195e1eee3d44c93d6bb6a98fb2bd, type: 3}
   loopMusic: 0
-  musicVolume: 1
+  musicVolume: 0.1
   playSoundEffect: {fileID: 8300000, guid: 7bbc195e1eee3d44c93d6bb6a98fb2bd, type: 3}
   soundEffectPosition: {fileID: 137460680}
   responseType: 1
-  audioSourceAction: 0
+  audioSourceAction: 3
 --- !u!114 &555184989
 MonoBehaviour:
   m_ObjectHideFlags: 2

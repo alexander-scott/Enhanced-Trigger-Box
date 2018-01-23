@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace EnhancedTriggerbox.Component
 {
@@ -92,6 +93,9 @@ namespace EnhancedTriggerbox.Component
                 {
                     musicVolume = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Music Volume",
                         "The volume of the audio clip. Default is 1."), musicVolume);
+
+                    duration = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Change Duration",
+                    "The duration that the volume change will happen over in seconds. If you leave it as 0 it will perform the changes instantly."), duration);
                 }
             }
             else if (responseType == ResponseType.SoundEffect)
@@ -143,10 +147,6 @@ namespace EnhancedTriggerbox.Component
                 {
                     ShowWarningMessage("You have chosen to play a sound effect but haven't set a position for it to play at!");
                 }
-                if (!playSoundEffect)
-                {
-                    ShowWarningMessage("You have chosen to play a sound effect but haven't set a sound effect to play!");
-                }
             }
         }
 
@@ -161,13 +161,24 @@ namespace EnhancedTriggerbox.Component
                         break;
 
                     case AudioSourceAction.ChangeVolume:
-                        audioSource.volume = musicVolume;
+                        // If duration isn't 0 then we'll apply the changes over a set duration using a coroutine
+                        if (duration != 0f)
+                        {
+                            activeCoroutines.Add(StartCoroutine(ChangeVolumeOverTime()));
+                        }
+                        else // Else we'll instantly apply the changes
+                        {
+                            audioSource.volume = musicVolume;
+                        }   
                         break;
 
                     case AudioSourceAction.Play:
-                        audioSource.loop = loopMusic;
-                        audioSource.clip = playMusic;
-                        audioSource.volume = musicVolume;
+                        audioSource.loop = loopMusic;  
+                        audioSource.volume = musicVolume; 
+
+                        if (playMusic)
+                            audioSource.clip = playMusic;
+                         
                         audioSource.Play();
                         break;
 
@@ -182,7 +193,24 @@ namespace EnhancedTriggerbox.Component
                 AudioSource.PlayClipAtPoint(playSoundEffect, soundEffectPosition.position, musicVolume);
             }
 
-            return true;
+            return false;
+        }
+
+        private IEnumerator ChangeVolumeOverTime()
+        {
+            float smoothness = 0.02f; // Should the user be able to set this?
+            float progress = 0; // This float will serve as the 3rd parameter of the lerp function.
+            float increment = smoothness / duration; // The amount of change to apply.
+
+            float startVolume = audioSource.volume;
+
+            while (progress < 1)
+            {
+                audioSource.volume = Mathf.Lerp(startVolume, musicVolume, progress); 
+
+                progress += increment;
+                yield return new WaitForSeconds(smoothness);
+            }
         }
     }
 }
