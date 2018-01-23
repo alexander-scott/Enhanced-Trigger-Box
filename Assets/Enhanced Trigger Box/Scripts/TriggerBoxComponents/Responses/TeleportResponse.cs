@@ -101,7 +101,8 @@ namespace EnhancedTriggerbox.Component
                     }
                     break;
             }
-            
+
+            ShowWarningMessage("This component has been deprecated and replaced with the ModifyTransform component. Please use that instead.");
         }
 
         public override bool ExecuteAction(GameObject collisionGameObject)

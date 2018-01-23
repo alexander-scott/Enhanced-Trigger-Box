@@ -575,7 +575,7 @@ Prefab:
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
       propertyPath: triggerTags
-      value: CubeShoot
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
@@ -2937,7 +2937,7 @@ Prefab:
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
       propertyPath: triggerTags
-      value: CubeShoot
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
@@ -4192,12 +4192,13 @@ MonoBehaviour:
   showWarnings: 1
   duration: 0
   audioSource: {fileID: 0}
-  muteAllAudio: 0
   playMusic: {fileID: 0}
   loopMusic: 0
   musicVolume: 1
   playSoundEffect: {fileID: 8300000, guid: 7bbc195e1eee3d44c93d6bb6a98fb2bd, type: 3}
   soundEffectPosition: {fileID: 137460680}
+  responseType: 1
+  audioSourceAction: 0
 --- !u!114 &555184989
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -7637,7 +7638,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012283059912, guid: 0e19bd83a514cd94b91dfda04ba2352c, type: 2}
       propertyPath: m_Name
-      value: ETB_Transform
+      value: ETB_ModifyTransform
       objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
@@ -7698,6 +7699,7 @@ MonoBehaviour:
   localSpace: 0
   targetValue: 220
   referenceType: 0
+  valueType: 0
 --- !u!114 &1095221650
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -7719,6 +7721,7 @@ MonoBehaviour:
   localSpace: 0
   targetValue: 140
   referenceType: 0
+  valueType: 0
 --- !u!114 &1095221651
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -8084,7 +8087,7 @@ Prefab:
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}
       propertyPath: triggerTags
-      value: CubeShoot
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114000010472492878, guid: 0e19bd83a514cd94b91dfda04ba2352c,
         type: 2}

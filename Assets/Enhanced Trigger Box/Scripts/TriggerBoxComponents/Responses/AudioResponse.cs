@@ -14,11 +14,6 @@ namespace EnhancedTriggerbox.Component
         public AudioSource audioSource;
 
         /// <summary>
-        /// Stops the current audio clip being played on the main camera.
-        /// </summary>
-        public bool muteAllAudio;
-
-        /// <summary>
         /// This is the audio clip that will be played on the main camera.
         /// </summary>
         public AudioClip playMusic;
@@ -43,60 +38,145 @@ namespace EnhancedTriggerbox.Component
         /// </summary>
         public Transform soundEffectPosition;
 
+        /// <summary>
+        /// The type of response that this component will be using. AudioSource allows you to modify an audio source and SoundEffect allows you to play positional sound effects
+        /// </summary>
+        public ResponseType responseType;
+
+        /// <summary>
+        /// The type of action to be performed on the audio source. Play allows you to play an Audio Clip, Stop stops an audio source's currently playing clip,
+        /// Restart put the time of the audio clip back to 0 and ChangeVolume sets the volume of the audio source.
+        /// </summary>
+        public AudioSourceAction audioSourceAction;
+
+        public enum ResponseType
+        {
+            AudioSource,
+            SoundEffect,
+        }
+
+        public enum AudioSourceAction
+        {
+            Play,
+            Stop,
+            Restart,
+            ChangeVolume
+        }
+
 #if UNITY_EDITOR
         public override void DrawInspectorGUI()
         {
-            audioSource = (AudioSource)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Audio Source",
-                "The audio source for the music."), audioSource, typeof(AudioSource), true);
+            responseType = (ResponseType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Response Type",
+                "The type of response that this component will be using. AudioSource allows you to modify an audio source and SoundEffect allows you to play positional sound effects"), responseType);
 
-            muteAllAudio = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Mute all audio",
-                "Stops the current audio clip being played on the audio source."), muteAllAudio);
+            if (responseType == ResponseType.AudioSource)
+            {
+                audioSource = (AudioSource)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Audio Source",
+               "The audio source."), audioSource, typeof(AudioSource), true);
 
-            playMusic = (AudioClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Play Music",
-                "This is the audio clip that will be played on the audio source."), playMusic, typeof(AudioClip), true);
+                audioSourceAction = (AudioSourceAction)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Audio Source Action",
+                "The type of action to be performed on the audio source. Play allows you to play an Audio Clip, Stop stops an audio source's currently playing clip, Restart put the time of the audio clip back to 0 and ChangeVolume sets the volume of the audio source."), audioSourceAction);
 
-            loopMusic = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Loop Music",
-                "If this is true, the above audio clip will loop when played."), loopMusic);
+                if (audioSourceAction == AudioSourceAction.Play)
+                {
+                    playMusic = (AudioClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Audio Clip",
+                    "This is the audio clip that will be played on the audio source."), playMusic, typeof(AudioClip), true);
 
-            musicVolume = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Music Volume",
-                    "The volume of the audio clip. Default is 1."), musicVolume);
+                    loopMusic = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Loop Music",
+                    "If this is true, the above audio clip will loop when played."), loopMusic);
 
-            playSoundEffect = (AudioClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Play Sound Effect",
+                    musicVolume = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Music Volume",
+                        "The volume of the audio clip. Default is 1."), musicVolume);
+                }    
+                else if (audioSourceAction == AudioSourceAction.ChangeVolume)
+                {
+                    musicVolume = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Music Volume",
+                        "The volume of the audio clip. Default is 1."), musicVolume);
+                }
+            }
+            else if (responseType == ResponseType.SoundEffect)
+            {
+                playSoundEffect = (AudioClip)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Play Sound Effect",
                 "This is an audio clip, played at a certain position in world space as defined below."), playSoundEffect, typeof(AudioClip), true);
 
-            soundEffectPosition = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Sound Effect Position",
-                "The position the sound effect will be played at."), soundEffectPosition, typeof(Transform), true);
+                soundEffectPosition = (Transform)UnityEditor.EditorGUILayout.ObjectField(new GUIContent("Sound Effect Position",
+                    "The position the sound effect will be played at."), soundEffectPosition, typeof(Transform), true);
+
+                musicVolume = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Sound Effect Volume",
+                        "The volume of the sound effect. Default is 1."), musicVolume);
+            }
         }
 #endif
 
         public override void Validation()
         {
-            // If we're playing a sound effect a position must be specified
-            if (playSoundEffect)
+            if (responseType == ResponseType.AudioSource)
+            {
+                switch (audioSourceAction)
+                {
+                    case AudioSourceAction.Stop:
+                        if (!audioSource)
+                            ShowWarningMessage("You have chosen to stop an audio source but haven't specified an Audio Source.");
+                        break;
+
+                    case AudioSourceAction.ChangeVolume:
+                        if (!audioSource)
+                            ShowWarningMessage("You have chosen to change the volume on an audio source but haven't specified an Audio Source.");
+                        break;
+
+                    case AudioSourceAction.Play:
+                        if (!playMusic)
+                            ShowWarningMessage("You have chosen to play an audio source but haven't specified an Audio Clip.");
+                        if (!audioSource)
+                            ShowWarningMessage("You have chosen to play an audio source but haven't specified an Audio Source.");
+                        break;
+
+                    case AudioSourceAction.Restart:
+                        if (!audioSource)
+                            ShowWarningMessage("You have chosen to restart an audio source but haven't specified an Audio Source.");
+                        break;
+                }
+            }
+            else
             {
                 if (!soundEffectPosition)
                 {
                     ShowWarningMessage("You have chosen to play a sound effect but haven't set a position for it to play at!");
+                }
+                if (!playSoundEffect)
+                {
+                    ShowWarningMessage("You have chosen to play a sound effect but haven't set a sound effect to play!");
                 }
             }
         }
 
         public override bool ExecuteAction()
         {
-            if (muteAllAudio)
+            if (responseType == ResponseType.AudioSource)
             {
-                audioSource.Stop();
-            }
+                switch (audioSourceAction)
+                {
+                    case AudioSourceAction.Stop:
+                        audioSource.Stop();
+                        break;
 
-            if (playMusic)
-            {
-                audioSource.loop = loopMusic;
-                audioSource.clip = playMusic;
-                audioSource.volume = musicVolume;
-                audioSource.Play();
-            }
+                    case AudioSourceAction.ChangeVolume:
+                        audioSource.volume = musicVolume;
+                        break;
 
-            if (playSoundEffect)
+                    case AudioSourceAction.Play:
+                        audioSource.loop = loopMusic;
+                        audioSource.clip = playMusic;
+                        audioSource.volume = musicVolume;
+                        audioSource.Play();
+                        break;
+
+                    case AudioSourceAction.Restart:
+                        audioSource.time = 0;
+                        break;
+                }
+            }
+            else
             {
                 // This will play the audio clip at soundEffectPosition's position with the volume of musicVolume
                 AudioSource.PlayClipAtPoint(playSoundEffect, soundEffectPosition.position, musicVolume);

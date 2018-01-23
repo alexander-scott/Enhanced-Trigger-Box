@@ -5,7 +5,7 @@ Enhanced Trigger Box is a free tool that be used within Unity. It allows develop
 
 It has been designed in a way that allows you to easily extend the Enhanced Trigger Box yourself by adding more responses or conditions. This will be explained in more detail further down the page. 
 
-*Current version: [v0.3]*
+*Current version: [v0.41]*
 
 Getting started
 ---------------
@@ -526,6 +526,28 @@ Change Collision Detection:- Choose to set this rigidbody's collision detection 
 
 ![Rigidbody Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/RigidbodyResponse.png)
 
+### Modify Transform Response
+
+This response allows you to modify any part of a transform component on another gameobject.
+
+#### Component Fields
+
+Target Transform:- The transform that will be modified.
+
+Target Attribute:- What attribute of the transform will be modified. Choose from position, rotation or scale.
+
+Target Axis:- What axis the selected attribute will be modified on. Choose from X, Y or Z.
+
+Local Space:- If this is checked, the modifications will be done in local space instead of world space.
+
+Target Value Type:- The type of value that the new value is. If it is set, the transform value will be set to that value. If it is additive, the transform value will be incremented by that value. 
+
+Target Value:- The value you would like to set this attribute to.
+
+Change Duration:- The duration you want this change to happen over. Leaving this at 0 will result in it happening instantly.  
+
+![Modify Transform Response](https://alex-scott.co.uk/img/portfolio/TrigBoxSS/ModifyTransformResponse.png)
+
 ### Player Pref Response
 
 This response allows you to save a value to a player pref. The supported data types are int, float and string. If you're dealing with ints or floats you can choose to increment or decrement the value by 1 by entering '++' or '--' in the value field.
@@ -645,6 +667,10 @@ If you are upgrading from a version lower than v0.1.3 and have created any custo
 #### Variable values not being saved correctly in custom components
 
 This is quite a vague issue so there could be a whole multitude of reasons why it isn't saving. One thing I would recommend checking is that all the variables are public and not private. This has solved a similar problem for me in the past and could be the solution to your problem.
+
+#### Base ExecuteAction(GameObject collisionGameObject) being called instead of the overriden version
+
+This is caused by requiresCollisionObjectData being set to false and the ExecuteAction() version without the GameObject references being called, which you most likely haven't implemented. To fix this simply set requiresCollisionObjectData to true in your component.
 
 Misc
 ---------------

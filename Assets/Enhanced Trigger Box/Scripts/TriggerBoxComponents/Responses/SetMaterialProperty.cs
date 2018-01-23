@@ -179,6 +179,11 @@ namespace EnhancedTriggerbox.Component
                     if (cloneMaterial)
                     {
                         meshRenderer = targetGameobject.GetComponent<MeshRenderer>();
+                        if (!meshRenderer)
+                        {
+                            Debug.Log("Unable to execute Set Material Property Response. Missing mesh renderer component!");
+                            return true;
+                        }
                         targetMaterial = new Material(meshRenderer.material);
                         meshRenderer.material = targetMaterial;
                     }

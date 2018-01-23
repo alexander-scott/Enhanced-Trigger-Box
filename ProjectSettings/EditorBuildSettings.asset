@@ -6,6 +6,4 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Enhanced Trigger Box/Demo/Demo.unity
-  - enabled: 1
-    path: Assets/Enhanced Trigger Box/Demo/Examples.unity
+    path: Assets/Enhanced Trigger Box/Examples/Examples.unity

@@ -41,6 +41,19 @@ namespace EnhancedTriggerbox.Component
         public ReferenceType referenceType;
 
         /// <summary>
+        /// The type of value that the new value is. If it is set, the transform value will be set to that value. If it is additive, the transform value will be incremented by that value. 
+        /// </summary>
+        public ValueType valueType;
+
+        public override bool requiresCollisionObjectData 
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// The available attributes that can be modified
         /// </summary>
         public enum SelectAttribute
@@ -65,6 +78,15 @@ namespace EnhancedTriggerbox.Component
             TransformReference,
             TransformName,
             CollisionTransform,
+        }
+
+        /// <summary>
+        /// The type of value that the new value is. If it is set, the transform value will be set to that value. If it is additive, the transform value will be incremented by that value. 
+        /// </summary>
+        public enum ValueType
+        {
+            Set,
+            Additive,
         }
 
 #if UNITY_EDITOR
@@ -94,6 +116,9 @@ namespace EnhancedTriggerbox.Component
 
             localSpace = UnityEditor.EditorGUILayout.Toggle(new GUIContent("Local Space",
                    "If this value is true, the modifications will be done in local space rather than world space."), localSpace);
+
+            valueType = (ValueType)UnityEditor.EditorGUILayout.EnumPopup(new GUIContent("Target Value Type",
+                "The type of value that the new value is. If it is set, the transform value will be set to that value. If it is additive, the transform value will be incremented by that value. ."), valueType);
 
             targetValue = UnityEditor.EditorGUILayout.FloatField(new GUIContent("Target Value",
                     "The value you would like to set this attribute to."), targetValue);
@@ -128,7 +153,13 @@ namespace EnhancedTriggerbox.Component
             }
             else
             {
-                SetValue(targetValue);
+                float newValue;
+                if (valueType == ValueType.Additive)
+                    newValue = GetStartValue() + targetValue;
+                else
+                    newValue = targetValue;
+
+                SetValue(newValue);
             }
 
             return false;
@@ -141,10 +172,15 @@ namespace EnhancedTriggerbox.Component
             float increment = smoothness / duration; // The amount of change to apply.
 
             float startValue = GetStartValue();
+            float endValue;
+            if (valueType == ValueType.Additive)
+                endValue = GetStartValue() + targetValue;
+            else
+                endValue = targetValue;
 
             while (progress < 1)
             {
-                SetValue(Mathf.Lerp(startValue, targetValue, progress));
+                SetValue(Mathf.Lerp(startValue, endValue, progress));
 
                 progress += increment;
                 yield return new WaitForSeconds(smoothness);
