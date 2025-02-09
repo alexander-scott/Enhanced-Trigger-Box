@@ -285,8 +285,8 @@ namespace EnhancedTriggerbox
                 // ArgumentException: Getting control 0's position in a group with only 0 controls when doing Repaint Aborting
                 // but this does remove the error.
                 return;
-            } 
-            
+            }
+
             if (EditorGUI.EndChangeCheck())
             {
                 // If the user has selected an item in the drop down list
@@ -322,8 +322,8 @@ namespace EnhancedTriggerbox
         /// Called when the game is first started
         /// </summary>
         void Start()
-        { 
-            if (disableEntryCheck) 
+        {
+            if (disableEntryCheck)
             {
                 // If entry check is disabled, then triggered is true by default
                 triggered = true;
@@ -516,7 +516,7 @@ namespace EnhancedTriggerbox
                     }
                     for (int i = 0; i < responses.Count; i++)
                     {
-                        responses[i].ResetComponent(); 
+                        responses[i].ResetComponent();
                     }
                     break;
 
@@ -537,7 +537,7 @@ namespace EnhancedTriggerbox
             // Reset the components
             for (int i = responses.Count - 1; i >= 0; i--)
             {
-                responses[i].ResetComponent(); 
+                responses[i].ResetComponent();
             }
             for (int i = conditions.Count - 1; i >= 0; i--)
             {
@@ -545,7 +545,7 @@ namespace EnhancedTriggerbox
             }
 
             // Execute all the exit responses the same way as the normal responses
-            for (int i = exitResponses.Count - 1; i >= 0; i--) 
+            for (int i = exitResponses.Count - 1; i >= 0; i--)
             {
                 if (exitResponses[i].requiresCollisionObjectData)
                 {
