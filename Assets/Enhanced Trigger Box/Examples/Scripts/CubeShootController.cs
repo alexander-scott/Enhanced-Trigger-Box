@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace EnhancedTriggerbox.Demo
+namespace EnhancedTriggerbox.Examples
 {
     public class CubeShootController : MonoBehaviour
     {
