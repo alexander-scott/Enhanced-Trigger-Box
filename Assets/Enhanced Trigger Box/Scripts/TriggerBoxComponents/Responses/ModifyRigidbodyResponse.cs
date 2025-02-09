@@ -200,7 +200,7 @@ namespace EnhancedTriggerbox.Component
                 int drag;
                 if (int.TryParse(setDrag, out drag))
                 {
-                    rigbody.drag = drag;
+                    rigbody.linearDamping = drag;
                 }
                 else
                 {
@@ -213,7 +213,7 @@ namespace EnhancedTriggerbox.Component
                 float aDrag;
                 if (float.TryParse(setAngularDrag, out aDrag))
                 {
-                    rigbody.angularDrag = aDrag;
+                    rigbody.angularDamping = aDrag;
                 }
                 else
                 {
